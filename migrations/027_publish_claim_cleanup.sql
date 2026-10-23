@@ -1,0 +1,2 @@
+ALTER TABLE security_publish_claims DROP CONSTRAINT security_publish_claims_draft_id_fkey;
+ALTER TABLE security_publish_claims ADD CONSTRAINT security_publish_claims_draft_id_fkey FOREIGN KEY (draft_id) REFERENCES aegis_outbound_drafts(id) ON DELETE CASCADE;

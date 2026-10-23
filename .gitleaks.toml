@@ -1,0 +1,13 @@
+title = "Threat Deck source release"
+[extend]
+useDefault = true
+[[allowlists]]
+description = "Deterministic synthetic AES key in crypto regression tests"
+condition = "AND"
+paths = ['''src/lib/crypto/symmetric\.test\.ts''']
+regexes = ['''0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef''']
+[[allowlists]]
+description = "Explicitly synthetic cron secret shared by isolated regression fixtures"
+condition = "AND"
+paths = ['''src/(__test__/setup-isolation|lib/security/route-policy\.test)\.ts''']
+regexes = ['''test-cron-secret-with-at-least-32-characters''']

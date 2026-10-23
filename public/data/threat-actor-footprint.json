@@ -1,0 +1,579 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "name": "Threat Actor Footprint",
+    "description": "Approximate operating regions for tracked state-sponsored and criminal threat groups. Coordinates reflect attributed home regions per MITRE ATT&CK group attribution and public intelligence reporting; they are not building-level pins.",
+    "schemaVersion": 1,
+    "attribution": "MITRE ATT&CK Groups, CISA, Mandiant, CrowdStrike, Microsoft Threat Intelligence",
+    "lastReviewed": "2026-05-27"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "apt28",
+        "displayName": "APT28",
+        "aliases": ["Fancy Bear", "Sofacy", "Sednit", "STRONTIUM", "Forest Blizzard"],
+        "actorType": "apt",
+        "attributionCountry": "Russia",
+        "attributionAgency": "GRU Unit 26165",
+        "techniques": ["T1566.001", "T1078", "T1110.003", "T1574.001", "T1583"],
+        "targetSectors": ["government", "defense", "media", "ngo", "energy"],
+        "targetGeographies": ["us", "eu", "uk", "ua"],
+        "lastActive": "2026-04",
+        "victimCountEst": 250,
+        "sophistication": "expert",
+        "mitreGroupId": "G0007",
+        "mitreUrl": "https://attack.mitre.org/groups/G0007/",
+        "summary": "Russian military intelligence group active since at least 2004, targeting governments, military, and security organizations primarily in the United States, Europe, and CIS."
+      },
+      "geometry": { "type": "Point", "coordinates": [37.6173, 55.7558] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "apt29",
+        "displayName": "APT29",
+        "aliases": ["Cozy Bear", "Nobelium", "Midnight Blizzard", "The Dukes"],
+        "actorType": "apt",
+        "attributionCountry": "Russia",
+        "attributionAgency": "SVR",
+        "techniques": ["T1078.004", "T1566.002", "T1199", "T1098", "T1556"],
+        "targetSectors": ["government", "diplomatic", "technology", "thinktank"],
+        "targetGeographies": ["us", "eu", "uk", "nato"],
+        "lastActive": "2026-05",
+        "victimCountEst": 180,
+        "sophistication": "expert",
+        "mitreGroupId": "G0016",
+        "mitreUrl": "https://attack.mitre.org/groups/G0016/",
+        "summary": "Russian Foreign Intelligence Service (SVR) cyber unit responsible for SolarWinds and ongoing supply-chain and identity-pivot operations against NATO governments and cloud providers."
+      },
+      "geometry": { "type": "Point", "coordinates": [37.6173, 55.7558] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "sandworm",
+        "displayName": "Sandworm",
+        "aliases": ["APT44", "Voodoo Bear", "Telebots", "Iron Viking", "Seashell Blizzard"],
+        "actorType": "apt",
+        "attributionCountry": "Russia",
+        "attributionAgency": "GRU Unit 74455",
+        "techniques": ["T1485", "T1490", "T1561", "T1078", "T1190"],
+        "targetSectors": ["energy", "ics", "government", "logistics", "media"],
+        "targetGeographies": ["ua", "us", "eu", "global"],
+        "lastActive": "2026-05",
+        "victimCountEst": 120,
+        "sophistication": "expert",
+        "mitreGroupId": "G0034",
+        "mitreUrl": "https://attack.mitre.org/groups/G0034/",
+        "summary": "Russian GRU-attributed group behind BlackEnergy, NotPetya, Industroyer, and ongoing destructive operations against Ukrainian critical infrastructure."
+      },
+      "geometry": { "type": "Point", "coordinates": [37.6173, 55.7558] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "turla",
+        "displayName": "Turla",
+        "aliases": ["Snake", "Venomous Bear", "Waterbug", "Secret Blizzard"],
+        "actorType": "apt",
+        "attributionCountry": "Russia",
+        "attributionAgency": "FSB Center 16",
+        "techniques": ["T1071.004", "T1574", "T1027", "T1546"],
+        "targetSectors": ["government", "diplomatic", "research", "military"],
+        "targetGeographies": ["eu", "us", "asia", "me"],
+        "lastActive": "2026-03",
+        "victimCountEst": 95,
+        "sophistication": "expert",
+        "mitreGroupId": "G0010",
+        "mitreUrl": "https://attack.mitre.org/groups/G0010/",
+        "summary": "FSB-linked espionage group active since the late 1990s, known for advanced stealth, satellite C2, and long-dwell operations against diplomatic and military targets."
+      },
+      "geometry": { "type": "Point", "coordinates": [37.6173, 55.7558] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "lazarus",
+        "displayName": "Lazarus Group",
+        "aliases": ["Hidden Cobra", "APT38", "Diamond Sleet", "Labyrinth Chollima"],
+        "actorType": "apt",
+        "attributionCountry": "North Korea",
+        "attributionAgency": "Reconnaissance General Bureau",
+        "techniques": ["T1566.003", "T1059.007", "T1486", "T1648", "T1195"],
+        "targetSectors": ["finance", "cryptocurrency", "defense", "media", "energy"],
+        "targetGeographies": ["global"],
+        "lastActive": "2026-05",
+        "victimCountEst": 320,
+        "sophistication": "expert",
+        "mitreGroupId": "G0032",
+        "mitreUrl": "https://attack.mitre.org/groups/G0032/",
+        "summary": "DPRK state-sponsored group responsible for Sony Pictures, WannaCry, Bangladesh Bank heist, and ongoing cryptocurrency theft estimated at $3B+ since 2017."
+      },
+      "geometry": { "type": "Point", "coordinates": [125.7625, 39.0392] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "kimsuky",
+        "displayName": "Kimsuky",
+        "aliases": ["APT43", "Velvet Chollima", "Black Banshee", "Emerald Sleet"],
+        "actorType": "apt",
+        "attributionCountry": "North Korea",
+        "attributionAgency": "Reconnaissance General Bureau",
+        "techniques": ["T1566.001", "T1583.001", "T1102", "T1056"],
+        "targetSectors": ["government", "thinktank", "academic", "nuclear"],
+        "targetGeographies": ["kr", "us", "jp", "eu"],
+        "lastActive": "2026-05",
+        "victimCountEst": 200,
+        "sophistication": "high",
+        "mitreGroupId": "G0094",
+        "mitreUrl": "https://attack.mitre.org/groups/G0094/",
+        "summary": "DPRK espionage group focused on Korean Peninsula intelligence, US/EU policy targets, and cryptocurrency theft to fund the regime."
+      },
+      "geometry": { "type": "Point", "coordinates": [125.7625, 39.0392] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "apt41",
+        "displayName": "APT41",
+        "aliases": ["Double Dragon", "Wicked Panda", "Barium", "Brass Typhoon"],
+        "actorType": "apt",
+        "attributionCountry": "China",
+        "attributionAgency": "MSS contractor (Chengdu 404)",
+        "techniques": ["T1190", "T1505.003", "T1068", "T1133", "T1059"],
+        "targetSectors": ["technology", "telecom", "healthcare", "gaming", "government"],
+        "targetGeographies": ["us", "eu", "asia", "global"],
+        "lastActive": "2026-05",
+        "victimCountEst": 280,
+        "sophistication": "expert",
+        "mitreGroupId": "G0096",
+        "mitreUrl": "https://attack.mitre.org/groups/G0096/",
+        "summary": "PRC group conducting both state-sponsored espionage and financially motivated operations, indicted by US DOJ in 2020. Known for supply-chain and edge-device exploitation."
+      },
+      "geometry": { "type": "Point", "coordinates": [104.0668, 30.5728] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "apt10",
+        "displayName": "APT10",
+        "aliases": ["Stone Panda", "MenuPass", "Potassium", "Cicada"],
+        "actorType": "apt",
+        "attributionCountry": "China",
+        "attributionAgency": "MSS Tianjin Bureau",
+        "techniques": ["T1199", "T1486", "T1059.001", "T1566.001"],
+        "targetSectors": ["msp", "manufacturing", "engineering", "telecom"],
+        "targetGeographies": ["us", "jp", "eu", "global"],
+        "lastActive": "2026-04",
+        "victimCountEst": 175,
+        "sophistication": "expert",
+        "mitreGroupId": "G0045",
+        "mitreUrl": "https://attack.mitre.org/groups/G0045/",
+        "summary": "Long-running PRC espionage group behind Operation Cloud Hopper — large-scale MSP compromise enabling downstream access to managed customers globally."
+      },
+      "geometry": { "type": "Point", "coordinates": [117.2009, 39.0842] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "apt40",
+        "displayName": "APT40",
+        "aliases": ["Leviathan", "Bronze Mohawk", "TEMP.Periscope", "Gingham Typhoon"],
+        "actorType": "apt",
+        "attributionCountry": "China",
+        "attributionAgency": "MSS Hainan State Security Department",
+        "techniques": ["T1190", "T1078", "T1071.001", "T1505.003"],
+        "targetSectors": ["maritime", "defense", "academic", "biomedical"],
+        "targetGeographies": ["us", "eu", "asean", "au"],
+        "lastActive": "2026-04",
+        "victimCountEst": 140,
+        "sophistication": "high",
+        "mitreGroupId": "G0065",
+        "mitreUrl": "https://attack.mitre.org/groups/G0065/",
+        "summary": "Hainan-based MSS contractor group focused on maritime, defense, and academic targets supporting PRC strategic interests in the South China Sea."
+      },
+      "geometry": { "type": "Point", "coordinates": [110.1989, 20.0444] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "volt_typhoon",
+        "displayName": "Volt Typhoon",
+        "aliases": ["Vanguard Panda", "BRONZE SILHOUETTE", "Insidious Taurus"],
+        "actorType": "apt",
+        "attributionCountry": "China",
+        "attributionAgency": "PLA Strategic Support Force",
+        "techniques": ["T1133", "T1078", "T1059.003", "T1090.003", "T1562"],
+        "targetSectors": ["energy", "water", "transportation", "telecom", "manufacturing"],
+        "targetGeographies": ["us", "guam", "asia-pacific"],
+        "lastActive": "2026-05",
+        "victimCountEst": 75,
+        "sophistication": "expert",
+        "mitreGroupId": "G1017",
+        "mitreUrl": "https://attack.mitre.org/groups/G1017/",
+        "summary": "PRC group pre-positioning in US critical infrastructure for disruptive or destructive operations during a future Taiwan conflict. Heavy living-off-the-land tradecraft."
+      },
+      "geometry": { "type": "Point", "coordinates": [110.1989, 20.0444] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "salt_typhoon",
+        "displayName": "Salt Typhoon",
+        "aliases": ["GhostEmperor", "FamousSparrow", "Earth Estries"],
+        "actorType": "apt",
+        "attributionCountry": "China",
+        "attributionAgency": "MSS",
+        "techniques": ["T1078", "T1133", "T1505.003", "T1556.002"],
+        "targetSectors": ["telecom", "government", "intelligence"],
+        "targetGeographies": ["us", "eu", "asia"],
+        "lastActive": "2026-05",
+        "victimCountEst": 60,
+        "sophistication": "expert",
+        "mitreGroupId": "G1027",
+        "mitreUrl": "https://attack.mitre.org/groups/G1027/",
+        "summary": "PRC group responsible for compromising US telecom carriers and accessing lawful intercept systems used by federal law enforcement (disclosed Oct 2026)."
+      },
+      "geometry": { "type": "Point", "coordinates": [116.4074, 39.9042] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "mustang_panda",
+        "displayName": "Mustang Panda",
+        "aliases": ["TA416", "RedDelta", "Bronze President", "Earth Preta"],
+        "actorType": "apt",
+        "attributionCountry": "China",
+        "attributionAgency": "MSS",
+        "techniques": ["T1566.001", "T1574.002", "T1059.003"],
+        "targetSectors": ["government", "ngo", "religious", "diplomatic"],
+        "targetGeographies": ["asean", "eu", "us"],
+        "lastActive": "2026-04",
+        "victimCountEst": 130,
+        "sophistication": "high",
+        "mitreGroupId": "G0129",
+        "mitreUrl": "https://attack.mitre.org/groups/G0129/",
+        "summary": "PRC group focused on government and NGO espionage against Vatican, Tibetan diaspora, ASEAN governments, and EU policy targets."
+      },
+      "geometry": { "type": "Point", "coordinates": [116.4074, 39.9042] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "apt34",
+        "displayName": "APT34",
+        "aliases": ["OilRig", "Helix Kitten", "Hazel Sandstorm", "Cobalt Gypsy"],
+        "actorType": "apt",
+        "attributionCountry": "Iran",
+        "attributionAgency": "MOIS",
+        "techniques": ["T1566.001", "T1078.003", "T1505.003", "T1059.001"],
+        "targetSectors": ["energy", "telecom", "government", "finance"],
+        "targetGeographies": ["me", "us", "eu"],
+        "lastActive": "2026-04",
+        "victimCountEst": 110,
+        "sophistication": "high",
+        "mitreGroupId": "G0049",
+        "mitreUrl": "https://attack.mitre.org/groups/G0049/",
+        "summary": "Iranian MOIS-attributed group targeting Middle East energy, telecom, and government sectors with custom backdoors (Karkoff, RDAT)."
+      },
+      "geometry": { "type": "Point", "coordinates": [51.3890, 35.6892] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "muddywater",
+        "displayName": "MuddyWater",
+        "aliases": ["Mango Sandstorm", "Static Kitten", "Mercury", "Earth Vetala"],
+        "actorType": "apt",
+        "attributionCountry": "Iran",
+        "attributionAgency": "MOIS",
+        "techniques": ["T1566.001", "T1059.001", "T1218", "T1219"],
+        "targetSectors": ["telecom", "government", "defense", "energy"],
+        "targetGeographies": ["me", "tr", "us", "asia"],
+        "lastActive": "2026-05",
+        "victimCountEst": 150,
+        "sophistication": "high",
+        "mitreGroupId": "G0069",
+        "mitreUrl": "https://attack.mitre.org/groups/G0069/",
+        "summary": "MOIS-attributed group known for living-off-the-land PowerShell tradecraft and post-Oct-2023 operations against Israeli targets and Five Eyes allies."
+      },
+      "geometry": { "type": "Point", "coordinates": [51.3890, 35.6892] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "apt35",
+        "displayName": "Charming Kitten",
+        "aliases": ["APT35", "Phosphorus", "Mint Sandstorm", "Newscaster"],
+        "actorType": "apt",
+        "attributionCountry": "Iran",
+        "attributionAgency": "IRGC-IO",
+        "techniques": ["T1566.002", "T1056.003", "T1539", "T1098.005"],
+        "targetSectors": ["thinktank", "academic", "journalism", "dissident"],
+        "targetGeographies": ["us", "uk", "il", "me"],
+        "lastActive": "2026-05",
+        "victimCountEst": 220,
+        "sophistication": "high",
+        "mitreGroupId": "G0059",
+        "mitreUrl": "https://attack.mitre.org/groups/G0059/",
+        "summary": "IRGC-attributed group running long-running social-engineering campaigns against journalists, academics, and human-rights activists with persona-driven phishing."
+      },
+      "geometry": { "type": "Point", "coordinates": [51.3890, 35.6892] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "lockbit",
+        "displayName": "LockBit",
+        "aliases": ["LockBit Black", "LockBit Green", "LockBit Red"],
+        "actorType": "ransomware",
+        "attributionCountry": "Russia",
+        "attributionAgency": "criminal RaaS",
+        "techniques": ["T1486", "T1490", "T1098", "T1566", "T1078"],
+        "targetSectors": ["manufacturing", "healthcare", "finance", "government"],
+        "targetGeographies": ["global"],
+        "lastActive": "2026-04",
+        "victimCountEst": 1700,
+        "sophistication": "high",
+        "mitreGroupId": "G1015",
+        "mitreUrl": "https://attack.mitre.org/groups/G1015/",
+        "summary": "Most prolific ransomware-as-a-service operation 2022–2024. Disrupted by Operation Cronos (Feb 2024) but resurfaced; continued affiliate operations with leaked builder."
+      },
+      "geometry": { "type": "Point", "coordinates": [37.6173, 55.7558] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "alphv",
+        "displayName": "ALPHV/BlackCat",
+        "aliases": ["BlackCat", "Noberus"],
+        "actorType": "ransomware",
+        "attributionCountry": "Russia",
+        "attributionAgency": "criminal RaaS",
+        "techniques": ["T1486", "T1490", "T1567", "T1078"],
+        "targetSectors": ["healthcare", "finance", "energy", "msp"],
+        "targetGeographies": ["global"],
+        "lastActive": "2026-02",
+        "victimCountEst": 600,
+        "sophistication": "high",
+        "mitreGroupId": "G1041",
+        "mitreUrl": "https://attack.mitre.org/groups/G1041/",
+        "summary": "Rust-based RaaS responsible for Change Healthcare ($872M+ impact), MGM, and other major 2023–2024 incidents. Performed exit-scam after seizure attempt."
+      },
+      "geometry": { "type": "Point", "coordinates": [37.6173, 55.7558] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "cl0p",
+        "displayName": "Cl0p",
+        "aliases": ["Clop", "TA505 spinoff", "Lace Tempest"],
+        "actorType": "ransomware",
+        "attributionCountry": "Russia",
+        "attributionAgency": "criminal",
+        "techniques": ["T1190", "T1486", "T1567", "T1041"],
+        "targetSectors": ["fileTransfer", "finance", "education", "healthcare"],
+        "targetGeographies": ["global"],
+        "lastActive": "2026-05",
+        "victimCountEst": 2700,
+        "sophistication": "expert",
+        "mitreGroupId": "G0092",
+        "mitreUrl": "https://attack.mitre.org/groups/G0092/",
+        "summary": "Long-running ransomware/extortion group specializing in zero-day exploitation of file-transfer software (Accellion FTA, GoAnywhere, MOVEit, Cleo). Affects thousands per campaign."
+      },
+      "geometry": { "type": "Point", "coordinates": [30.5234, 50.4501] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "conti",
+        "displayName": "Conti / Wizard Spider",
+        "aliases": ["TrickBot Gang", "Royal", "Black Basta successor"],
+        "actorType": "ransomware",
+        "attributionCountry": "Russia",
+        "attributionAgency": "criminal",
+        "techniques": ["T1486", "T1490", "T1059.003", "T1078"],
+        "targetSectors": ["healthcare", "government", "energy", "manufacturing"],
+        "targetGeographies": ["global"],
+        "lastActive": "2026-03",
+        "victimCountEst": 900,
+        "sophistication": "expert",
+        "mitreGroupId": "G0102",
+        "mitreUrl": "https://attack.mitre.org/groups/G0102/",
+        "summary": "Russia-aligned cybercrime syndicate behind TrickBot, Ryuk, Conti, Royal, and Black Basta. Successor brands continue operations after 2022 Conti leak."
+      },
+      "geometry": { "type": "Point", "coordinates": [30.3609, 59.9311] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "black_basta",
+        "displayName": "Black Basta",
+        "aliases": ["Storm-1811", "Conti successor"],
+        "actorType": "ransomware",
+        "attributionCountry": "Russia",
+        "attributionAgency": "criminal",
+        "techniques": ["T1486", "T1219", "T1133", "T1059"],
+        "targetSectors": ["healthcare", "manufacturing", "finance"],
+        "targetGeographies": ["us", "eu", "global"],
+        "lastActive": "2026-05",
+        "victimCountEst": 500,
+        "sophistication": "high",
+        "mitreGroupId": "G1042",
+        "mitreUrl": "https://attack.mitre.org/groups/G1042/",
+        "summary": "Conti-spinoff RaaS using Microsoft Teams vishing for initial access. Major 2024 healthcare disruptor (Ascension)."
+      },
+      "geometry": { "type": "Point", "coordinates": [37.6173, 55.7558] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "fin7",
+        "displayName": "FIN7",
+        "aliases": ["Carbanak", "Sangria Tempest", "Carbon Spider"],
+        "actorType": "criminal",
+        "attributionCountry": "Ukraine/Russia",
+        "attributionAgency": "criminal syndicate",
+        "techniques": ["T1566.001", "T1059.005", "T1027", "T1078"],
+        "targetSectors": ["retail", "hospitality", "finance"],
+        "targetGeographies": ["us", "eu", "global"],
+        "lastActive": "2026-04",
+        "victimCountEst": 350,
+        "sophistication": "expert",
+        "mitreGroupId": "G0046",
+        "mitreUrl": "https://attack.mitre.org/groups/G0046/",
+        "summary": "Long-running financially motivated group responsible for $1B+ in fraud. Pivoted from POS card theft to ransomware affiliation post-2020."
+      },
+      "geometry": { "type": "Point", "coordinates": [30.5234, 50.4501] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "scattered_spider",
+        "displayName": "Scattered Spider",
+        "aliases": ["UNC3944", "Octo Tempest", "Roasted 0ktapus", "0ktapus", "Muddled Libra"],
+        "actorType": "criminal",
+        "attributionCountry": "US/UK",
+        "attributionAgency": "criminal collective",
+        "techniques": ["T1566.004", "T1078.004", "T1098.005", "T1556"],
+        "targetSectors": ["telecom", "saas", "hospitality", "finance"],
+        "targetGeographies": ["us", "uk", "global"],
+        "lastActive": "2026-05",
+        "victimCountEst": 110,
+        "sophistication": "high",
+        "mitreGroupId": "G1015",
+        "mitreUrl": "https://attack.mitre.org/groups/G1015/",
+        "summary": "English-speaking social-engineering specialists behind MGM/Caesars (Sep 2023) and ongoing helpdesk impersonation attacks. Affiliated with ALPHV and RansomHub."
+      },
+      "geometry": { "type": "Point", "coordinates": [-0.1278, 51.5074] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "lapsus",
+        "displayName": "Lapsus$",
+        "aliases": ["DEV-0537", "Strawberry Tempest"],
+        "actorType": "criminal",
+        "attributionCountry": "Brazil/UK",
+        "attributionAgency": "criminal collective",
+        "techniques": ["T1078", "T1556", "T1199", "T1098"],
+        "targetSectors": ["technology", "telecom", "gaming", "saas"],
+        "targetGeographies": ["global"],
+        "lastActive": "2025-12",
+        "victimCountEst": 25,
+        "sophistication": "medium",
+        "mitreGroupId": "G1004",
+        "mitreUrl": "https://attack.mitre.org/groups/G1004/",
+        "summary": "Youth-driven extortion group responsible for Microsoft, Nvidia, Okta, Rockstar Games, and Uber 2022 breaches. Several members arrested 2022–2023."
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.6333, -23.5505] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "ransomhub",
+        "displayName": "RansomHub",
+        "aliases": ["Greenbottle"],
+        "actorType": "ransomware",
+        "attributionCountry": "Russia",
+        "attributionAgency": "criminal RaaS",
+        "techniques": ["T1486", "T1078", "T1133", "T1219"],
+        "targetSectors": ["healthcare", "government", "msp", "education"],
+        "targetGeographies": ["global"],
+        "lastActive": "2026-05",
+        "victimCountEst": 460,
+        "sophistication": "high",
+        "mitreGroupId": "G1051",
+        "mitreUrl": "https://attack.mitre.org/groups/G1051/",
+        "summary": "Top RaaS by victim count in 2024–2025, absorbing affiliates from disrupted LockBit and ALPHV operations. Heavy Change Healthcare aftermath ties."
+      },
+      "geometry": { "type": "Point", "coordinates": [37.6173, 55.7558] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "andariel",
+        "displayName": "Andariel",
+        "aliases": ["Onyx Sleet", "Plutonium", "Stonefly"],
+        "actorType": "apt",
+        "attributionCountry": "North Korea",
+        "attributionAgency": "Reconnaissance General Bureau",
+        "techniques": ["T1566.001", "T1190", "T1059.001", "T1486"],
+        "targetSectors": ["defense", "nuclear", "aerospace", "healthcare"],
+        "targetGeographies": ["us", "kr", "global"],
+        "lastActive": "2026-04",
+        "victimCountEst": 80,
+        "sophistication": "high",
+        "mitreGroupId": "G0138",
+        "mitreUrl": "https://attack.mitre.org/groups/G0138/",
+        "summary": "DPRK Lazarus sub-cluster blending espionage against defense/nuclear R&D with opportunistic ransomware for revenue generation."
+      },
+      "geometry": { "type": "Point", "coordinates": [125.7625, 39.0392] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "hafnium",
+        "displayName": "Hafnium",
+        "aliases": ["Silk Typhoon"],
+        "actorType": "apt",
+        "attributionCountry": "China",
+        "attributionAgency": "MSS",
+        "techniques": ["T1190", "T1505.003", "T1059", "T1078"],
+        "targetSectors": ["defense", "thinktank", "ngo", "law"],
+        "targetGeographies": ["us"],
+        "lastActive": "2026-02",
+        "victimCountEst": 240,
+        "sophistication": "high",
+        "mitreGroupId": "G0125",
+        "mitreUrl": "https://attack.mitre.org/groups/G0125/",
+        "summary": "PRC group responsible for Microsoft Exchange ProxyLogon 2021 mass exploitation affecting 60,000+ servers. Continued edge-device targeting."
+      },
+      "geometry": { "type": "Point", "coordinates": [116.4074, 39.9042] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "actorId": "killnet",
+        "displayName": "Killnet",
+        "aliases": ["Killmilk", "NoName057(16) ally"],
+        "actorType": "hacktivist",
+        "attributionCountry": "Russia",
+        "attributionAgency": "pro-Russia hacktivist",
+        "techniques": ["T1498.001", "T1499"],
+        "targetSectors": ["government", "media", "transportation"],
+        "targetGeographies": ["us", "eu", "ua", "nato"],
+        "lastActive": "2026-05",
+        "victimCountEst": 800,
+        "sophistication": "low",
+        "mitreGroupId": "G1009",
+        "mitreUrl": "https://attack.mitre.org/groups/G1009/",
+        "summary": "Pro-Russia hacktivist umbrella conducting persistent DDoS against NATO/EU government and infrastructure websites since 2022."
+      },
+      "geometry": { "type": "Point", "coordinates": [37.6173, 55.7558] }
+    }
+  ]
+}

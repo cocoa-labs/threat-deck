@@ -1,0 +1,60 @@
+name: threatdeck
+x-app: &app
+  image: threatdeck:local
+  build:
+    context: .
+    args:
+      NEXT_PUBLIC_WS_URL: ${NEXT_PUBLIC_WS_URL:-}
+      NEXT_PUBLIC_MAPBOX_TOKEN: ${NEXT_PUBLIC_MAPBOX_TOKEN:-}
+      NEXT_PUBLIC_SITE_URL: ${NEXTAUTH_URL:-http://localhost:3002}
+  env_file: .env
+  environment: &environment
+    NODE_ENV: production
+    HOSTNAME: 0.0.0.0
+    PORT: 3002
+    DATABASE_URL: postgresql://threatdeck:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@postgres:5432/threatdeck
+    REDIS_URL: redis://redis:6379
+    NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?Set a random NEXTAUTH_SECRET in .env}
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: threatdeck
+      POSTGRES_USER: threatdeck
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports: ['127.0.0.1:${POSTGRES_PORT:-5436}:5432']
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U threatdeck -d threatdeck']
+      interval: 3s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+  redis:
+    image: redis:7-alpine
+    ports: ['127.0.0.1:${REDIS_PORT:-6380}:6379']
+    command: [redis-server, --appendonly, 'yes']
+    volumes: [redisdata:/data]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+  migrate:
+    <<: *app
+    command: [npm, run, 'db:migrate']
+    depends_on:
+      postgres: {condition: service_healthy}
+  app:
+    <<: *app
+    ports: ['127.0.0.1:${APP_PORT:-3002}:3002']
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+volumes:
+  pgdata:
+  redisdata:

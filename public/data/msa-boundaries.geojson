@@ -1,0 +1,60 @@
+{
+  "type": "FeatureCollection",
+  "_comment": "PLACEHOLDER: Replace with real CBSA/MSA boundary polygons from Census TIGER/Line shapefiles. These are rough bounding-box approximations for development only. Each feature must include a 'msaCode' property matching AtlasMarketScore.msaCode for choropleth join.",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "msaCode": "35620",
+        "msaName": "New York-Newark-Jersey City, NY-NJ-PA",
+        "placeholder": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.26, 40.48],
+          [-73.70, 40.48],
+          [-73.70, 40.92],
+          [-74.26, 40.92],
+          [-74.26, 40.48]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "msaCode": "16980",
+        "msaName": "Chicago-Naperville-Elgin, IL-IN-WI",
+        "placeholder": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-88.26, 41.64],
+          [-87.52, 41.64],
+          [-87.52, 42.15],
+          [-88.26, 42.15],
+          [-88.26, 41.64]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "msaCode": "31080",
+        "msaName": "Los Angeles-Long Beach-Anaheim, CA",
+        "placeholder": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-118.67, 33.70],
+          [-117.65, 33.70],
+          [-117.65, 34.34],
+          [-118.67, 34.34],
+          [-118.67, 33.70]
+        ]]
+      }
+    }
+  ]
+}

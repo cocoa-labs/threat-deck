@@ -1,0 +1,307 @@
+/* ═══════════════════════════════════════════════
+   KLAMMER MONITOR - Design Tokens
+   Migrated from klammer dashboard/css/variables.css
+   ═══════════════════════════════════════════════ */
+
+:root {
+  /* ─── Backgrounds ─── */
+  --bg-primary: #0a0a0a;
+  --bg-surface: #141414;
+  --bg-elevated: #1a1a1a;
+  --bg-hover: #222222;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* ─── Borders ─── */
+  --border-default: #2a2a2a;
+  --border-focus: #444444;
+  --border-subtle: #1e1e1e;
+
+  /* ─── Text ─── */
+  --text-primary: #e8e8e8;
+  --text-secondary: #888888;
+  --text-dim: #aaaaaa;
+  --text-muted: #888888;
+
+  /* ─── Semantic Colors ─── */
+  --color-positive: #44ff88;
+  --color-negative: #ff4444;
+  --color-warning: #ffaa00;
+  --color-info: #00ff41;
+  --color-accent: #ffffff;
+  --color-cyber: #00ff41;
+
+  /* ─── Severity (globe + alerts) ─── */
+  --severity-critical: #ff0040;
+  --severity-high: #ff4444;
+  --severity-medium: #ffaa00;
+  --severity-low: #00ff41;
+  --severity-info: #666666;
+
+  /* ─── Agent States ─── */
+  --agent-idle: #00ff41;
+  --agent-thinking: #ffaa00;
+  --agent-acting: #44ff88;
+  --agent-error: #ff4444;
+
+  /* ─── Globe Atmosphere ─── */
+  --atmosphere-calm: #2266aa;
+  --atmosphere-elevated: #aa8822;
+  --atmosphere-high: #aa2222;
+
+  /* ─── Globe Map ─── */
+  --map-bg: #0d2240;
+  --map-grid: #2288cc;
+  --map-land: #153050;
+  --map-border: #2288cc;
+  --map-water: #0d2240;
+
+  /* ─── Geopolitical ─── */
+  --base-us-nato: #4488ff;
+  --base-china: #ff4444;
+  --base-russia: #ff8800;
+  --base-other: #aaaaaa;
+
+  /* ─── Typography ─── */
+  --text-xs: 0.65rem;
+  --text-sm: 0.75rem;
+  --text-base: 0.8125rem;
+  --text-md: 0.875rem;
+  --text-lg: 1rem;
+  --text-xl: 1.125rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.75rem;
+
+  /* ─── Spacing (4px base) ─── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ─── Layout ─── */
+  --header-height: 48px;
+  --top-ticker-height: 62px;
+  --bottom-ticker-height: 62px;
+  --ticker-height: var(--top-ticker-height);
+  --sidebar-width: 56px;
+  --sidebar-expanded: 240px;
+  --panel-header: 36px;
+  --command-bar-height: 48px;
+
+  /* ─── Radii ─── */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* ─── Shadows ─── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow-positive: 0 0 12px rgba(68, 255, 136, 0.3);
+  --shadow-glow-negative: 0 0 12px rgba(255, 68, 68, 0.3);
+  --shadow-glow-info: 0 0 12px rgba(0, 255, 65, 0.3);
+
+  /* ─── Transitions ─── */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+
+  /* ─── Z-Index Scale ─── */
+  --z-globe: 0;
+  --z-panels: 10;
+  --z-sidebar: 20;
+  --z-ticker: 25;
+  --z-header: 30;
+  --z-command-bar: 55;
+  --z-agent-drawer: 55;
+  --z-tooltip: 40;
+  --z-dialog: 50;
+  --z-command-palette: 60;
+  --z-notification: 70;
+
+  /* ─── Agent Drawer ─── */
+  --agent-drawer-width: 420px;
+
+  /* ─── Command View ─── */
+  --command-scanline-opacity: 0.03;
+  --command-grid-color: #00cccc;
+  --command-radar-color: #00ffaa;
+  --command-vignette-opacity: 0.6;
+  --command-glow-color: rgba(0, 255, 170, 0.06);
+
+  /* ─── CRT Panel Frames — Phase 6.1: Matrix green primary ─── */
+  --crt-glow: #00ff41;
+  --crt-glow-rgb: 0, 255, 65;
+  --crt-border-width: 1px;
+  --crt-corner-size: 12px;
+  --crt-corner-thickness: 2px;
+  --crt-scanline-opacity: 0.025;
+  --crt-scanline-gap: 4px;
+  --crt-glow-spread: 8px;
+  --crt-glow-intensity: 0.25;
+  --crt-pulse-min: 0.15;
+  --crt-pulse-max: 0.35;
+  --crt-panel-bg: rgba(10, 10, 10, 0.92);
+
+  /* ─── U-Shape Layout ─── */
+  --u-side-width: 320px;
+  --u-bottom-height: 340px;
+  --u-gap: 6px;
+  --u-hero-min-height: 400px;
+
+  /* ─── Grid Section ─── */
+  --grid-columns: 3;
+  --grid-panel-height: 340px;
+
+  /* ─── Companion Mode ─── */
+  --companion-sidebar-width: 380px;
+  --companion-ticker-height: 36px;
+  --companion-toast-width: 320px;
+
+  /* ─── Badge Colors ─── */
+  --badge-green: #22c55e;
+  --badge-green-rgb: 34, 197, 94;
+  --badge-blue: #3b82f6;
+  --badge-blue-rgb: 59, 130, 246;
+  --badge-amber: #f59e0b;
+  --badge-amber-rgb: 245, 158, 11;
+  --badge-red: #ef4444;
+  --badge-red-rgb: 239, 68, 68;
+  --badge-cyan: #06b6d4;
+  --badge-cyan-rgb: 6, 182, 212;
+  --badge-purple: #a855f7;
+  --badge-purple-rgb: 168, 85, 247;
+
+  /* ─── Agent Name Colors ─── */
+  --agent-color-1: #06b6d4;
+  --agent-color-2: #a855f7;
+  --agent-color-3: #f59e0b;
+  --agent-color-4: #22c55e;
+  --agent-color-5: #3b82f6;
+
+  /* ─── Cocoa AI Brand (Phase 4.5 + Phase 6) ─── */
+  /* Neon brand accent aligned with the tactical CRT interface. */
+  /* Warm brand brown — the single "cocoa" touch per surface (wordmark italic,
+     seam stripe, fix-architect mode chip, DEMO freshness telltale). */
+  --cocoa-brown: #6b4423;
+  --cocoa-brown-rgb: 107, 68, 35;
+  --brand-accent: #00ff41;
+  --brand-accent-rgb: 0, 255, 65;
+  --brand-accent-deep: #00a82d;
+  --brand-accent-pale: #7dff99;
+  --brand-accent-pale-rgb: 125, 255, 153;
+  --brand-accent-readable: #00ff41;
+  --brand-accent-readable-rgb: 0, 255, 65;
+
+  /* ─── Matrix Green Preview (Phase 6 will swap --crt-glow to this) ─── */
+  /* For now, used directly by showpiece surfaces (login, AEGIS viewers, brand chrome). */
+  --matrix-green: #00ff41;
+  --matrix-green-rgb: 0, 255, 65;
+  --matrix-green-dim: #00a82d;
+  --matrix-rain-tail-rgb: 0, 255, 65;
+  --matrix-rain-head-rgb: 125, 255, 153;
+}
+
+/* ─── Light Mode Overrides ─── */
+.light {
+  /* Backgrounds */
+  --bg-primary: #f5f5f5;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-hover: #e8e8e8;
+  --bg-overlay: rgba(0, 0, 0, 0.3);
+
+  /* Borders */
+  --border-default: #d8d8d8;
+  --border-focus: #aaaaaa;
+  --border-subtle: #e8e8e8;
+
+  /* Text */
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-dim: #888888;
+  --text-muted: #bbbbbb;
+
+  /* Semantic */
+  --color-positive: #22aa55;
+  --color-negative: #dd2222;
+  --color-warning: #cc8800;
+  --color-info: #00a82d;
+  --color-accent: #1a1a1a;
+
+  /* Severity */
+  --severity-critical: #dd0033;
+  --severity-high: #dd2222;
+  --severity-medium: #cc8800;
+  --severity-low: #00a82d;
+  --severity-info: #888888;
+
+  /* Brand — deepen cocoa brown slightly for contrast on the white surface */
+  --cocoa-brown: #5a3a1e;
+  --cocoa-brown-rgb: 90, 58, 30;
+
+  /* Agent */
+  --agent-idle: #00a82d;
+  --agent-thinking: #cc8800;
+  --agent-acting: #22aa55;
+  --agent-error: #dd2222;
+
+  /* Map */
+  --map-bg: #d4e6f1;
+  --map-grid: #0077aa;
+  --map-land: #e8eeee;
+  --map-border: #0077aa;
+  --map-water: #c8dce8;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-glow-positive: 0 0 8px rgba(34, 170, 85, 0.15);
+  --shadow-glow-negative: 0 0 8px rgba(221, 34, 34, 0.15);
+  --shadow-glow-info: 0 0 8px rgba(0, 168, 45, 0.15);
+
+  /* CRT — toned down (light-mode Matrix green readable on white) */
+  --crt-glow: #00a82d;
+  --crt-glow-rgb: 0, 168, 45;
+  --crt-glow-intensity: 0.08;
+  --crt-glow-spread: 4px;
+  --crt-pulse-min: 0.05;
+  --crt-pulse-max: 0.12;
+  --crt-panel-bg: rgba(255, 255, 255, 0.95);
+  --crt-scanline-opacity: 0;
+
+  /* Command View */
+  --command-scanline-opacity: 0;
+  --command-grid-color: #0099aa;
+  --command-radar-color: #00aa88;
+  --command-vignette-opacity: 0.15;
+  --command-glow-color: rgba(0, 170, 136, 0.04);
+
+  /* Badge Colors — darker/more saturated for white bg */
+  --badge-green: #16a34a;
+  --badge-green-rgb: 22, 163, 74;
+  --badge-blue: #2563eb;
+  --badge-blue-rgb: 37, 99, 235;
+  --badge-amber: #d97706;
+  --badge-amber-rgb: 217, 119, 6;
+  --badge-red: #dc2626;
+  --badge-red-rgb: 220, 38, 38;
+  --badge-cyan: #0891b2;
+  --badge-cyan-rgb: 8, 145, 178;
+  --badge-purple: #9333ea;
+  --badge-purple-rgb: 147, 51, 234;
+
+  /* Agent Name Colors */
+  --agent-color-1: #0891b2;
+  --agent-color-2: #9333ea;
+  --agent-color-3: #d97706;
+  --agent-color-4: #16a34a;
+  --agent-color-5: #2563eb;
+}

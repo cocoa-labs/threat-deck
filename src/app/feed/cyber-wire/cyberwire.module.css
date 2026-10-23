@@ -1,0 +1,516 @@
+/* ═══════════════════════════════════════════════
+   Cyber Wire — Phase 4.5D editorial broadsheet
+   Magazine-grade typography, paper-texture grain,
+   restraint with the brand seam appearing twice.
+   ═══════════════════════════════════════════════ */
+
+.page {
+  position: relative;
+  min-height: 100dvh;
+  background: #0a0a0a;
+  color: #e8e8e8;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  overflow-x: hidden;
+  isolation: isolate;
+}
+
+/* Paper-texture noise overlay — SVG-encoded turbulence at ~1.5% opacity */
+.page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  mix-blend-mode: screen;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 32px 80px;
+}
+
+/* ═══════════════════════════════════════════════
+   Masthead
+   ═══════════════════════════════════════════════ */
+
+.masthead {
+  text-align: center;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--brand-accent, #00ff41);
+  margin-bottom: 36px;
+  box-shadow: 0 1px 0 rgba(var(--brand-accent-rgb), 0.25);
+}
+
+.brandRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 6px;
+}
+
+.brandName {
+  font-family: var(--font-instrument-serif), "Times New Roman", serif;
+  font-style: italic;
+  font-size: clamp(40px, 7vw, 64px);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--brand-accent-readable, var(--brand-accent, #00ff41));
+}
+
+.brandSeparator {
+  width: 1px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.18);
+  display: inline-block;
+  align-self: center;
+  margin: 0 4px;
+}
+
+.wireMark {
+  font-family: var(--font-vt323), "VT323", "Courier New", monospace;
+  font-size: clamp(28px, 5vw, 44px);
+  letter-spacing: 0.15em;
+  line-height: 1;
+  color: var(--matrix-green-dim, #00a82d);
+  text-shadow: 0 0 14px rgba(var(--crt-glow-rgb), 0.3);
+  text-transform: uppercase;
+}
+
+.dateline {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.dateSep {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.subscribeRow {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.subscribeLink {
+  color: var(--matrix-green-dim, #00a82d);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+.subscribeLink:hover {
+  color: var(--matrix-green, #00ff41);
+  text-decoration: underline;
+}
+
+/* ═══════════════════════════════════════════════
+   Big Numbers strip — NORAD scoreboard
+   ═══════════════════════════════════════════════ */
+
+.bigNumbers {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  padding: 32px 0;
+  margin-bottom: 56px;
+  border-top: 1px solid rgba(var(--crt-glow-rgb), 0.15);
+  border-bottom: 1px solid rgba(var(--crt-glow-rgb), 0.15);
+}
+
+.bigCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8px 14px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bigCell:last-child {
+  border-right: none;
+}
+
+.bigCellLabel {
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.bigCellValue {
+  font-family: var(--font-vt323), "VT323", "Courier New", monospace;
+  font-size: clamp(40px, 5.5vw, 60px);
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+  color: var(--matrix-green-dim, #00a82d);
+  text-shadow: 0 0 12px rgba(var(--crt-glow-rgb), 0.28);
+  font-variant-numeric: tabular-nums;
+}
+
+.bigCellUnit {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════
+   Lead story — single column, magazine treatment
+   ═══════════════════════════════════════════════ */
+
+.leadStory {
+  max-width: 680px;
+  margin: 0 auto 64px;
+  padding: 0 8px;
+}
+
+.leadKicker {
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  color: var(--severity-critical, #ff0040);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.leadKickerDot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: var(--severity-critical, #ff0040);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--severity-critical, #ff0040);
+}
+
+.leadHeadline {
+  font-family: var(--font-instrument-serif), "Times New Roman", serif;
+  font-style: italic;
+  font-size: clamp(28px, 4.5vw, 44px);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  color: #f4f4f4;
+  margin-bottom: 16px;
+}
+
+.leadByline {
+  font-style: italic;
+  font-family: var(--font-instrument-serif), "Times New Roman", serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.leadBody {
+  font-size: 14px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.leadBody p {
+  margin-bottom: 1.2em;
+}
+
+/* Drop cap — magazine convention, no one expects on a cyber dashboard */
+.leadBody p:first-child::first-letter {
+  font-family: var(--font-instrument-serif), "Times New Roman", serif;
+  font-style: italic;
+  font-size: 72px;
+  line-height: 0.85;
+  float: left;
+  padding: 6px 12px 0 0;
+  color: var(--brand-accent-readable, var(--brand-accent, #00ff41));
+}
+
+.leadFooter {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+}
+
+.leadLink {
+  color: var(--matrix-green-dim, #00a82d);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+.leadLink:hover {
+  color: var(--matrix-green, #00ff41);
+}
+
+/* ═══════════════════════════════════════════════
+   Brief grid — 3-column magazine cards
+   ═══════════════════════════════════════════════ */
+
+.briefSection {
+  margin-bottom: 64px;
+}
+
+.sectionTitle {
+  font-family: var(--font-vt323), "VT323", "Courier New", monospace;
+  font-size: 22px;
+  letter-spacing: 0.18em;
+  color: var(--matrix-green-dim, #00a82d);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(var(--crt-glow-rgb), 0.18);
+}
+
+.briefGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.briefCard {
+  position: relative;
+  padding: 18px 18px 18px 22px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 2px solid rgba(255, 255, 255, 0.12);
+  transition:
+    border-left-color 120ms ease,
+    background-color 120ms ease;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  color: inherit;
+}
+
+.briefCard:hover {
+  background: rgba(var(--crt-glow-rgb), 0.025);
+  border-left-color: var(--matrix-green, #00ff41);
+}
+
+.briefKicker {
+  font-size: 8px;
+  letter-spacing: 0.28em;
+  color: var(--severity-critical, #ff0040);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.briefHeadline {
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: #f0f0f0;
+  margin-bottom: 10px;
+}
+
+.briefSummary {
+  font-size: 11px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.briefLink {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  color: var(--matrix-green-dim, #00a82d);
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════
+   Index list
+   ═══════════════════════════════════════════════ */
+
+.indexSection {
+  margin-bottom: 56px;
+}
+
+.indexList {
+  display: flex;
+  flex-direction: column;
+}
+
+.indexRow {
+  display: grid;
+  grid-template-columns: 80px 78px 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 12px;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.08);
+  border-left: 2px solid transparent;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.72);
+  transition:
+    border-left-color 120ms ease,
+    background-color 120ms ease,
+    padding-left 120ms ease;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.indexRow:hover {
+  background: rgba(var(--crt-glow-rgb), 0.03);
+  border-left-color: var(--matrix-green, #00ff41);
+  padding-left: 18px;
+}
+
+.indexTime {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  font-variant-numeric: tabular-nums;
+}
+
+.indexTag {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 2px 6px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+.indexTagCve {
+  color: var(--severity-high, #ff4444);
+}
+
+.indexTagKev {
+  color: var(--severity-critical, #ff0040);
+}
+
+.indexTagBreach {
+  color: var(--severity-critical, #ff0040);
+}
+
+.indexTagPatch {
+  color: var(--matrix-green-dim, #00a82d);
+}
+
+.indexHeadline {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════════
+   Footer — closing brand seam
+   ═══════════════════════════════════════════════ */
+
+.footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 2px solid var(--brand-accent, #00ff41);
+  box-shadow: 0 -1px 0 rgba(var(--brand-accent-rgb), 0.25);
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.32);
+  text-transform: uppercase;
+}
+
+.footerLine {
+  margin-bottom: 8px;
+}
+
+.footerLink {
+  color: var(--brand-accent-pale, #7dff99);
+  text-decoration: none;
+}
+
+.footerLink:hover {
+  color: var(--matrix-green-dim, #00a82d);
+}
+
+/* ═══════════════════════════════════════════════
+   Empty state
+   ═══════════════════════════════════════════════ */
+
+.empty {
+  padding: 64px 16px;
+  text-align: center;
+  font-family: var(--font-vt323), "VT323", "Courier New", monospace;
+  font-size: 22px;
+  letter-spacing: 0.08em;
+  color: rgba(var(--crt-glow-rgb), 0.5);
+}
+
+/* ═══════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════ */
+
+@media (max-width: 820px) {
+  .container {
+    padding: 36px 20px 56px;
+  }
+  .bigNumbers {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bigCell:nth-child(2) {
+    border-right: none;
+  }
+  .briefGrid {
+    grid-template-columns: 1fr;
+  }
+  .indexRow {
+    grid-template-columns: 64px 68px 1fr;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brandRow {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .brandSeparator {
+    display: none;
+  }
+  .leadBody p:first-child::first-letter {
+    font-size: 52px;
+  }
+}

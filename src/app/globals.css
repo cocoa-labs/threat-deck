@@ -1,0 +1,403 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-foreground: var(--text-primary);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-hover: var(--bg-hover);
+  --color-border: var(--border-default);
+  --color-border-focus: var(--border-focus);
+  --color-positive: var(--color-positive);
+  --color-negative: var(--color-negative);
+  --color-warning: var(--color-warning);
+  --color-info: var(--color-info);
+  --color-accent: var(--color-accent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-badge-green: var(--badge-green);
+  --color-badge-blue: var(--badge-blue);
+  --color-badge-amber: var(--badge-amber);
+  --color-badge-red: var(--badge-red);
+  --color-badge-cyan: var(--badge-cyan);
+  --color-badge-purple: var(--badge-purple);
+}
+
+/* Hide scrollbar for horizontal scroll containers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-default) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--border-focus);
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-geist-mono), "SF Mono", "Monaco", monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+/* Selection */
+::selection {
+  background: rgba(var(--brand-accent-readable-rgb), 0.2);
+  color: var(--text-primary);
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 1px solid var(--color-info);
+  outline-offset: 2px;
+}
+
+/* Keyframes */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Ticker hover-pause */
+.ticker-paused {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+@keyframes ticker-scroll-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes alert-flash {
+  0%,
+  100% {
+    border-opacity: 0.4;
+    opacity: 0.4;
+  }
+  50% {
+    border-opacity: 1;
+    opacity: 1;
+  }
+}
+
+@keyframes alert-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* Mapbox popup override — default (existing overlays) */
+.mapboxgl-popup-content {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: var(--bg-surface) !important;
+}
+
+.mapboxgl-popup-close-button {
+  display: none !important;
+}
+
+/* Klammer popup — lighter native Mapbox feel with subtle CRT glow */
+.klammer-popup .mapboxgl-popup-content {
+  background: rgba(20, 22, 28, 0.94) !important;
+  border: 1px solid rgba(var(--crt-glow-rgb), 0.2) !important;
+  border-radius: 6px !important;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 0 12px rgba(var(--crt-glow-rgb), 0.06) !important;
+  padding: 0 !important;
+  min-width: 180px;
+  overflow: hidden;
+}
+
+.klammer-popup .mapboxgl-popup-tip {
+  border-top-color: rgba(20, 22, 28, 0.94) !important;
+}
+
+.klammer-popup.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+  border-top-color: transparent !important;
+  border-bottom-color: rgba(20, 22, 28, 0.94) !important;
+}
+
+.klammer-popup.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+  border-top-color: transparent !important;
+  border-right-color: rgba(20, 22, 28, 0.94) !important;
+}
+
+.klammer-popup.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+  border-top-color: transparent !important;
+  border-left-color: rgba(20, 22, 28, 0.94) !important;
+}
+
+.mapboxgl-ctrl-logo {
+  opacity: 0.3 !important;
+}
+
+.mapboxgl-ctrl-attrib {
+  display: none !important;
+}
+
+/* ─── CRT Panel Keyframes ─── */
+
+@keyframes crt-glow-pulse {
+  0%,
+  100% {
+    opacity: var(--crt-pulse-min);
+  }
+  50% {
+    opacity: var(--crt-pulse-max);
+  }
+}
+
+@keyframes crt-data-enter {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.crt-scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent var(--crt-scanline-gap),
+    rgba(var(--crt-glow-rgb), var(--crt-scanline-opacity)) var(--crt-scanline-gap),
+    rgba(var(--crt-glow-rgb), var(--crt-scanline-opacity)) calc(var(--crt-scanline-gap) + 1px)
+  );
+  pointer-events: none;
+  mix-blend-mode: screen;
+  will-change: opacity;
+  contain: strict;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crt-no-motion {
+    animation: none !important;
+  }
+}
+
+/* ─── Freshness Telltale (per-panel signal light) ─── */
+/* Sibling idiom to <ConnectionStatus> LIVE: a concentric ping ring for live
+   transmission, a slow opacity breathe for stale. Both collapse to a steady
+   dot under prefers-reduced-motion. Decorative only — no layout impact. */
+
+@keyframes freshness-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes freshness-breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.freshness-ping {
+  animation: freshness-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.freshness-breathe {
+  animation: freshness-breathe 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .freshness-ping {
+    animation: none !important;
+    /* Hide the ring entirely — the steady dot beneath carries the signal. */
+    opacity: 0 !important;
+  }
+  .freshness-breathe {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ─── Command View Keyframes ─── */
+
+@keyframes radar-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes command-glow-pulse {
+  0%,
+  100% {
+    box-shadow: inset 0 0 80px rgba(0, 255, 170, 0.06);
+  }
+  50% {
+    box-shadow: inset 0 0 100px rgba(0, 255, 170, 0.1);
+  }
+}
+
+/* ─── Light Mode Overrides ─── */
+
+.light *::-webkit-scrollbar-thumb {
+  background: #cccccc;
+}
+
+.light *::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
+}
+
+.light * {
+  scrollbar-color: #cccccc transparent;
+}
+
+.light ::selection {
+  background: rgba(0, 136, 204, 0.2);
+}
+
+/* Theme override deliberately follows the anchor-specific defaults. */
+/* biome-ignore lint/style/noDescendingSpecificity: theme override */
+.light .mapboxgl-popup-tip {
+  border-top-color: #ffffff !important;
+}
+
+.light .klammer-popup .mapboxgl-popup-content {
+  background: rgba(255, 255, 255, 0.96) !important;
+  border: 1px solid rgba(0, 136, 204, 0.2) !important;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 0 12px rgba(0, 136, 204, 0.04) !important;
+}
+
+.light .klammer-popup .mapboxgl-popup-tip {
+  border-top-color: rgba(255, 255, 255, 0.96) !important;
+}
+
+.light .klammer-popup.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+  border-top-color: transparent !important;
+  border-bottom-color: rgba(255, 255, 255, 0.96) !important;
+}
+
+.light .klammer-popup.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+  border-top-color: transparent !important;
+  border-right-color: rgba(255, 255, 255, 0.96) !important;
+}
+
+.light .klammer-popup.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+  border-top-color: transparent !important;
+  border-left-color: rgba(255, 255, 255, 0.96) !important;
+}

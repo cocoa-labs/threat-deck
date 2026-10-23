@@ -1,0 +1,323 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ukraine-frontline",
+        "name": "Ukraine Frontline",
+        "severity": "critical",
+        "category": "active-conflict",
+        "description": "Active combat zone along eastern Ukraine frontline from Kharkiv Oblast through Donetsk and Zaporizhzhia.",
+        "url": "https://en.wikipedia.org/wiki/Russian_invasion_of_Ukraine"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [36.2300, 49.9800],
+            [38.9500, 49.4200],
+            [40.1800, 48.0500],
+            [39.0200, 47.1000],
+            [37.5400, 46.8300],
+            [35.1200, 47.4500],
+            [34.8000, 48.6200],
+            [35.4500, 49.5800],
+            [36.2300, 49.9800]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "gaza-southern-israel",
+        "name": "Gaza / Southern Israel",
+        "severity": "critical",
+        "category": "active-conflict",
+        "description": "Active conflict zone encompassing the Gaza Strip and adjacent southern Israel border region.",
+        "url": "https://en.wikipedia.org/wiki/Israel%E2%80%93Hamas_war"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [34.2200, 31.5900],
+            [34.5600, 31.5900],
+            [34.5600, 31.2200],
+            [34.4800, 31.2200],
+            [34.2700, 31.2200],
+            [34.2200, 31.3500],
+            [34.2200, 31.5900]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "taiwan-strait-adz",
+        "name": "Taiwan Strait Air Defense Zone",
+        "severity": "high",
+        "category": "tension-zone",
+        "description": "Contested air defense identification zone in the Taiwan Strait between mainland China and Taiwan.",
+        "url": "https://en.wikipedia.org/wiki/Taiwan_Strait"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [117.5000, 26.5000],
+            [122.5000, 26.5000],
+            [122.5000, 23.0000],
+            [121.0000, 21.5000],
+            [117.5000, 22.0000],
+            [117.5000, 26.5000]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "south-china-sea",
+        "name": "South China Sea Disputed Waters",
+        "severity": "high",
+        "category": "disputed-territory",
+        "description": "Overlapping territorial claims involving China, Vietnam, Philippines, Malaysia, and Brunei over the Spratly and Paracel Islands.",
+        "url": "https://en.wikipedia.org/wiki/Territorial_disputes_in_the_South_China_Sea"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [109.5000, 21.0000],
+            [117.0000, 21.0000],
+            [121.0000, 16.0000],
+            [119.5000, 10.5000],
+            [115.0000, 7.5000],
+            [109.0000, 7.5000],
+            [106.5000, 11.0000],
+            [107.5000, 16.5000],
+            [109.5000, 21.0000]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "korean-dmz",
+        "name": "Korean DMZ Buffer Zone",
+        "severity": "high",
+        "category": "tension-zone",
+        "description": "Heavily militarized demilitarized zone and buffer area separating North and South Korea along the 38th parallel.",
+        "url": "https://en.wikipedia.org/wiki/Korean_Demilitarized_Zone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [124.6100, 38.3500],
+            [126.1000, 38.0000],
+            [127.5000, 38.3000],
+            [129.0800, 38.6500],
+            [129.0800, 38.0000],
+            [127.5000, 37.7000],
+            [126.1000, 37.5000],
+            [124.6100, 37.8000],
+            [124.6100, 38.3500]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "strait-of-hormuz",
+        "name": "Strait of Hormuz Tension Zone",
+        "severity": "medium",
+        "category": "tension-zone",
+        "description": "Strategic chokepoint between Iran and the Arabian Peninsula through which ~20% of global oil transits.",
+        "url": "https://en.wikipedia.org/wiki/Strait_of_Hormuz"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [55.5000, 27.2000],
+            [56.8000, 27.2000],
+            [57.4000, 26.5000],
+            [57.0000, 25.5000],
+            [56.0000, 25.3000],
+            [55.0000, 25.8000],
+            [54.8000, 26.5000],
+            [55.5000, 27.2000]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "red-sea-bab-el-mandeb",
+        "name": "Red Sea / Bab el-Mandeb",
+        "severity": "high",
+        "category": "active-conflict",
+        "description": "Active threat zone where Houthi attacks on commercial shipping have disrupted Red Sea transit routes.",
+        "url": "https://en.wikipedia.org/wiki/Houthi-led_attacks_on_shipping_in_the_Red_Sea"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [42.5000, 15.5000],
+            [44.0000, 15.0000],
+            [44.5000, 13.5000],
+            [44.0000, 12.4000],
+            [43.0000, 11.8000],
+            [42.0000, 12.5000],
+            [41.5000, 13.5000],
+            [42.5000, 15.5000]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sahel-belt",
+        "name": "Sahel Insurgency Belt",
+        "severity": "high",
+        "category": "insurgency",
+        "description": "Sprawling zone of jihadist insurgency and instability across Mali, Burkina Faso, Niger, and northern Nigeria.",
+        "url": "https://en.wikipedia.org/wiki/Islamist_insurgency_in_the_Sahel"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-5.5000, 17.0000],
+            [2.0000, 17.5000],
+            [8.0000, 17.0000],
+            [15.0000, 16.0000],
+            [15.0000, 13.0000],
+            [8.0000, 11.5000],
+            [2.0000, 11.0000],
+            [-5.5000, 12.0000],
+            [-5.5000, 17.0000]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sudan",
+        "name": "Sudan Civil War Zone",
+        "severity": "critical",
+        "category": "active-conflict",
+        "description": "Nationwide civil war between SAF and RSF with severe humanitarian crisis centered on Khartoum, Darfur, and Kordofan.",
+        "url": "https://en.wikipedia.org/wiki/Sudanese_civil_war_(2023%E2%80%93present)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [24.0000, 22.0000],
+            [36.8000, 22.0000],
+            [36.8000, 18.0000],
+            [38.6000, 18.0000],
+            [38.6000, 14.0000],
+            [35.0000, 10.0000],
+            [29.0000, 10.0000],
+            [24.0000, 12.5000],
+            [22.0000, 15.5000],
+            [24.0000, 22.0000]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "myanmar",
+        "name": "Myanmar Civil War Zone",
+        "severity": "high",
+        "category": "insurgency",
+        "description": "Multi-front civil war involving junta forces and ethnic resistance armies across Shan, Kachin, Rakhine, and Sagaing.",
+        "url": "https://en.wikipedia.org/wiki/Myanmar_civil_war_(2021%E2%80%93present)"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [96.0000, 28.5000],
+            [98.5000, 28.0000],
+            [100.1000, 25.0000],
+            [100.5000, 21.0000],
+            [99.0000, 17.0000],
+            [98.0000, 15.0000],
+            [96.5000, 10.0000],
+            [93.5000, 14.0000],
+            [92.2000, 18.0000],
+            [92.2000, 22.0000],
+            [94.5000, 26.0000],
+            [96.0000, 28.5000]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kashmir-loc",
+        "name": "Kashmir Line of Control",
+        "severity": "medium",
+        "category": "disputed-territory",
+        "description": "Disputed territory along the India-Pakistan Line of Control with periodic military standoffs and cross-border fire.",
+        "url": "https://en.wikipedia.org/wiki/Line_of_Control"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [73.5000, 36.0000],
+            [76.0000, 36.0000],
+            [77.5000, 35.0000],
+            [77.8000, 33.5000],
+            [76.5000, 33.0000],
+            [74.5000, 33.5000],
+            [73.5000, 34.5000],
+            [73.5000, 36.0000]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "nagorno-karabakh",
+        "name": "Nagorno-Karabakh / South Caucasus",
+        "severity": "medium",
+        "category": "disputed-territory",
+        "description": "Former conflict zone and disputed enclave between Armenia and Azerbaijan with unresolved territorial status.",
+        "url": "https://en.wikipedia.org/wiki/Nagorno-Karabakh"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [46.3500, 40.4000],
+            [47.2000, 40.3000],
+            [47.2000, 39.5000],
+            [46.8000, 39.0000],
+            [46.0000, 39.0000],
+            [45.8000, 39.6000],
+            [46.3500, 40.4000]
+          ]
+        ]
+      }
+    }
+  ]
+}

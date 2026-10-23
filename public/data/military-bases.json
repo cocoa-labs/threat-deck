@@ -1,0 +1,405 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "diego-garcia",
+        "name": "Naval Support Facility Diego Garcia",
+        "country": "US",
+        "type": "naval",
+        "significance": "critical",
+        "description": "Strategic US naval and air base in the Indian Ocean providing power projection across the Indo-Pacific and Middle East.",
+        "url": "https://en.wikipedia.org/wiki/Naval_Support_Facility_Diego_Garcia"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [72.3700, -7.3200]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ramstein",
+        "name": "Ramstein Air Base",
+        "country": "US",
+        "type": "air",
+        "significance": "critical",
+        "description": "Headquarters of USAFE-AFAFRICA and NATO Allied Air Command, key hub for European and Middle East operations.",
+        "url": "https://en.wikipedia.org/wiki/Ramstein_Air_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [7.6003, 49.4369]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "camp-humphreys",
+        "name": "Camp Humphreys",
+        "country": "US",
+        "type": "army",
+        "significance": "critical",
+        "description": "Largest US overseas military base, headquarters of USFK and Eighth Army south of Seoul.",
+        "url": "https://en.wikipedia.org/wiki/Camp_Humphreys"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [127.0480, 36.9627]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "yokosuka",
+        "name": "Yokosuka Naval Base",
+        "country": "US",
+        "type": "naval",
+        "significance": "critical",
+        "description": "Home port of the US 7th Fleet and the only forward-deployed carrier strike group outside the US.",
+        "url": "https://en.wikipedia.org/wiki/United_States_Fleet_Activities_Yokosuka"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [139.6711, 35.2834]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "andersen-afb",
+        "name": "Andersen Air Force Base",
+        "country": "US",
+        "type": "air",
+        "significance": "critical",
+        "description": "Strategic bomber base on Guam supporting continuous bomber presence and Indo-Pacific power projection.",
+        "url": "https://en.wikipedia.org/wiki/Andersen_Air_Force_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [144.9301, 13.5840]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "al-udeid",
+        "name": "Al Udeid Air Base",
+        "country": "US",
+        "type": "air",
+        "significance": "critical",
+        "description": "Forward headquarters of CENTCOM and AFCENT, the largest US air base in the Middle East.",
+        "url": "https://en.wikipedia.org/wiki/Al_Udeid_Air_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [51.3150, 25.1175]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "incirlik",
+        "name": "Incirlik Air Base",
+        "country": "US",
+        "type": "air",
+        "significance": "high",
+        "description": "NATO air base in southern Turkey with nuclear weapons storage capability and Middle East strike access.",
+        "url": "https://en.wikipedia.org/wiki/Incirlik_Air_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [35.4259, 37.0021]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "camp-lemonnier",
+        "name": "Camp Lemonnier",
+        "country": "US",
+        "type": "joint",
+        "significance": "high",
+        "description": "Primary US military base in Africa, supporting counterterrorism and drone operations across the Horn of Africa.",
+        "url": "https://en.wikipedia.org/wiki/Camp_Lemonnier"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [43.1557, 11.5472]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "thule-ab",
+        "name": "Pituffik Space Base (Thule)",
+        "country": "US",
+        "type": "missile",
+        "significance": "high",
+        "description": "Northernmost US military installation providing ballistic missile early warning and space surveillance.",
+        "url": "https://en.wikipedia.org/wiki/Pituffik_Space_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-68.7031, 76.5312]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "norfolk",
+        "name": "Naval Station Norfolk",
+        "country": "US",
+        "type": "naval",
+        "significance": "critical",
+        "description": "World's largest naval station and home port for the US Atlantic Fleet carrier strike groups.",
+        "url": "https://en.wikipedia.org/wiki/Naval_Station_Norfolk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-76.3316, 36.9466]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kaliningrad",
+        "name": "Kaliningrad Military District",
+        "country": "RU",
+        "type": "missile",
+        "significance": "critical",
+        "description": "Russian Baltic exclave hosting Iskander missile systems and the Baltic Fleet, threatening NATO's eastern flank.",
+        "url": "https://en.wikipedia.org/wiki/Baltic_Fleet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.5100, 54.7100]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sevastopol",
+        "name": "Sevastopol Naval Base",
+        "country": "RU",
+        "type": "naval",
+        "significance": "high",
+        "description": "Home port of the Russian Black Sea Fleet in occupied Crimea, heavily degraded by Ukrainian strikes.",
+        "url": "https://en.wikipedia.org/wiki/Sevastopol_Naval_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [33.5240, 44.6170]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "tartus",
+        "name": "Tartus Naval Facility",
+        "country": "RU",
+        "type": "naval",
+        "significance": "high",
+        "description": "Russia's sole Mediterranean naval base providing logistics support and power projection in the Eastern Med.",
+        "url": "https://en.wikipedia.org/wiki/Russian_naval_facility_in_Tartus"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [35.8866, 34.8959]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "fiery-cross-reef",
+        "name": "Fiery Cross Reef",
+        "country": "CN",
+        "type": "joint",
+        "significance": "high",
+        "description": "Chinese artificial island military outpost in the Spratly Islands with a 3km runway, radar, and missile systems.",
+        "url": "https://en.wikipedia.org/wiki/Fiery_Cross_Reef"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [112.8920, 9.5500]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "mischief-reef",
+        "name": "Mischief Reef",
+        "country": "CN",
+        "type": "joint",
+        "significance": "high",
+        "description": "Chinese-built artificial island within the Philippine EEZ, equipped with hangars, radar, and CIWS systems.",
+        "url": "https://en.wikipedia.org/wiki/Mischief_Reef"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [115.5300, 9.9000]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "subi-reef",
+        "name": "Subi Reef",
+        "country": "CN",
+        "type": "joint",
+        "significance": "high",
+        "description": "Chinese military outpost in the Spratlys with fighter-capable runway and surface-to-air missile emplacements.",
+        "url": "https://en.wikipedia.org/wiki/Subi_Reef"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [114.0800, 10.9200]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "hainan-submarine",
+        "name": "Yulin Naval Base, Hainan",
+        "country": "CN",
+        "type": "naval",
+        "significance": "critical",
+        "description": "China's primary submarine base with underground pens housing nuclear-armed SSBNs for second-strike capability.",
+        "url": "https://en.wikipedia.org/wiki/Yulin_Naval_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [109.5310, 18.2260]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "changi",
+        "name": "Changi Naval Base",
+        "country": "SG",
+        "type": "naval",
+        "significance": "high",
+        "description": "Singapore's primary naval installation at the eastern entrance of the Strait of Malacca, hosts US carrier visits.",
+        "url": "https://en.wikipedia.org/wiki/Changi_Naval_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [104.0000, 1.3300]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "pine-gap",
+        "name": "Pine Gap Joint Defence Facility",
+        "country": "US",
+        "type": "intelligence",
+        "significance": "critical",
+        "description": "US-Australian SIGINT and satellite surveillance station providing missile early warning and intelligence collection.",
+        "url": "https://en.wikipedia.org/wiki/Pine_Gap"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [133.7370, -23.7990]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "hmnb-clyde",
+        "name": "HMNB Clyde (Faslane)",
+        "country": "GB",
+        "type": "naval",
+        "significance": "critical",
+        "description": "Home of the UK's Trident nuclear deterrent submarine fleet and the Royal Navy's submarine service.",
+        "url": "https://en.wikipedia.org/wiki/HMNB_Clyde"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-4.8190, 56.0670]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kadena",
+        "name": "Kadena Air Base",
+        "country": "US",
+        "type": "air",
+        "significance": "high",
+        "description": "Largest US Air Force base in the Pacific, hosting F-15s and ISR assets on Okinawa facing the Taiwan Strait.",
+        "url": "https://en.wikipedia.org/wiki/Kadena_Air_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [127.7680, 26.3516]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bahrain-nsa",
+        "name": "Naval Support Activity Bahrain",
+        "country": "US",
+        "type": "naval",
+        "significance": "high",
+        "description": "Headquarters of US Naval Forces Central Command and the US Fifth Fleet overseeing Persian Gulf operations.",
+        "url": "https://en.wikipedia.org/wiki/Naval_Support_Activity_Bahrain"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [50.6080, 26.2361]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "djibouti-cn",
+        "name": "PLA Support Base Djibouti",
+        "country": "CN",
+        "type": "joint",
+        "significance": "medium",
+        "description": "China's first overseas military base, located near Camp Lemonnier, supporting PLAN operations in the Gulf of Aden.",
+        "url": "https://en.wikipedia.org/wiki/Chinese_People%27s_Liberation_Army_Support_Base_in_Djibouti"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [43.0900, 11.5900]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ream",
+        "name": "Ream Naval Base",
+        "country": "CN",
+        "type": "naval",
+        "significance": "medium",
+        "description": "Chinese-funded and operated naval facility in Cambodia providing PLA Navy access to the Gulf of Thailand.",
+        "url": "https://en.wikipedia.org/wiki/Ream_Naval_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.5640, 10.5100]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "misawa",
+        "name": "Misawa Air Base",
+        "country": "US",
+        "type": "air",
+        "significance": "medium",
+        "description": "Joint US-Japan air base in northern Honshu hosting F-16s and intelligence collection operations.",
+        "url": "https://en.wikipedia.org/wiki/Misawa_Air_Base"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [141.3686, 40.7032]
+      }
+    }
+  ]
+}

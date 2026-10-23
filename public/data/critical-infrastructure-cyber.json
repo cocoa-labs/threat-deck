@@ -1,0 +1,460 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "name": "Critical Cyber Infrastructure",
+    "description": "Public-knowledge locations of internet-critical infrastructure relevant to cyber-threat visualization: DNS root server operators, top internet exchange points (IXPs), hyperscaler cloud regions, and major submarine cable landing hubs. Locations are city-level; multi-site anycast operators are shown at their primary administrative site.",
+    "schemaVersion": 1,
+    "attribution": "ICANN, root-servers.org, PeeringDB, AWS/Azure/GCP region documentation, TeleGeography submarine cable map",
+    "lastReviewed": "2026-05-27"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dns-root-a",
+        "name": "A Root (Verisign)",
+        "category": "dns_root",
+        "operator": "Verisign",
+        "sector": "DNS",
+        "significance": "critical",
+        "description": "A root server operated by Verisign with anycast nodes globally; administrative home in Dulles, VA.",
+        "url": "https://a.root-servers.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-77.4360, 38.9550] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dns-root-b",
+        "name": "B Root (USC-ISI)",
+        "category": "dns_root",
+        "operator": "USC Information Sciences Institute",
+        "sector": "DNS",
+        "significance": "critical",
+        "description": "B root operated by USC-ISI from Marina del Rey / Los Angeles, with anycast deployment.",
+        "url": "https://b.root-servers.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-118.4530, 33.9810] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dns-root-c",
+        "name": "C Root (Cogent)",
+        "category": "dns_root",
+        "operator": "Cogent Communications",
+        "sector": "DNS",
+        "significance": "critical",
+        "description": "C root operated by Cogent with anycast nodes worldwide; administrative HQ in Washington, DC area.",
+        "url": "https://c.root-servers.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-77.0369, 38.9072] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dns-root-d",
+        "name": "D Root (University of Maryland)",
+        "category": "dns_root",
+        "operator": "University of Maryland",
+        "sector": "DNS",
+        "significance": "critical",
+        "description": "D root operated by UMD with anycast deployment.",
+        "url": "https://d.root-servers.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-76.9378, 38.9897] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dns-root-i",
+        "name": "I Root (Netnod)",
+        "category": "dns_root",
+        "operator": "Netnod",
+        "sector": "DNS",
+        "significance": "critical",
+        "description": "I root operated by Netnod from Stockholm, with anycast deployment across 70+ sites.",
+        "url": "https://i.root-servers.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [18.0686, 59.3293] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dns-root-k",
+        "name": "K Root (RIPE NCC)",
+        "category": "dns_root",
+        "operator": "RIPE NCC",
+        "sector": "DNS",
+        "significance": "critical",
+        "description": "K root operated by RIPE NCC from Amsterdam with anycast deployment across 100+ sites.",
+        "url": "https://k.root-servers.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [4.9041, 52.3676] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dns-root-l",
+        "name": "L Root (ICANN)",
+        "category": "dns_root",
+        "operator": "ICANN",
+        "sector": "DNS",
+        "significance": "critical",
+        "description": "L root operated by ICANN with the largest anycast deployment of any root operator (200+ sites).",
+        "url": "https://l.root-servers.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-118.2437, 34.0522] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "dns-root-m",
+        "name": "M Root (WIDE)",
+        "category": "dns_root",
+        "operator": "WIDE Project",
+        "sector": "DNS",
+        "significance": "critical",
+        "description": "M root operated by WIDE Project from Tokyo, with anycast deployment across APAC.",
+        "url": "https://m.root-servers.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [139.6917, 35.6895] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ixp-de-cix-frankfurt",
+        "name": "DE-CIX Frankfurt",
+        "category": "ixp",
+        "operator": "DE-CIX",
+        "sector": "IXP",
+        "significance": "critical",
+        "description": "World's largest internet exchange by peak traffic (~17 Tbps). Frankfurt is Europe's primary peering hub.",
+        "url": "https://www.de-cix.net/"
+      },
+      "geometry": { "type": "Point", "coordinates": [8.6821, 50.1109] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ixp-ams-ix",
+        "name": "AMS-IX Amsterdam",
+        "category": "ixp",
+        "operator": "AMS-IX",
+        "sector": "IXP",
+        "significance": "critical",
+        "description": "Second-largest European IXP. ~12 Tbps peak. Anchor of the Dutch/Northern European peering ecosystem.",
+        "url": "https://www.ams-ix.net/"
+      },
+      "geometry": { "type": "Point", "coordinates": [4.9041, 52.3676] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ixp-linx",
+        "name": "LINX London",
+        "category": "ixp",
+        "operator": "London Internet Exchange",
+        "sector": "IXP",
+        "significance": "critical",
+        "description": "UK's primary peering hub, ~7 Tbps peak across LON1/LON2.",
+        "url": "https://www.linx.net/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-0.1278, 51.5074] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ixp-equinix-ashburn",
+        "name": "Equinix Ashburn (NoVA)",
+        "category": "ixp",
+        "operator": "Equinix",
+        "sector": "IXP",
+        "significance": "critical",
+        "description": "Densest interconnection campus in the world. Hosts MAE-East, Equinix Internet Exchange, and ~70% of global east-west internet traffic at some hour.",
+        "url": "https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-data-centers"
+      },
+      "geometry": { "type": "Point", "coordinates": [-77.4900, 39.0438] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ixp-jpix-tokyo",
+        "name": "JPIX/JPNAP Tokyo",
+        "category": "ixp",
+        "operator": "JPIX / Internet Multifeed",
+        "sector": "IXP",
+        "significance": "critical",
+        "description": "Japan's primary peering hub. JPIX and JPNAP collectively anchor East Asian traffic.",
+        "url": "https://www.jpix.ad.jp/en/"
+      },
+      "geometry": { "type": "Point", "coordinates": [139.6917, 35.6895] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ixp-equinix-singapore",
+        "name": "Equinix Singapore",
+        "category": "ixp",
+        "operator": "Equinix",
+        "sector": "IXP",
+        "significance": "critical",
+        "description": "Southeast Asia's primary peering and submarine cable convergence point.",
+        "url": "https://www.equinix.com/data-centers/asia-pacific-colocation/singapore-data-centers"
+      },
+      "geometry": { "type": "Point", "coordinates": [103.8198, 1.3521] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ixp-mix-milan",
+        "name": "MIX Milan",
+        "category": "ixp",
+        "operator": "Milan Internet Exchange",
+        "sector": "IXP",
+        "significance": "high",
+        "description": "Southern European peering hub, primary anchor for Italian and Mediterranean traffic.",
+        "url": "https://www.mix-it.net/"
+      },
+      "geometry": { "type": "Point", "coordinates": [9.1900, 45.4642] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ixp-pttbr-sp",
+        "name": "PTT.br São Paulo (IX.br)",
+        "category": "ixp",
+        "operator": "NIC.br",
+        "sector": "IXP",
+        "significance": "critical",
+        "description": "Largest IXP in Latin America by peak traffic (~15 Tbps). Anchor of Brazilian peering.",
+        "url": "https://ix.br/intro/en"
+      },
+      "geometry": { "type": "Point", "coordinates": [-46.6333, -23.5505] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cloud-aws-us-east-1",
+        "name": "AWS us-east-1 (N. Virginia)",
+        "category": "cloud_region",
+        "operator": "Amazon Web Services",
+        "sector": "Cloud",
+        "significance": "critical",
+        "description": "AWS's largest and oldest region. Single-region outages have historically affected ~30% of internet services.",
+        "url": "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-77.4900, 39.0438] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cloud-aws-us-west-2",
+        "name": "AWS us-west-2 (Oregon)",
+        "category": "cloud_region",
+        "operator": "Amazon Web Services",
+        "sector": "Cloud",
+        "significance": "critical",
+        "description": "AWS's primary West Coast region; many federal and FedRAMP-high workloads run here.",
+        "url": "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-119.7129, 45.5152] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cloud-aws-eu-west-1",
+        "name": "AWS eu-west-1 (Ireland)",
+        "category": "cloud_region",
+        "operator": "Amazon Web Services",
+        "sector": "Cloud",
+        "significance": "critical",
+        "description": "AWS's primary European region; default for many EU-GDPR-resident workloads.",
+        "url": "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-6.2603, 53.3498] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cloud-aws-ap-northeast-1",
+        "name": "AWS ap-northeast-1 (Tokyo)",
+        "category": "cloud_region",
+        "operator": "Amazon Web Services",
+        "sector": "Cloud",
+        "significance": "critical",
+        "description": "AWS's primary APAC region serving Japan/Korea finance and gaming workloads.",
+        "url": "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/"
+      },
+      "geometry": { "type": "Point", "coordinates": [139.6917, 35.6895] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cloud-azure-east-us",
+        "name": "Azure East US (Virginia)",
+        "category": "cloud_region",
+        "operator": "Microsoft Azure",
+        "sector": "Cloud",
+        "significance": "critical",
+        "description": "Azure's primary East Coast region; co-located with NoVA hyperscaler concentration.",
+        "url": "https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-78.6382, 35.7796] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cloud-azure-west-europe",
+        "name": "Azure West Europe (Netherlands)",
+        "category": "cloud_region",
+        "operator": "Microsoft Azure",
+        "sector": "Cloud",
+        "significance": "critical",
+        "description": "Azure's primary European hub, located in Amsterdam.",
+        "url": "https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/"
+      },
+      "geometry": { "type": "Point", "coordinates": [4.9041, 52.3676] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cloud-gcp-us-central1",
+        "name": "GCP us-central1 (Iowa)",
+        "category": "cloud_region",
+        "operator": "Google Cloud Platform",
+        "sector": "Cloud",
+        "significance": "critical",
+        "description": "GCP's primary US region in Council Bluffs, IA.",
+        "url": "https://cloud.google.com/about/locations"
+      },
+      "geometry": { "type": "Point", "coordinates": [-95.8608, 41.2619] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cloud-gcp-europe-west1",
+        "name": "GCP europe-west1 (Belgium)",
+        "category": "cloud_region",
+        "operator": "Google Cloud Platform",
+        "sector": "Cloud",
+        "significance": "critical",
+        "description": "GCP's primary European region in St. Ghislain, Belgium.",
+        "url": "https://cloud.google.com/about/locations"
+      },
+      "geometry": { "type": "Point", "coordinates": [3.8200, 50.4500] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cloud-cloudflare-hq",
+        "name": "Cloudflare HQ + Global Anycast",
+        "category": "cloud_region",
+        "operator": "Cloudflare",
+        "sector": "Cloud",
+        "significance": "critical",
+        "description": "Cloudflare global anycast network reaches ~20% of websites. Single-config-deploy outages have caused internet-scale incidents.",
+        "url": "https://www.cloudflare.com/network/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.3984, 37.7749] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "submarine-marea-virginia-beach",
+        "name": "MAREA Cable Landing (Virginia Beach)",
+        "category": "submarine_cable",
+        "operator": "Microsoft / Meta / Telxius",
+        "sector": "Telecom",
+        "significance": "critical",
+        "description": "US landing of the MAREA trans-Atlantic cable (160 Tbps), connecting Virginia Beach to Bilbao, Spain.",
+        "url": "https://www.submarinecablemap.com/submarine-cable/marea"
+      },
+      "geometry": { "type": "Point", "coordinates": [-75.9780, 36.8529] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "submarine-marea-bilbao",
+        "name": "MAREA Cable Landing (Bilbao)",
+        "category": "submarine_cable",
+        "operator": "Microsoft / Meta / Telxius",
+        "sector": "Telecom",
+        "significance": "critical",
+        "description": "Spanish landing of the MAREA trans-Atlantic cable.",
+        "url": "https://www.submarinecablemap.com/submarine-cable/marea"
+      },
+      "geometry": { "type": "Point", "coordinates": [-2.9350, 43.2630] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "submarine-2africa-marseille",
+        "name": "2Africa Cable Hub (Marseille)",
+        "category": "submarine_cable",
+        "operator": "Meta + consortium",
+        "sector": "Telecom",
+        "significance": "critical",
+        "description": "Mediterranean hub for the 2Africa cable, the world's longest subsea system (45,000 km around Africa, Middle East, Asia).",
+        "url": "https://www.submarinecablemap.com/submarine-cable/2africa"
+      },
+      "geometry": { "type": "Point", "coordinates": [5.3698, 43.2965] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "submarine-fujairah-uae",
+        "name": "Fujairah Cable Hub (UAE)",
+        "category": "submarine_cable",
+        "operator": "Multiple",
+        "sector": "Telecom",
+        "significance": "critical",
+        "description": "Persian Gulf cable convergence point. Critical chokepoint for Asia-Europe-Africa traffic; vulnerable to anchor cuts in the Red Sea.",
+        "url": "https://www.submarinecablemap.com/landing-point/fujairah-united-arab-emirates"
+      },
+      "geometry": { "type": "Point", "coordinates": [56.3265, 25.1288] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "submarine-toucheng-taiwan",
+        "name": "Toucheng Cable Landing (Taiwan)",
+        "category": "submarine_cable",
+        "operator": "Multiple",
+        "sector": "Telecom",
+        "significance": "critical",
+        "description": "Primary Taiwan submarine cable landing. Strategic chokepoint repeatedly affected by cable damage incidents 2022–2026.",
+        "url": "https://www.submarinecablemap.com/landing-point/toucheng-taiwan"
+      },
+      "geometry": { "type": "Point", "coordinates": [121.8333, 24.8500] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ca-digicert",
+        "name": "DigiCert (Lehi, UT)",
+        "category": "certificate_authority",
+        "operator": "DigiCert",
+        "sector": "PKI",
+        "significance": "critical",
+        "description": "Largest issuer of EV/OV certificates. Single-vendor outage cascaded across HTTPS verification 2024.",
+        "url": "https://www.digicert.com/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-111.8508, 40.3916] }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ca-letsencrypt",
+        "name": "Let's Encrypt (ISRG)",
+        "category": "certificate_authority",
+        "operator": "Internet Security Research Group",
+        "sector": "PKI",
+        "significance": "critical",
+        "description": "Free CA issuing 5M+ certificates daily. Underpins ~50% of public HTTPS certificates by issuance volume.",
+        "url": "https://letsencrypt.org/"
+      },
+      "geometry": { "type": "Point", "coordinates": [-122.0838, 37.3861] }
+    }
+  ]
+}

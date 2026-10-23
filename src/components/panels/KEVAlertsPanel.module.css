@@ -1,0 +1,323 @@
+/* ═══════════════════════════════════════════════
+   KEV Alerts — Phase 4.5C showpiece
+   NORAD countdown wall. The panel feels alive and
+   angry when something is past due.
+   ═══════════════════════════════════════════════ */
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 10px;
+}
+
+/* ─── Top counter strip ─── */
+
+.counterStrip {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 6px 8px 8px;
+  border-bottom: 1px dashed rgba(var(--crt-glow-rgb), 0.18);
+}
+
+.counterCell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.counterCellRight {
+  align-items: flex-end;
+}
+
+.counterLabel {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.counterValue {
+  font-family: var(--font-vt323), "VT323", "Courier New", monospace;
+  font-size: 28px;
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+  color: var(--matrix-green-dim, #00a82d);
+  text-shadow: 0 0 12px rgba(var(--crt-glow-rgb), 0.28);
+  font-variant-numeric: tabular-nums;
+}
+
+.counterValueOverdue {
+  color: var(--severity-critical, #ff0040);
+  text-shadow: 0 0 14px rgba(255, 0, 64, 0.6);
+  animation: throb 1.4s ease-in-out infinite;
+}
+
+@keyframes throb {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(0.97);
+  }
+}
+
+/* ─── Rows ─── */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
+  /* Subtle inner top fade — feels like a scrolling instrument */
+  mask-image: linear-gradient(to bottom, transparent 0, black 6px, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 6px, black 100%);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 92px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 1px solid transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    border-left-width 100ms ease;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+.row:hover {
+  background: rgba(var(--crt-glow-rgb), 0.04);
+  border-color: rgba(var(--crt-glow-rgb), 0.18);
+  border-left: 1px solid var(--matrix-green, #00ff41);
+}
+
+.row:active {
+  background: rgba(var(--brand-accent-rgb), 0.08);
+  border-color: var(--brand-accent, #00ff41);
+  border-left: 3px solid var(--brand-accent, #00ff41);
+}
+
+/* ─── Left column: countdown ─── */
+
+.countdown {
+  font-family: var(--font-vt323), "VT323", "Courier New", monospace;
+  font-size: 17px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  white-space: nowrap;
+  padding: 2px 0;
+}
+
+.countdownLabel {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 7px;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.32);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.countdownOverdue {
+  color: var(--severity-critical, #ff0040);
+  text-shadow: 0 0 8px rgba(255, 0, 64, 0.4);
+  animation: throb 1.4s ease-in-out infinite;
+}
+
+.countdownUrgent {
+  color: var(--severity-high, #ff4444);
+  text-shadow: 0 0 6px rgba(255, 68, 68, 0.3);
+}
+
+.countdownSoon {
+  color: var(--severity-medium, #ffaa00);
+}
+
+.countdownComfortable {
+  color: var(--matrix-green-dim, #00a82d);
+}
+
+.countdownNone {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+/* ─── Middle column: vendor/product + vuln name ─── */
+
+.middleCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.vendorLine {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vulnLine {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.cveTag {
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.32);
+  margin-left: 6px;
+}
+
+/* ─── Right column: severity + ransomware ─── */
+
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.severityChip {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  padding: 2px 6px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+.severityCritical {
+  color: var(--severity-critical, #ff0040);
+}
+
+.severityHigh {
+  color: var(--severity-high, #ff4444);
+}
+
+.ransomBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 2px 6px;
+  border-radius: 2px;
+  background: rgba(255, 0, 64, 0.12);
+  color: var(--severity-critical, #ff0040);
+  border: 1px solid rgba(255, 0, 64, 0.45);
+  text-transform: uppercase;
+  /* Continuous glow — the "visual flame" */
+  animation: ransom-glow 2s ease-in-out infinite;
+}
+
+@keyframes ransom-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(255, 0, 64, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(255, 0, 64, 0.65);
+  }
+}
+
+/* ─── Empty state ─── */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 6px;
+  padding: 24px;
+}
+
+.emptyMark {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  color: rgba(var(--crt-glow-rgb), 0.55);
+  text-transform: uppercase;
+}
+
+.emptyText {
+  font-family: var(--font-vt323), "VT323", "Courier New", monospace;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--matrix-green-dim, #00a82d);
+  text-align: center;
+}
+
+/* ─── Shimmer loading state ─── */
+
+.shimmerRow {
+  display: grid;
+  grid-template-columns: 92px 1fr 70px;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 2px;
+}
+
+.shimmerBlock {
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03),
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.03)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ─── Reduced motion ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  .counterValueOverdue,
+  .countdownOverdue,
+  .ransomBadge,
+  .shimmerBlock {
+    animation: none !important;
+  }
+}

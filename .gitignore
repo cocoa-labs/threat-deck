@@ -1,0 +1,61 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files
+.env
+.env.local
+.env.*.local
+
+# raw data (generated seed file is committed, not source spreadsheets)
+/data/
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# Local Claude Code config (preview server launch, etc.) — user-specific
+.claude/
+
+# Smoke test output — generated PNGs are local-only (T18/T19)
+dev/generated-images/
+
+# Private release evidence and local staging
+/.release-private/
+/release/
+/brag-output/
+.env.*
+!.env.example
+/playwright-report/
+/test-results/
