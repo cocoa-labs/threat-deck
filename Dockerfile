@@ -1,4 +1,4 @@
-FROM node:24.19.0-bookworm-slim AS build
+FROM node:26.11.1-bookworm-slim AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY package.json package-lock.json ./
@@ -12,7 +12,7 @@ ENV NEXT_PUBLIC_MAPBOX_TOKEN=$NEXT_PUBLIC_MAPBOX_TOKEN
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 RUN npm run build && npm prune --omit=dev
 
-FROM node:24.19.0-bookworm-slim AS runtime
+FROM node:26.11.1-bookworm-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 HOSTNAME=0.0.0.0 PORT=3002
 COPY --from=build --chown=node:node /app/package.json /app/package-lock.json ./
