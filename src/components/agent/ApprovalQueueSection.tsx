@@ -12,6 +12,7 @@ import {
   useRejectDraft,
 } from '@/lib/hooks/use-approval-queue';
 import type { DraftRow } from '@/lib/outbound/drafts';
+import { buildTweetUrl } from '@/lib/twitter/permalink';
 import { ApprovalQueueRow } from './ApprovalQueueRow';
 
 /** Keep publications available without taking space from Max's conversation. */
@@ -77,12 +78,6 @@ export function ApprovalQueueSection() {
     });
   }
 
-  useEffect(() => {
-    if (!lastResult) return;
-    const timer = setTimeout(() => setLastResult(null), 9000);
-    return () => clearTimeout(timer);
-  }, [lastResult]);
-
   return (
     <Dialog.Root
       open={open}
@@ -105,7 +100,7 @@ export function ApprovalQueueSection() {
           ) : (
             <FileText size={12} aria-hidden />
           )}
-          Drafts
+          Unsent
           <span className="text-[var(--crt-glow)]">{isError ? '!' : count}</span>
         </button>
       </Dialog.Trigger>
@@ -125,7 +120,8 @@ export function ApprovalQueueSection() {
                 Publication drafts
               </Dialog.Title>
               <Dialog.Description className="mt-1 text-xs text-[var(--text-dim)]">
-                Review and edit pending posts or emails before publishing.
+                These are saved drafts, not sent posts. Open a draft to finish it; nothing here
+                publishes automatically.
               </Dialog.Description>
             </div>
             <Dialog.Close asChild>
@@ -152,6 +148,17 @@ export function ApprovalQueueSection() {
               aria-live="polite"
             >
               {lastResult.message}
+              {lastResult.tweetIds?.map((id, index) => (
+                <a
+                  key={id}
+                  className="mt-2 block underline"
+                  href={buildTweetUrl(id)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View post {index + 1} on X
+                </a>
+              ))}
               {lastResult.reconnect && (
                 <a href="/api/twitter/oauth/start" className="ml-2 underline">
                   Reconnect X →
@@ -219,6 +226,7 @@ export function ApprovalQueueSection() {
                                     : `Posted to X ✓ — ${res.tweetIds?.length ?? 0} tweet${
                                         (res.tweetIds?.length ?? 0) === 1 ? '' : 's'
                                       }.`,
+                                tweetIds: res.tweetIds?.filter((id) => /^\d+$/.test(id)),
                               },
                         );
                       } catch (err) {
@@ -265,7 +273,7 @@ export function ApprovalQueueSection() {
           )}
           <footer className="flex shrink-0 items-center justify-between border-t border-[var(--border-subtle)] px-4 py-3 text-xs">
             <span className="flex items-center gap-2 text-[var(--text-dim)]">
-              {count} pending
+              {count} unsent
               {isFetching && (
                 <Loader2 size={12} className="animate-spin" aria-label="Refreshing drafts" />
               )}
@@ -290,20 +298,21 @@ type ApproveOutcome = {
   message: string;
   /** When true, show a "Reconnect X" link (token expired/revoked). */
   reconnect?: boolean;
+  tweetIds?: string[];
 };
 
 /** Map a publish failure reason to an operator-facing, actionable message. */
 function friendlyApproveError(reason: string): string {
   switch (reason) {
     case 'no_token':
-      return 'X token expired — reconnect X, then approve again to post.';
+      return 'X is not connected. Reconnect it and check your account before creating a replacement post.';
     case 'partial_publish':
-      return 'Partially posted — some tweets failed. Draft is back in the queue; retry.';
+      return 'Posting did not complete. Some posts may have been sent. Check X before creating a replacement; this attempt will not be automatically resent.';
     case 'media_upload_failed':
-      return "The attached image wasn't ready — draft is back in the queue; retry once it renders.";
+      return 'The attachment could not be uploaded to X. The post was not sent.';
     case 'unsupported_channel':
       return 'This channel does not publish from the queue yet.';
     default:
-      return `Post failed (${reason}). Draft is back in the queue; retry.`;
+      return `Publishing was not confirmed (${reason}). Check the destination before creating a replacement; this attempt will not be automatically resent.`;
   }
 }

@@ -68,7 +68,7 @@
     },
     {
       "path": "README.md",
-      "sha256": "972b4ffb158a48cbce12c8020c25897dfbc6d6d4331eeb3c6f1a127a82a9f09e"
+      "sha256": "407600febbad2a5a02aa47845bb4730399a28a5643fd6da7a2ed48ca01f01baf"
     },
     {
       "path": "SECURITY.md",
@@ -120,15 +120,15 @@
     },
     {
       "path": "docs/RELEASE-NOTES.md",
-      "sha256": "486cdf429558a4873b33b2f12f3c02c7ee6a25964cf680ee0a04d4e7b978e2a3"
+      "sha256": "73de542b06f468bd643983d7dbf2415db335e4661459804b2876a5b006be38b4"
     },
     {
       "path": "docs/SECURITY-ARCHITECTURE.md",
-      "sha256": "997d4acc3508d16d03ea0561144a475efad42b00af2b2acf58d4fd666c8db5dc"
+      "sha256": "0c5ddfd59e3d2130d1a00a8c2d3e5347908ec8139d126528e5c52904ef15171f"
     },
     {
       "path": "e2e/release.spec.ts",
-      "sha256": "dd0806aa655f5c4bac5b0807e2a72e7c84efdb10d5d4e6656af3fb58bacf0c45"
+      "sha256": "d6d265ce8895ba89d0a01720f6fb1b4dc11d7778857064fef74e6f7ba3f2b523"
     },
     {
       "path": "eslint.config.mjs",
@@ -396,7 +396,7 @@
     },
     {
       "path": "src/__test__/integration-files.json",
-      "sha256": "df8af8e8da7d61404c7d9e9eac7ac91bdf9bd677e33ee70e2237f1eba12ea263"
+      "sha256": "e54c43ccf9bae12df55ad018c45dc776cc1095458f40a27efe3a97d136110bef"
     },
     {
       "path": "src/__test__/setup-env.ts",
@@ -891,6 +891,10 @@
       "sha256": "e873f3bd76e8e3bf7b7ff690c241c4048e29e72ca222f9508acc5a2d3140971f"
     },
     {
+      "path": "src/app/api/outbound/x/review/route.test.ts",
+      "sha256": "a7fef9ed86d917e26197724c34430b57e48140357ca3ff11f28e7e737cdb2af0"
+    },
+    {
       "path": "src/app/api/outbound/x/review/route.ts",
       "sha256": "3d3d07f493e7512eff045a4cc3d8575e08382e6fa8b4fa3e209829429d065cfb"
     },
@@ -1096,11 +1100,11 @@
     },
     {
       "path": "src/components/agent/ApprovalQueueRow.tsx",
-      "sha256": "33ab53f570f5929abbab8233509512f3dde6d3f9eb690eb187c8aacd3f0bfaae"
+      "sha256": "5c5f3686702a8fb34a97f4acf6a6d6c40eff947b056cd8a7311f0ca3987dc409"
     },
     {
       "path": "src/components/agent/ApprovalQueueSection.tsx",
-      "sha256": "4823f4c0b4378ada58137cdc4d756872040aa366aa113b5c034086133e04a7df"
+      "sha256": "3b6e0195568644e223041aa059f2a262f01c42fccb5963b2bb8a7e52794be0de"
     },
     {
       "path": "src/components/agent/DraftReview.tsx",
@@ -1136,11 +1140,11 @@
     },
     {
       "path": "src/components/agent/PostToXButton.test.tsx",
-      "sha256": "9ed187d83c0f1e62df75a3b76737a56d0545ba94090f4831660a4a9915dade7d"
+      "sha256": "2d57b1e1d337cf73e063c2cd3e9da1eb3d48c3f2de26fb783a466347efbec774"
     },
     {
       "path": "src/components/agent/PostToXButton.tsx",
-      "sha256": "5ef8b9ae7118b2cf7cb7f67bfae3916eeae8b0e2c65e6f27ed2d5dd6aca256ce"
+      "sha256": "c088d42ca5f24960952440ef045b62a8d721b48c9cabf1fe5e1538aeb619b473"
     },
     {
       "path": "src/components/agent/PrivateFilesControl.tsx",

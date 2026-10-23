@@ -4,14 +4,16 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { useQueryClient } from '@tanstack/react-query';
 import { Loader2, Twitter, X } from 'lucide-react';
 import Image from 'next/image';
-import { useCallback, useMemo, useState } from 'react';
-import { APPROVAL_QUEUE_KEY, OPEN_APPROVAL_QUEUE_EVENT } from '@/lib/hooks/use-approval-queue';
+import { useMemo, useRef, useState } from 'react';
+import { APPROVAL_QUEUE_KEY } from '@/lib/hooks/use-approval-queue';
 import type { GeneratedImageAttachment, GeneratedVideoAttachment } from '@/lib/store/agent-store';
+import { appendCanonicalHashtag } from '@/lib/twitter/content/format';
 import {
   effectiveTweetLength,
   X_LONGFORM_MAX_LENGTH,
   X_STANDARD_VISIBLE_CHARS,
 } from '@/lib/twitter/length';
+import { buildTweetUrl } from '@/lib/twitter/permalink';
 import { buildXPublishPackage } from '@/lib/twitter/publish-package';
 import type { VisualBriefSourceContext } from '@/lib/visual/visual-brief';
 import { GenerateImageButton } from './GenerateImageButton';
@@ -56,7 +58,7 @@ export function PostToXButton({
   const [open, setOpen] = useState(false);
   const [text, setText] = useState(defaultPackage.primaryText);
   const [replyText, setReplyText] = useState(defaultPackage.replyText);
-  const [publishMode, setPublishMode] = useState<PublishMode>('two_post');
+  const [publishMode, setPublishMode] = useState<PublishMode>('single');
   const [selectedMediaId, setSelectedMediaId] = useState<string | null>(null);
   const [startedImage, setStartedImage] = useState<GeneratedImageAttachment | null>(null);
   const [saving, setSaving] = useState(false);
@@ -66,6 +68,18 @@ export function PostToXButton({
   const [xDisabled, setXDisabled] = useState(false);
   const [missingScopes, setMissingScopes] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [connected, setConnected] = useState(false);
+  const [dryRun, setDryRun] = useState(false);
+  const [publicationAttempted, setPublicationAttempted] = useState(false);
+  const [savedDraft, setSavedDraft] = useState<{ id: number; key: string } | null>(null);
+  const [outcome, setOutcome] = useState<{
+    message: string;
+    tweetIds: string[];
+    published: boolean;
+  } | null>(null);
+  const initialized = useRef(false);
+  const observedLatestMediaId = useRef<string | null>(null);
+  const submitting = useRef(false);
   const latestImage =
     generatedImages.filter((image) => image.status !== 'failed').at(-1) ?? startedImage;
   const latestVideo = generatedVideos
@@ -82,21 +96,58 @@ export function PostToXButton({
       selectedMedia.status !== 'failed',
   );
   const invalidMedia = selectedMediaId !== null && !mediaReady;
+  const postText = appendCanonicalHashtag(text.trim());
   const tooLong =
-    text.length > X_LONGFORM_MAX_LENGTH ||
+    postText.length > X_LONGFORM_MAX_LENGTH ||
     (publishMode === 'two_post' && replyText.length > X_LONGFORM_MAX_LENGTH);
+  const locked = saving || publicationAttempted;
+  // This is exactly the content visible in the composer, including its attachment.
+  // The approval endpoint atomically compares it with the stored draft.
+  const reviewedPayload = {
+    canonicalHashtag: '#AICyber',
+    tweets: [
+      { text: postText },
+      ...(publishMode === 'two_post' ? [{ text: replyText.trim() }] : []),
+    ],
+    ...(selectedMediaId
+      ? { mediaId: selectedMediaId, mediaKind: selectedImage ? 'image' : 'video' }
+      : {}),
+  };
+  const payloadKey = JSON.stringify(reviewedPayload);
+  const alreadySaved = savedDraft?.key === payloadKey;
+  const cannotSave =
+    locked ||
+    xDisabled ||
+    drafting ||
+    invalidMedia ||
+    tooLong ||
+    !text.trim() ||
+    (publishMode === 'two_post' && !replyText.trim());
+  const cannotPublish =
+    cannotSave ||
+    !connected ||
+    missingScopes.includes('tweet.write') ||
+    (selectedMediaId !== null && missingScopes.includes('media.write'));
 
-  const handleOpen = useCallback(async () => {
-    setText(defaultPackage.primaryText);
-    setReplyText(defaultPackage.replyText);
-    setPublishMode('two_post');
-    setSelectedMediaId(latestImage?.generatedMediaId ?? latestVideo?.generatedMediaId ?? null);
+  const handleOpen = async () => {
+    setOpen(true);
+    if (publicationAttempted) return;
+    const latestId = latestImage?.generatedMediaId ?? latestVideo?.generatedMediaId ?? null;
+    if (!initialized.current || latestId !== observedLatestMediaId.current) {
+      setSelectedMediaId(latestId);
+      observedLatestMediaId.current = latestId;
+    }
+    if (!initialized.current) {
+      initialized.current = true;
+      setText(defaultPackage.primaryText);
+      setReplyText(defaultPackage.replyText);
+    }
     setError(null);
+    setConnected(false);
     setNeedsConnect(false);
     setXDisabled(false);
     setMissingScopes([]);
     setConnection('Checking X connection…');
-    setOpen(true);
     try {
       const response = await fetch('/api/twitter/status', { credentials: 'include' });
       const status = await response.json();
@@ -110,6 +161,8 @@ export function PostToXButton({
       if (!response.ok || !status.ok)
         throw new Error('Could not check the X connection. You can still prepare a draft.');
       setNeedsConnect(!status.connected);
+      setConnected(Boolean(status.connected));
+      setDryRun(Boolean(status.dryRun));
       setMissingScopes(Array.isArray(status.missingScopes) ? status.missingScopes : []);
       setConnection(
         status.connected
@@ -119,7 +172,7 @@ export function PostToXButton({
     } catch (err) {
       setConnection(err instanceof Error ? err.message : 'Could not check the X connection.');
     }
-  }, [defaultPackage, latestImage, latestVideo]);
+  };
 
   // Rewriting is explicit: opening the composer never overwrites operator edits.
   const refine = async () => {
@@ -151,52 +204,95 @@ export function PostToXButton({
   const imageStarted = (image: GeneratedImageAttachment) => {
     setStartedImage(image);
     setSelectedMediaId(image.generatedMediaId);
+    observedLatestMediaId.current = image.generatedMediaId;
     onImageReady?.(image);
   };
 
-  const save = async () => {
-    if (
-      saving ||
-      xDisabled ||
-      invalidMedia ||
-      tooLong ||
-      !text.trim() ||
-      (publishMode === 'two_post' && !replyText.trim())
-    )
-      return;
+  const submit = async (publish: boolean) => {
+    if (submitting.current || (publish ? cannotPublish : cannotSave)) return;
+    submitting.current = true;
     setSaving(true);
     setError(null);
+    let approvalSent = false;
     try {
-      const response = await fetch('/api/outbound/x/review', {
+      let draftId = alreadySaved ? savedDraft.id : null;
+      if (draftId === null) {
+        const response = await fetch('/api/outbound/x/review', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            text: postText,
+            messageTimestamp,
+            publishMode,
+            replyText: publishMode === 'two_post' ? replyText : undefined,
+            replyMode: selectedImage ? 'latest_image' : selectedVideo ? 'latest_video' : 'text',
+            imageBlobUrl: selectedImage?.blobUrl,
+            videoBlobUrl: selectedVideo?.blobUrl,
+            sourceUrl: defaultPackage.sourceUrl,
+            sourceContext,
+          }),
+        });
+        const data = await response.json();
+        if (!response.ok || !data.ok || !Number.isSafeInteger(data.draftId) || data.draftId <= 0)
+          throw new Error(
+            data.detail || data.error || `Could not save draft (${response.status}).`,
+          );
+        draftId = data.draftId as number;
+        setSavedDraft({ id: draftId, key: payloadKey });
+      }
+      if (!publish) return;
+      // The operator's Post to X click approves the displayed content. Keep the
+      // existing server approval, ownership, and duplicate-send protections.
+      approvalSent = true;
+      setPublicationAttempted(true);
+      const response = await fetch(`/api/outbound/drafts/${draftId}/approve`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          text,
-          messageTimestamp,
-          publishMode,
-          replyText: publishMode === 'two_post' ? replyText : undefined,
-          replyMode: selectedImage ? 'latest_image' : selectedVideo ? 'latest_video' : 'text',
-          imageBlobUrl: selectedImage?.blobUrl,
-          videoBlobUrl: selectedVideo?.blobUrl,
-          sourceUrl: defaultPackage.sourceUrl,
-          sourceContext,
-        }),
+        body: JSON.stringify({ publish: true, reviewedPayload }),
       });
-      const data = await response.json();
-      if (!response.ok || !data.ok || !data.draftId)
-        throw new Error(data.detail || data.error || `Could not save draft (${response.status}).`);
-      await queryClient.invalidateQueries({ queryKey: APPROVAL_QUEUE_KEY });
-      setOpen(false);
-      requestAnimationFrame(() =>
-        window.dispatchEvent(
-          new CustomEvent(OPEN_APPROVAL_QUEUE_EVENT, { detail: { draftId: data.draftId } }),
-        ),
+      const result = await response.json();
+      const tweetIds = (result.tweetIds ?? result.partial?.tweetIds ?? []).filter(
+        (id: unknown): id is string => typeof id === 'string' && /^\d+$/.test(id),
       );
+      if (response.ok && result.ok && result.status === 'published' && result.dryRun) {
+        setOutcome({
+          message: 'Test completed. Nothing was posted to X.',
+          tweetIds: [],
+          published: false,
+        });
+      } else if (response.ok && result.ok && result.status === 'published' && tweetIds.length > 0) {
+        setOutcome({
+          message: publishMode === 'single' ? 'Posted to X.' : 'Thread posted to X.',
+          tweetIds,
+          published: true,
+        });
+      } else {
+        const detail = result.detail || result.error;
+        setOutcome({
+          message: `${tweetIds.length ? `${tweetIds.length} post(s) sent, but the thread did not finish.` : 'Posting was not confirmed.'} ${typeof detail === 'string' ? detail : ''} Check X before trying again; this attempt will not be automatically resent.`,
+          tweetIds,
+          published: false,
+        });
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not save the draft.');
+      if (approvalSent) {
+        setOutcome({
+          message:
+            'The connection ended before X confirmed the result. Check your X account before trying again; this attempt will not be automatically resent.',
+          tweetIds: [],
+          published: false,
+        });
+      } else {
+        setError(
+          err instanceof Error ? err.message : 'Could not save the draft. Nothing was posted.',
+        );
+      }
     } finally {
       setSaving(false);
+      submitting.current = false;
+      void queryClient.invalidateQueries({ queryKey: APPROVAL_QUEUE_KEY });
     }
   };
 
@@ -214,7 +310,7 @@ export function PostToXButton({
           className="inline-flex min-h-7 items-center gap-1.5 rounded border border-[var(--crt-glow)]/25 bg-[var(--crt-glow)]/5 px-2 py-1 font-mono text-[11px] text-[var(--crt-glow)] hover:bg-[var(--crt-glow)]/10"
           title="Create an X post with text, an image, or a video"
         >
-          <Twitter size={12} aria-hidden /> Post to X
+          <Twitter size={12} aria-hidden /> {outcome?.published ? 'Posted to X' : 'Post to X'}
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>
@@ -234,7 +330,7 @@ export function PostToXButton({
                 Post to X
               </Dialog.Title>
               <Dialog.Description className="mt-1 text-xs text-[var(--text-dim)]">
-                Create your post and image, then review the saved draft before publishing.
+                Check your text and attachment, then post directly to your connected X account.
               </Dialog.Description>
             </div>
             <Dialog.Close asChild>
@@ -264,7 +360,7 @@ export function PostToXButton({
                   type="button"
                   aria-pressed={publishMode === mode}
                   onClick={() => setPublishMode(mode)}
-                  disabled={saving}
+                  disabled={locked}
                   className="rounded border border-[var(--border-subtle)] px-3 py-2 aria-pressed:border-[var(--crt-glow)] aria-pressed:text-[var(--crt-glow)]"
                 >
                   {mode === 'single' ? 'One post' : 'Two-post thread'}
@@ -273,7 +369,7 @@ export function PostToXButton({
               <button
                 type="button"
                 onClick={refine}
-                disabled={drafting || saving}
+                disabled={drafting || locked}
                 className="ml-auto rounded border border-[var(--border-subtle)] px-3 py-2 text-[var(--crt-glow)]"
               >
                 {drafting ? 'Drafting…' : 'Refine with Max'}
@@ -285,14 +381,18 @@ export function PostToXButton({
                 aria-label="Post text"
                 value={text}
                 onChange={(event) => setText(event.target.value)}
-                disabled={saving || drafting}
+                disabled={locked || drafting}
                 rows={6}
                 className="w-full resize-y rounded border border-[var(--border-subtle)] bg-black/30 p-3 text-sm leading-relaxed"
               />
             </label>
+            {postText !== text.trim() && (
+              <p className="text-[var(--text-dim)]">Added to your post: #AICyber</p>
+            )}
             <p className="text-[var(--text-dim)]">
-              {text.length.toLocaleString()} / {X_LONGFORM_MAX_LENGTH.toLocaleString()} characters ·{' '}
-              {effectiveTweetLength(text) > X_STANDARD_VISIBLE_CHARS
+              {postText.length.toLocaleString()} / {X_LONGFORM_MAX_LENGTH.toLocaleString()}{' '}
+              characters ·{' '}
+              {effectiveTweetLength(postText) > X_STANDARD_VISIBLE_CHARS
                 ? 'Long posts require an eligible X account.'
                 : 'Fits the standard post length.'}
             </p>
@@ -303,7 +403,7 @@ export function PostToXButton({
                   aria-label="Reply text"
                   value={replyText}
                   onChange={(event) => setReplyText(event.target.value)}
-                  disabled={saving || drafting}
+                  disabled={locked || drafting}
                   rows={3}
                   className="w-full resize-y rounded border border-[var(--border-subtle)] bg-black/30 p-3 text-sm leading-relaxed"
                 />
@@ -318,14 +418,14 @@ export function PostToXButton({
                 {publishMode === 'two_post'
                   ? 'The attachment goes on the reply.'
                   : 'The attachment goes on your post.'}{' '}
-                Generated media stays private until you approve publication.
+                It will be included when you click Post to X.
               </p>
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   aria-pressed={selectedMediaId === null}
                   onClick={() => setSelectedMediaId(null)}
-                  disabled={saving}
+                  disabled={locked}
                   className="rounded border border-[var(--border-subtle)] px-2 py-1.5 aria-pressed:text-[var(--crt-glow)]"
                 >
                   No attachment
@@ -335,7 +435,7 @@ export function PostToXButton({
                     type="button"
                     aria-pressed={selectedMediaId === latestImage.generatedMediaId}
                     onClick={() => setSelectedMediaId(latestImage.generatedMediaId)}
-                    disabled={saving}
+                    disabled={locked}
                     className="rounded border border-[var(--border-subtle)] px-2 py-1.5 aria-pressed:text-[var(--crt-glow)]"
                   >
                     Use latest image
@@ -346,7 +446,7 @@ export function PostToXButton({
                     type="button"
                     aria-pressed={selectedMediaId === latestVideo.generatedMediaId}
                     onClick={() => setSelectedMediaId(latestVideo.generatedMediaId)}
-                    disabled={saving}
+                    disabled={locked}
                     className="rounded border border-[var(--border-subtle)] px-2 py-1.5 aria-pressed:text-[var(--crt-glow)]"
                   >
                     Use latest video
@@ -357,7 +457,7 @@ export function PostToXButton({
                   messageTimestamp={messageTimestamp}
                   sourceContext={sourceContext}
                   onImageReady={imageStarted}
-                  disabled={saving}
+                  disabled={locked}
                 />
               </div>
               {selectedImage && mediaReady && (
@@ -408,27 +508,61 @@ export function PostToXButton({
                 Shorten the post or reply to {X_LONGFORM_MAX_LENGTH.toLocaleString()} characters.
               </p>
             )}
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-[var(--text-dim)]">
-                Nothing is published until you approve.
-              </span>
-              <button
-                type="button"
-                onClick={save}
-                disabled={
-                  saving ||
-                  xDisabled ||
-                  drafting ||
-                  invalidMedia ||
-                  tooLong ||
-                  !text.trim() ||
-                  (publishMode === 'two_post' && !replyText.trim())
-                }
-                className="inline-flex shrink-0 items-center gap-2 rounded bg-[var(--crt-glow)] px-3 py-2 text-black disabled:opacity-40"
-              >
-                {saving && <Loader2 size={12} className="animate-spin" aria-hidden />}
-                {saving ? 'Saving…' : 'Review draft'}
-              </button>
+            {outcome && (
+              <div role="status" className="space-y-2">
+                <p>{outcome.message}</p>
+                {outcome.tweetIds.map((id, index) => (
+                  <a
+                    key={id}
+                    className="block text-[var(--crt-glow)] underline"
+                    href={buildTweetUrl(id)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {outcome.tweetIds.length === 1
+                      ? 'View post on X'
+                      : `View post ${index + 1} on X`}
+                  </a>
+                ))}
+              </div>
+            )}
+            {!outcome && alreadySaved && !saving && (
+              <p role="status">Saved for later. Not posted.</p>
+            )}
+            {dryRun && !outcome && (
+              <p role="status">Test mode is enabled. This will not publish a real post.</p>
+            )}
+            <div className="flex flex-wrap items-center justify-end gap-3">
+              {outcome ? (
+                <Dialog.Close asChild>
+                  <button
+                    type="button"
+                    className="rounded border border-[var(--crt-glow)] px-3 py-2"
+                  >
+                    Done
+                  </button>
+                </Dialog.Close>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => void submit(false)}
+                    disabled={cannotSave || alreadySaved}
+                    className="rounded border border-[var(--border-subtle)] px-3 py-2 disabled:opacity-40"
+                  >
+                    Save for later
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void submit(true)}
+                    disabled={cannotPublish}
+                    className="inline-flex shrink-0 items-center gap-2 rounded bg-[var(--crt-glow)] px-3 py-2 text-black disabled:opacity-40"
+                  >
+                    {saving && <Loader2 size={12} className="animate-spin" aria-hidden />}
+                    {saving ? 'Working…' : dryRun ? 'Test post (not public)' : 'Post to X'}
+                  </button>
+                </>
+              )}
             </div>
           </footer>
         </Dialog.Content>

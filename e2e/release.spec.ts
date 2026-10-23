@@ -216,7 +216,7 @@ test('publication drafts stay out of the conversation and review returns keyboar
   expect(mutations).toBe(0);
 });
 
-test('Max can create an image inside the X composer and hand it off for explicit publication review', async ({ page, context }) => {
+test('Max creates and previews an image, then posts from the same composer with one click', async ({ page, context }) => {
   await operator(context);
   const imageId = '100000101';
   const draftId = 100000101;
@@ -252,7 +252,7 @@ test('Max can create an image inside the X composer and hand it off for explicit
   await page.route(`**/api/outbound/drafts/${draftId}/approve`, route => {
     expect(route.request().postDataJSON()).toEqual({ publish: true, reviewedPayload: payload });
     approved = true;
-    return route.fulfill({ json: { ok: true, draftId, tweetIds: ['1999999999999999999'] } });
+    return route.fulfill({ json: { ok: true, draftId, status: 'published', tweetIds: ['1999999999999999999'] } });
   });
   await page.goto('/');
   await page.getByPlaceholder(/Ask .* anything/).fill('Create a synthetic update');
@@ -272,22 +272,17 @@ test('Max can create an image inside the X composer and hand it off for explicit
   await expect(generator).toBeInViewport({ ratio: 1 });
   await generator.getByRole('button', { name: 'Generate', exact: true }).click();
   await expect(generator).toHaveCount(0);
-  await expect(composer.getByRole('button', { name: 'Review draft', exact: true })).toBeDisabled();
+  await expect(composer.getByRole('button', { name: 'Post to X', exact: true })).toBeDisabled();
   expect(saved).toBe(false);
   ready = true;
   const image = composer.getByRole('img', { name: 'Image attached to your X draft' });
   await expect(image).toBeVisible({ timeout: 15_000 });
   await expect.poll(() => image.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
   expect(imageRequests).toBe(1);
-  await composer.getByRole('button', { name: 'Review draft', exact: true }).click();
-  await expect(composer).toHaveCount(0);
-  const review = page.getByRole('dialog', { name: 'Publication drafts' });
-  await expect(review.getByRole('region', { name: 'Publication preview' })).toBeVisible();
-  await expect(review.getByRole('img', { name: 'Image included in this publication' })).toBeVisible();
-  await expect(review.getByText('Synthetic illustrated post', { exact: true })).toHaveCount(2);
-  expect(approved).toBe(false);
-  await review.getByRole('button', { name: 'Approve and publish', exact: true }).click();
-  await expect(review.getByText('Posted to X ✓ — 1 tweet.', { exact: true })).toBeVisible();
+  await composer.getByRole('button', { name: 'Post to X', exact: true }).click();
+  await expect(composer.getByText('Posted to X.', { exact: true })).toBeVisible();
+  await expect(composer.getByRole('link', { name: 'View post on X' })).toHaveAttribute('href', 'https://x.com/i/status/1999999999999999999');
+  await expect(page.getByRole('dialog', { name: 'Publication drafts' })).toHaveCount(0);
   expect(approved).toBe(true);
   expect(runtimeErrors).toEqual([]);
 });

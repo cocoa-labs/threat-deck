@@ -5,6 +5,7 @@
   "src/app/api/outbound/drafts/route.test.ts",
   "src/app/api/outbound/email-me/route.test.ts",
   "src/app/api/outbound/escalate/route.test.ts",
+  "src/app/api/outbound/x/review/route.test.ts",
   "src/app/feed/cyber-wire.rss/route.test.ts",
   "src/lib/aegis/forecasting/aggregations.test.ts",
   "src/lib/aegis/ingest/cursor.test.ts",
