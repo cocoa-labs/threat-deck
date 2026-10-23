@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>X account connected — Cocoa AI</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      :root {
+        --cocoa-brown: #6b4423;
+        --matrix-green: #00ff41;
+        --bg: #0a0a0a;
+        --text: #e8e8e8;
+        --text-dim: #888;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: ui-monospace, "Geist Mono", Menlo, monospace;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        padding: 24px;
+      }
+      .stripe {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: var(--cocoa-brown);
+        box-shadow: 0 1px 12px rgba(107, 68, 35, 0.4);
+      }
+      .wordmark {
+        font-family: "Instrument Serif", "Times New Roman", serif;
+        font-style: italic;
+        font-size: 32px;
+        color: var(--cocoa-brown);
+        margin-bottom: 4px;
+      }
+      .system-tag {
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.42);
+        margin-bottom: 32px;
+      }
+      .status {
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--matrix-green);
+        margin-bottom: 12px;
+        text-shadow: 0 0 8px rgba(0, 255, 65, 0.4);
+      }
+      .status[data-status="error"] {
+        color: #ff4444;
+        text-shadow: 0 0 8px rgba(255, 68, 68, 0.4);
+      }
+      .message {
+        font-size: 13px;
+        color: var(--text);
+        margin-bottom: 8px;
+        max-width: 420px;
+      }
+      .hint {
+        font-size: 11px;
+        color: var(--text-dim);
+        margin-top: 24px;
+      }
+      .countdown {
+        font-size: 11px;
+        color: var(--text-dim);
+        margin-top: 8px;
+        font-variant-numeric: tabular-nums;
+      }
+      .reason {
+        font-size: 11px;
+        color: var(--text-dim);
+        margin-top: 8px;
+        font-family: ui-monospace, monospace;
+      }
+      .actions {
+        margin-top: 28px;
+      }
+      /* Always-visible escape hatch: window.close() is a no-op unless this
+         window was script-opened, so never rely on it as the only way out. */
+      .back-link {
+        display: inline-block;
+        padding: 10px 22px;
+        border: 1px solid var(--matrix-green);
+        color: var(--matrix-green);
+        text-decoration: none;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        transition:
+          background-color 120ms ease,
+          box-shadow 120ms ease;
+      }
+      .back-link:hover,
+      .back-link:focus-visible {
+        background: rgba(0, 255, 65, 0.12);
+        box-shadow: 0 0 12px rgba(0, 255, 65, 0.25);
+        outline: none;
+      }
+      .back-link[data-status="error"] {
+        border-color: #ff4444;
+        color: #ff4444;
+      }
+      .back-link[data-status="error"]:hover,
+      .back-link[data-status="error"]:focus-visible {
+        background: rgba(255, 68, 68, 0.12);
+        box-shadow: 0 0 12px rgba(255, 68, 68, 0.25);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .dot {
+          animation: none;
+        }
+        .back-link {
+          transition: none;
+        }
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+      .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--matrix-green);
+        margin-right: 8px;
+        animation: pulse 2s ease-in-out infinite;
+        box-shadow: 0 0 8px var(--matrix-green);
+      }
+      .dot[data-status="error"] {
+        background: #ff4444;
+        box-shadow: 0 0 8px #ff4444;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stripe"></div>
+    <div class="wordmark">Cocoa AI</div>
+    <div class="system-tag">// Threat Deck</div>
+    <div id="status-line" class="status" data-status="ok">
+      <span class="dot" data-status="ok"></span>X Account Connected
+    </div>
+    <div id="message" class="message">
+      Connected. The Cyber Wire is now wired up to post.
+    </div>
+    <div id="reason" class="reason"></div>
+    <div class="actions">
+      <a id="back-link" class="back-link" href="/">← Back to Threat Deck</a>
+    </div>
+    <div class="hint">Returning to the Threat Deck automatically.</div>
+    <div id="countdown" class="countdown">Returning in 5…</div>
+
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var status = params.get('status') || 'ok';
+        var reason = params.get('reason') || '';
+
+        var statusLine = document.getElementById('status-line');
+        var message = document.getElementById('message');
+        var reasonEl = document.getElementById('reason');
+        var backLink = document.getElementById('back-link');
+        var dot = statusLine.querySelector('.dot');
+
+        // Not every failure is X's fault — a dead local DB used to render as
+        // "Twitter rejected the authorization", which sent debugging the wrong way.
+        var HEADLINES = {
+          persist_failed_db_down: 'Local Database Unreachable',
+          persist_failed: 'Token Not Saved',
+        };
+        var MESSAGES = {
+          persist_failed_db_down:
+            'X authorized fine, but the local database is unreachable — is Docker running? ' +
+            'Start it, then try again:  docker compose up -d',
+          persist_failed:
+            'X authorized fine, but saving the token failed. Check the dev server logs.',
+        };
+
+        if (status === 'error') {
+          var headline = HEADLINES[reason] || 'Connection Failed';
+          statusLine.setAttribute('data-status', 'error');
+          statusLine.innerHTML =
+            '<span class="dot" data-status="error"></span>' + headline;
+          message.textContent =
+            MESSAGES[reason] ||
+            'Twitter rejected the authorization. Try again from the agent drawer.';
+          backLink.setAttribute('data-status', 'error');
+          if (reason) {
+            reasonEl.textContent = 'reason: ' + reason;
+          }
+        }
+
+        var seconds = 5;
+        var countdown = document.getElementById('countdown');
+        var tick = setInterval(function () {
+          seconds--;
+          if (seconds <= 0) {
+            clearInterval(tick);
+            countdown.textContent = 'Returning to the Threat Deck…';
+            // close() only works if this window was opened by script. It is a
+            // silent no-op for a normal tab, so always fall back to navigating
+            // home — otherwise the user is stranded with no way back.
+            window.close();
+            setTimeout(function () {
+              window.location.replace('/');
+            }, 250);
+            return;
+          }
+          countdown.textContent = 'Returning in ' + seconds + '…';
+        }, 1000);
+      })();
+    </script>
+  </body>
+</html>

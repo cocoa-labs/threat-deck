@@ -1,0 +1,122 @@
+[
+  {
+    "id": "taiwan-strait",
+    "name": "Taiwan Strait",
+    "lat": 24.5,
+    "lon": 120.5,
+    "severity": "high",
+    "category": "conflict",
+    "description": "US-China flashpoint. Military exercises, ADIZ incursions, semiconductor supply chain risk.",
+    "url": "https://en.wikipedia.org/wiki/Taiwan_Strait"
+  },
+  {
+    "id": "south-china-sea",
+    "name": "South China Sea",
+    "lat": 12.0,
+    "lon": 114.0,
+    "severity": "high",
+    "category": "conflict",
+    "description": "Territorial disputes. Freedom of navigation operations, island militarization, shipping lane risk.",
+    "url": "https://en.wikipedia.org/wiki/Territorial_disputes_in_the_South_China_Sea"
+  },
+  {
+    "id": "ukraine-russia",
+    "name": "Ukraine-Russia",
+    "lat": 49.0,
+    "lon": 32.0,
+    "severity": "critical",
+    "category": "conflict",
+    "description": "Active conflict zone. Energy supply disruption, sanctions impact, NATO expansion dynamics.",
+    "url": "https://en.wikipedia.org/wiki/Russian_invasion_of_Ukraine"
+  },
+  {
+    "id": "middle-east",
+    "name": "Middle East",
+    "lat": 31.5,
+    "lon": 35.5,
+    "severity": "critical",
+    "category": "conflict",
+    "description": "Israel-Gaza-Lebanon-Iran axis. Oil price risk, regional escalation potential, humanitarian crisis.",
+    "url": "https://en.wikipedia.org/wiki/Israel%E2%80%93Hamas_war"
+  },
+  {
+    "id": "korean-peninsula",
+    "name": "Korean Peninsula",
+    "lat": 38.5,
+    "lon": 127.0,
+    "severity": "medium",
+    "category": "conflict",
+    "description": "DPRK missile tests, nuclear program, US-ROK alliance, semiconductor proximity risk.",
+    "url": "https://en.wikipedia.org/wiki/Korean_Demilitarized_Zone"
+  },
+  {
+    "id": "iran-nuclear",
+    "name": "Iran Nuclear",
+    "lat": 32.5,
+    "lon": 53.0,
+    "severity": "high",
+    "category": "proliferation",
+    "description": "Nuclear enrichment, JCPOA status, proxy warfare, Strait of Hormuz chokepoint.",
+    "url": "https://en.wikipedia.org/wiki/Nuclear_program_of_Iran"
+  },
+  {
+    "id": "venezuela",
+    "name": "Venezuela",
+    "lat": 8.0,
+    "lon": -66.0,
+    "severity": "medium",
+    "category": "instability",
+    "description": "Political crisis, oil production, sanctions, migration, China/Russia influence.",
+    "url": "https://en.wikipedia.org/wiki/Crisis_in_Venezuela"
+  },
+  {
+    "id": "arctic",
+    "name": "Arctic",
+    "lat": 75.0,
+    "lon": 0.0,
+    "severity": "low",
+    "category": "strategic",
+    "description": "Resource competition, shipping routes, military posturing, climate change acceleration.",
+    "url": "https://en.wikipedia.org/wiki/Arctic_geopolitics"
+  },
+  {
+    "id": "horn-of-africa",
+    "name": "Horn of Africa",
+    "lat": 8.0,
+    "lon": 46.0,
+    "severity": "high",
+    "category": "instability",
+    "description": "Red Sea shipping disruption, Houthi attacks, Bab el-Mandeb chokepoint, piracy.",
+    "url": "https://en.wikipedia.org/wiki/Houthi-led_attacks_on_shipping_in_the_Red_Sea"
+  },
+  {
+    "id": "sahel",
+    "name": "Sahel Region",
+    "lat": 15.0,
+    "lon": 0.0,
+    "severity": "medium",
+    "category": "instability",
+    "description": "Military coups, Wagner/Africa Corps presence, terrorism, French withdrawal, resource extraction.",
+    "url": "https://en.wikipedia.org/wiki/Islamist_insurgency_in_the_Sahel"
+  },
+  {
+    "id": "us-china-tech",
+    "name": "US-China Tech War",
+    "lat": 37.4,
+    "lon": -122.1,
+    "severity": "high",
+    "category": "economic",
+    "description": "Semiconductor export controls, AI competition, TikTok, rare earths, supply chain decoupling.",
+    "url": "https://en.wikipedia.org/wiki/China%E2%80%93United_States_trade_war"
+  },
+  {
+    "id": "greenland",
+    "name": "Greenland",
+    "lat": 72.0,
+    "lon": -40.0,
+    "severity": "medium",
+    "category": "strategic",
+    "description": "US strategic interest, rare earth minerals, Arctic shipping, Denmark sovereignty, NATO implications.",
+    "url": "https://en.wikipedia.org/wiki/Greenland"
+  }
+]

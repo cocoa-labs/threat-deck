@@ -1,0 +1,578 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "suez-canal",
+        "name": "Suez Canal",
+        "type": "shipping-chokepoint",
+        "category": "transport",
+        "significance": "critical",
+        "description": "Handles ~12% of global trade connecting the Mediterranean and Red Sea, critical for Europe-Asia shipping.",
+        "url": "https://en.wikipedia.org/wiki/Suez_Canal"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [32.3200, 31.2600],
+          [32.3400, 31.0800],
+          [32.3600, 30.8500],
+          [32.3500, 30.6000],
+          [32.3700, 30.4500],
+          [32.5200, 30.0200],
+          [32.5800, 29.9500]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "panama-canal",
+        "name": "Panama Canal",
+        "type": "shipping-chokepoint",
+        "category": "transport",
+        "significance": "critical",
+        "description": "Connects the Atlantic and Pacific oceans, handling ~5% of global maritime trade with chronic drought constraints.",
+        "url": "https://en.wikipedia.org/wiki/Panama_Canal"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-79.9200, 9.3800],
+          [-79.8800, 9.3200],
+          [-79.8200, 9.2600],
+          [-79.7200, 9.2000],
+          [-79.6300, 9.1500],
+          [-79.5700, 9.1000],
+          [-79.5200, 9.0400],
+          [-79.5000, 8.9500]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "strait-malacca",
+        "name": "Strait of Malacca",
+        "type": "shipping-chokepoint",
+        "category": "transport",
+        "significance": "critical",
+        "description": "Narrowest point just 2.7km wide, carrying ~25% of global shipping and 80% of China's oil imports.",
+        "url": "https://en.wikipedia.org/wiki/Strait_of_Malacca"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [97.5000, 5.4000],
+          [98.5000, 4.5000],
+          [99.5000, 3.5000],
+          [100.5000, 2.5000],
+          [101.5000, 1.8000],
+          [103.0000, 1.3000],
+          [103.8000, 1.2500],
+          [104.2000, 1.2700]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "strait-hormuz",
+        "name": "Strait of Hormuz",
+        "type": "shipping-chokepoint",
+        "category": "energy",
+        "significance": "critical",
+        "description": "Transits ~20% of global oil supply and ~25% of LNG trade between the Persian Gulf and Gulf of Oman.",
+        "url": "https://en.wikipedia.org/wiki/Strait_of_Hormuz"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [54.0000, 26.5000],
+          [55.0000, 26.3000],
+          [55.5000, 26.1000],
+          [56.0000, 26.0000],
+          [56.5000, 26.2000],
+          [57.0000, 26.5000],
+          [57.5000, 26.3000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "bab-el-mandeb",
+        "name": "Bab el-Mandeb Strait",
+        "type": "shipping-chokepoint",
+        "category": "transport",
+        "significance": "critical",
+        "description": "Critical 26km-wide chokepoint between Yemen and Djibouti under active Houthi threat, gateway to the Suez Canal.",
+        "url": "https://en.wikipedia.org/wiki/Bab-el-Mandeb"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [43.2000, 12.4000],
+          [43.3000, 12.5500],
+          [43.3500, 12.7000],
+          [43.4500, 12.8500],
+          [43.5000, 13.0000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "strait-gibraltar",
+        "name": "Strait of Gibraltar",
+        "type": "shipping-chokepoint",
+        "category": "transport",
+        "significance": "high",
+        "description": "14km-wide gateway between the Atlantic and Mediterranean carrying major east-west shipping traffic.",
+        "url": "https://en.wikipedia.org/wiki/Strait_of_Gibraltar"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-5.9000, 35.9600],
+          [-5.7000, 35.9200],
+          [-5.5000, 35.9000],
+          [-5.3000, 35.9500],
+          [-5.1500, 36.0000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "turkish-straits",
+        "name": "Turkish Straits (Bosphorus & Dardanelles)",
+        "type": "shipping-chokepoint",
+        "category": "transport",
+        "significance": "high",
+        "description": "Sole maritime access between the Black Sea and Mediterranean, regulated by the Montreux Convention.",
+        "url": "https://en.wikipedia.org/wiki/Turkish_Straits"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [26.4000, 40.0500],
+          [26.6000, 40.2000],
+          [26.8000, 40.4000],
+          [27.5000, 40.6000],
+          [28.5000, 40.8000],
+          [28.9500, 41.0000],
+          [29.0500, 41.1200],
+          [29.0600, 41.2200]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cape-good-hope",
+        "name": "Cape of Good Hope Route",
+        "type": "shipping-chokepoint",
+        "category": "transport",
+        "significance": "high",
+        "description": "Alternative route around Africa seeing surging traffic due to Red Sea crisis, adding 10-14 days to Asia-Europe voyages.",
+        "url": "https://en.wikipedia.org/wiki/Cape_of_Good_Hope"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [40.0000, 12.0000],
+          [44.0000, 5.0000],
+          [44.0000, -2.0000],
+          [42.0000, -10.0000],
+          [38.0000, -20.0000],
+          [32.0000, -30.0000],
+          [26.0000, -34.0000],
+          [20.0000, -35.5000],
+          [18.5000, -34.3600],
+          [15.0000, -30.0000],
+          [10.0000, -20.0000],
+          [5.0000, -5.0000],
+          [0.0000, 5.0000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "tsmc-hsinchu",
+        "name": "TSMC Hsinchu Fab Complex",
+        "type": "semiconductor-fab",
+        "category": "technology",
+        "significance": "critical",
+        "description": "TSMC's headquarters and primary R&D center producing the world's most advanced semiconductor nodes.",
+        "url": "https://en.wikipedia.org/wiki/TSMC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.9967, 24.7886]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "tsmc-tainan",
+        "name": "TSMC Tainan Gigafab",
+        "type": "semiconductor-fab",
+        "category": "technology",
+        "significance": "critical",
+        "description": "TSMC's largest production complex manufacturing cutting-edge 3nm and 5nm chips for Apple, NVIDIA, and AMD.",
+        "url": "https://en.wikipedia.org/wiki/TSMC"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [120.2653, 23.0587]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "samsung-pyeongtaek",
+        "name": "Samsung Pyeongtaek Semiconductor Campus",
+        "type": "semiconductor-fab",
+        "category": "technology",
+        "significance": "critical",
+        "description": "World's largest semiconductor complex producing advanced memory and foundry chips for the global supply chain.",
+        "url": "https://en.wikipedia.org/wiki/Samsung_Electronics"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [127.0900, 36.9600]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "asml-veldhoven",
+        "name": "ASML Veldhoven Headquarters",
+        "type": "semiconductor-fab",
+        "category": "technology",
+        "significance": "critical",
+        "description": "Sole manufacturer of extreme ultraviolet lithography machines required for sub-7nm chip production worldwide.",
+        "url": "https://en.wikipedia.org/wiki/ASML_Holding"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.4100, 51.4100]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "intel-chandler",
+        "name": "Intel Chandler Fab Complex",
+        "type": "semiconductor-fab",
+        "category": "technology",
+        "significance": "high",
+        "description": "Intel's primary US manufacturing campus with Fab 42, one of the most advanced fabs in the Western hemisphere.",
+        "url": "https://en.wikipedia.org/wiki/Intel"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-111.8910, 33.2270]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "globalfoundries-malta",
+        "name": "GlobalFoundries Malta Fab",
+        "type": "semiconductor-fab",
+        "category": "technology",
+        "significance": "high",
+        "description": "Major US-based semiconductor foundry producing chips for defense, automotive, and IoT applications.",
+        "url": "https://en.wikipedia.org/wiki/GlobalFoundries"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-73.8610, 42.9850]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ras-laffan",
+        "name": "Ras Laffan Industrial City",
+        "type": "lng-terminal",
+        "category": "energy",
+        "significance": "critical",
+        "description": "World's largest LNG export facility in Qatar, producing ~25% of global LNG supply from the North Field.",
+        "url": "https://en.wikipedia.org/wiki/Ras_Laffan"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [51.5330, 25.9130]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "sabine-pass",
+        "name": "Sabine Pass LNG Terminal",
+        "type": "lng-terminal",
+        "category": "energy",
+        "significance": "high",
+        "description": "Largest US LNG export facility on the Texas-Louisiana border operated by Cheniere Energy.",
+        "url": "https://en.wikipedia.org/wiki/Sabine_Pass_LNG_terminal"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-93.8540, 29.7360]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "yamal-lng",
+        "name": "Yamal LNG Terminal",
+        "type": "lng-terminal",
+        "category": "energy",
+        "significance": "high",
+        "description": "Major Russian Arctic LNG facility on the Yamal Peninsula exporting via the Northern Sea Route.",
+        "url": "https://en.wikipedia.org/wiki/Yamal_LNG"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [72.4900, 71.2600]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "freeport-lng",
+        "name": "Freeport LNG Terminal",
+        "type": "lng-terminal",
+        "category": "energy",
+        "significance": "high",
+        "description": "Second-largest US LNG export facility on Quintana Island, Texas with three liquefaction trains.",
+        "url": "https://en.wikipedia.org/wiki/Freeport_LNG"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-95.3140, 28.9410]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "nord-stream-route",
+        "name": "Nord Stream Pipeline Route",
+        "type": "pipeline-route",
+        "category": "energy",
+        "significance": "high",
+        "description": "Sabotaged subsea gas pipeline route across the Baltic Sea from Russia to Germany, now inoperable.",
+        "url": "https://en.wikipedia.org/wiki/Nord_Stream"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [28.8000, 59.8000],
+          [25.0000, 59.9000],
+          [21.0000, 59.5000],
+          [17.0000, 58.0000],
+          [14.5000, 55.5000],
+          [12.5000, 54.5000],
+          [12.1000, 54.2000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "turkstream",
+        "name": "TurkStream Pipeline",
+        "type": "pipeline-route",
+        "category": "energy",
+        "significance": "high",
+        "description": "Operational subsea gas pipeline across the Black Sea from Russia to Turkey supplying Southeast Europe.",
+        "url": "https://en.wikipedia.org/wiki/TurkStream"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [38.9500, 44.6000],
+          [36.0000, 44.0000],
+          [33.5000, 43.5000],
+          [31.0000, 43.0000],
+          [29.5000, 42.2000],
+          [29.0000, 41.7000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "tapi-pipeline",
+        "name": "TAPI Pipeline Route",
+        "type": "pipeline-route",
+        "category": "energy",
+        "significance": "medium",
+        "description": "Planned Turkmenistan-Afghanistan-Pakistan-India gas pipeline crossing some of the most unstable territory on Earth.",
+        "url": "https://en.wikipedia.org/wiki/Turkmenistan%E2%80%93Afghanistan%E2%80%93Pakistan%E2%80%93India_Pipeline"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [61.8000, 37.9000],
+          [62.2000, 36.5000],
+          [64.0000, 34.5000],
+          [65.7000, 32.5000],
+          [66.9000, 30.5000],
+          [67.5000, 28.0000],
+          [68.0000, 26.0000],
+          [69.0000, 25.0000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "marseille-landing",
+        "name": "Marseille Subsea Cable Landing",
+        "type": "subsea-cable-landing",
+        "category": "telecom",
+        "significance": "high",
+        "description": "Europe's largest submarine cable hub with 14+ cable systems connecting to Africa, Middle East, and Asia.",
+        "url": "https://en.wikipedia.org/wiki/Marseille"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [5.3698, 43.2965]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "singapore-cable-hub",
+        "name": "Singapore Submarine Cable Hub",
+        "type": "subsea-cable-landing",
+        "category": "telecom",
+        "significance": "critical",
+        "description": "Asia's primary submarine cable interchange connecting 30+ cable systems across the Indo-Pacific region.",
+        "url": "https://en.wikipedia.org/wiki/Submarine_communications_cable"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.8540, 1.2900]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "mumbai-landing",
+        "name": "Mumbai Submarine Cable Landing",
+        "type": "subsea-cable-landing",
+        "category": "telecom",
+        "significance": "high",
+        "description": "India's primary international internet gateway with major cable systems connecting to Europe, Middle East, and SE Asia.",
+        "url": "https://en.wikipedia.org/wiki/Submarine_communications_cable"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [72.8777, 19.0760]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "virginia-beach-landing",
+        "name": "Virginia Beach Cable Landing Station",
+        "type": "subsea-cable-landing",
+        "category": "telecom",
+        "significance": "critical",
+        "description": "Major US East Coast submarine cable landing point carrying transatlantic internet traffic to Europe and beyond.",
+        "url": "https://en.wikipedia.org/wiki/Submarine_communications_cable"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-75.9780, 36.8530]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "djibouti-cable",
+        "name": "Djibouti Cable Crossing",
+        "type": "subsea-cable-landing",
+        "category": "telecom",
+        "significance": "high",
+        "description": "Strategic cable convergence point where multiple Africa-to-Asia submarine cables transit the Bab el-Mandeb corridor.",
+        "url": "https://en.wikipedia.org/wiki/Djibouti"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [43.1456, 11.5950]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "port-shanghai",
+        "name": "Port of Shanghai (Yangshan)",
+        "type": "shipping-chokepoint",
+        "category": "transport",
+        "significance": "critical",
+        "description": "World's busiest container port handling 49+ million TEUs annually, critical node in global supply chains.",
+        "url": "https://en.wikipedia.org/wiki/Port_of_Shanghai"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [121.9300, 30.6300]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "port-rotterdam",
+        "name": "Port of Rotterdam",
+        "type": "shipping-chokepoint",
+        "category": "transport",
+        "significance": "critical",
+        "description": "Europe's largest port and primary energy import hub handling crude oil, LNG, and container traffic.",
+        "url": "https://en.wikipedia.org/wiki/Port_of_Rotterdam"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [4.0500, 51.9480]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "port-singapore",
+        "name": "Port of Singapore",
+        "type": "shipping-chokepoint",
+        "category": "transport",
+        "significance": "critical",
+        "description": "World's largest transshipment hub at the crossroads of the Malacca Strait, handling 37+ million TEUs annually.",
+        "url": "https://en.wikipedia.org/wiki/Port_of_Singapore"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [103.8200, 1.2650]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kharg-island",
+        "name": "Kharg Island Oil Terminal",
+        "type": "shipping-chokepoint",
+        "category": "energy",
+        "significance": "critical",
+        "description": "Iran's primary crude oil export terminal handling ~90% of Iranian petroleum exports through the Persian Gulf.",
+        "url": "https://en.wikipedia.org/wiki/Kharg_Island"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [50.3310, 29.2370]
+      }
+    }
+  ]
+}

@@ -1,0 +1,580 @@
+{
+  "scanner": "semgrep 1.182.1",
+  "rulesCommit": "16b9e6d45f10649f6a531ec4838ed9924372c3bc",
+  "reviewDate": "2026-10-23",
+  "scope": "Security-category rules; non-security style diagnostics are handled by Biome/ESLint. No confirmed high/critical finding is suppressed. File hashes force re-review on any affected-file change.",
+  "findings": [
+    {
+      "path": "src/app/api/aegis/compromised-orgs/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 94,
+      "sha256": "d8eb2348c3269ab3c55f37fc6513c9b1064c85a4805bbe405942dfcf07ecb929",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/compromised-orgs/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 95,
+      "sha256": "d8eb2348c3269ab3c55f37fc6513c9b1064c85a4805bbe405942dfcf07ecb929",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/compromised-orgs/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 100,
+      "sha256": "d8eb2348c3269ab3c55f37fc6513c9b1064c85a4805bbe405942dfcf07ecb929",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/cves/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 124,
+      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/cves/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 139,
+      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/cves/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 140,
+      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/cves/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 140,
+      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/cves/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 148,
+      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/cves/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 157,
+      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/cves/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 165,
+      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/cves/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 167,
+      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/cves/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 246,
+      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/defenses/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 128,
+      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/defenses/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 129,
+      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/defenses/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 130,
+      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/defenses/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 141,
+      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/defenses/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 146,
+      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/defenses/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 206,
+      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/incidents/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 128,
+      "sha256": "2a9de37dee2c4f62d70e6037750dd4eaaa0c9859425e16c98312b2febf807345",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/incidents/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 139,
+      "sha256": "2a9de37dee2c4f62d70e6037750dd4eaaa0c9859425e16c98312b2febf807345",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/incidents/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 144,
+      "sha256": "2a9de37dee2c4f62d70e6037750dd4eaaa0c9859425e16c98312b2febf807345",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/incidents/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 204,
+      "sha256": "2a9de37dee2c4f62d70e6037750dd4eaaa0c9859425e16c98312b2febf807345",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/kev/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 152,
+      "sha256": "72d5521d1af1ca3da96f2b09ffec6e62edfb5ec1963a1f120abfa948b719a61d",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/kev/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 168,
+      "sha256": "72d5521d1af1ca3da96f2b09ffec6e62edfb5ec1963a1f120abfa948b719a61d",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/kev/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 173,
+      "sha256": "72d5521d1af1ca3da96f2b09ffec6e62edfb5ec1963a1f120abfa948b719a61d",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/threat-actors/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 122,
+      "sha256": "6af86256d6bc8f1036e3d54e81c5531d309d486c5334b1d43f30ccb963e1893b",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/threat-actors/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 136,
+      "sha256": "6af86256d6bc8f1036e3d54e81c5531d309d486c5334b1d43f30ccb963e1893b",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/threat-actors/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 192,
+      "sha256": "6af86256d6bc8f1036e3d54e81c5531d309d486c5334b1d43f30ccb963e1893b",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/api/aegis/threat-actors/view/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 201,
+      "sha256": "6af86256d6bc8f1036e3d54e81c5531d309d486c5334b1d43f30ccb963e1893b",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/app/feed/cyber-wire.rss/route.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 109,
+      "sha256": "476831cb2e2c6bed79fe3725a2963083ccd305f06ea6c6b73466e4948752b56b",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/components/ui/AgentToast.tsx",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 247,
+      "sha256": "fbafa02e3046e25bf99eec071ed8a3f55bdd10c18ffafbd2a71f5bb057f89bbb",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/lib/agent/activation.ts",
+      "rule": "javascript.lang.security.audit.unsafe-dynamic-method",
+      "line": 166,
+      "sha256": "6033067463051c9c2900dd3d5a1f214fc6754eaaae1ccec73cbba268dddc97cf",
+      "disposition": "Dispatch is limited to a fixed own-property function registry, checked with Object.hasOwn before invocation; user input cannot select prototype functions."
+    },
+    {
+      "path": "src/lib/agent/activation.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 567,
+      "sha256": "6033067463051c9c2900dd3d5a1f214fc6754eaaae1ccec73cbba268dddc97cf",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/agent/client.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 548,
+      "sha256": "671a11131cfe69d5fd41104c45b14af67d58c18465e56c7637173c834fdad14d",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/breach-feed.ts",
+      "rule": "javascript.lang.security.audit.detect-non-literal-regexp",
+      "line": 268,
+      "sha256": "2f372439c3a4553c7be5e841aac844923b50237fa561a225c9bc44438a945145",
+      "disposition": "The expression interpolates fixed severity keywords, escaped hashtag literals (escapeRegExp), or a constant test fixture. It does not accept executable regular-expression syntax from feed/user input."
+    },
+    {
+      "path": "src/lib/data/collectors/breach-feed.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 394,
+      "sha256": "2f372439c3a4553c7be5e841aac844923b50237fa561a225c9bc44438a945145",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/channel-rss.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 56,
+      "sha256": "f7305511e086693bf1f55fd761db8f3f266e9b7dc6a23c1678d291e7a5b22b72",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/earnings.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 584,
+      "sha256": "c86aa18fa571fd6f3f43a60153cf394d127a39e889b5a52c5ad17438b3d373a1",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/fed-calendar.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 283,
+      "sha256": "56b587dc6724baadcbacd419a503390136a4a9dc7e0fc7c410ef8f171744f7ba",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/fed.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 217,
+      "sha256": "4d703c51ecd570a46439d40fb3696671b51aa6f4bcd5babee61eeb78f4fdec3b",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/livestream.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 158,
+      "sha256": "89b58b3bb1a3c278b65482dc7dc26b9b86f6fde1d0b4a5cc55384c8bf9e8b8f6",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/network-scraper.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 67,
+      "sha256": "6701c6d9a5d145b781a57006e6e4a0d19ef7f8c9453ffcc86dc14a1dd4b99317",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/osint.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 129,
+      "sha256": "fbd00f22681919ad51e4d2e2efe42a3ae5771d1a1622dbd9c5dc1dbdb4bee950",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/rss.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 308,
+      "sha256": "e6152b867c9c41f591d879f593cad33f277a7aa415fae841580b629bd3a94e5d",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/vendor-patches.ts",
+      "rule": "javascript.lang.security.audit.detect-non-literal-regexp",
+      "line": 199,
+      "sha256": "9c780e386e31f54cba7df0b631583b6064b685e5376a3188dd2483e35f5c85be",
+      "disposition": "The expression interpolates fixed severity keywords, escaped hashtag literals (escapeRegExp), or a constant test fixture. It does not accept executable regular-expression syntax from feed/user input."
+    },
+    {
+      "path": "src/lib/data/collectors/vendor-patches.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 253,
+      "sha256": "9c780e386e31f54cba7df0b631583b6064b685e5376a3188dd2483e35f5c85be",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/collectors/youtube-poller.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 92,
+      "sha256": "fd401e0858c928e57d265bdff5f380c74bc1653043b7ae5b5901cf682737dfc1",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/data/service-request.ts",
+      "rule": "javascript.lang.security.audit.unsafe-dynamic-method",
+      "line": 35,
+      "sha256": "94849f65553f2cb8decdc152dd597e0d9c4cc2d82576cf0955f57b344e965e93",
+      "disposition": "Dispatch is limited to a fixed own-property function registry, checked with Object.hasOwn before invocation; user input cannot select prototype functions."
+    },
+    {
+      "path": "src/lib/db/migrate.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 165,
+      "sha256": "a42f03d8c49207e2d69104ee39899e965b24ac67fb4002e5753e146d5cfd3a19",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/email/resend.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 159,
+      "sha256": "25dc6c5f4611da42d6a076ec121ec378b6260167cc10c7569d270f67cf2d74f0",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/lib/email/templates/AgentResponseEmail.tsx",
+      "rule": "typescript.react.security.audit.react-href-var",
+      "line": 236,
+      "sha256": "08b0f70cf4161b431fe6e885806ddee6817d44bb8f69d776ffbb8e878a719fd3",
+      "disposition": "The link is passed through safeLink(), which rejects javascript/data schemes, control characters, credentials and protocol-relative URLs; covered by safe-link.test.ts."
+    },
+    {
+      "path": "src/lib/feeds/manager.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 28,
+      "sha256": "7f9ceee0489f905ecc5759c84ced20705126af23e9d56d5865a95ea490626596",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/feeds/manager.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 49,
+      "sha256": "7f9ceee0489f905ecc5759c84ced20705126af23e9d56d5865a95ea490626596",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/hooks/use-agent-stream.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 1425,
+      "sha256": "9bf0f6cb3bfd17fe654d220607fe98f568844b83c3124fac1701a8a9a0980a78",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/mapbox/geocode-api.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 121,
+      "sha256": "147e8584f22434b09aac4557a5eeeca465ebbd13c19fb4b230729a6e19c74596",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/mapbox/geocode-api.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 239,
+      "sha256": "147e8584f22434b09aac4557a5eeeca465ebbd13c19fb4b230729a6e19c74596",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/redis/client.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 42,
+      "sha256": "6ffef535bf4f57080cce5395d16d6366aed966ee12d742184fced04054b78015",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/security/dashboard-csp.test.ts",
+      "rule": "javascript.lang.security.audit.detect-non-literal-regexp",
+      "line": 24,
+      "sha256": "9a38bafad4158307a7d7426096e50d1a6f273edea8c98adf4a785d8988b54932",
+      "disposition": "The expression interpolates fixed severity keywords, escaped hashtag literals (escapeRegExp), or a constant test fixture. It does not accept executable regular-expression syntax from feed/user input."
+    },
+    {
+      "path": "src/lib/twitter/content/format.ts",
+      "rule": "javascript.lang.security.audit.detect-non-literal-regexp",
+      "line": 66,
+      "sha256": "242a2f01a99ed81b35a95bfe741645d7cf6e945a89eb630c93998d8cea43140b",
+      "disposition": "The expression interpolates fixed severity keywords, escaped hashtag literals (escapeRegExp), or a constant test fixture. It does not accept executable regular-expression syntax from feed/user input."
+    },
+    {
+      "path": "src/lib/twitter/content/format.ts",
+      "rule": "javascript.lang.security.audit.detect-non-literal-regexp",
+      "line": 106,
+      "sha256": "242a2f01a99ed81b35a95bfe741645d7cf6e945a89eb630c93998d8cea43140b",
+      "disposition": "The expression interpolates fixed severity keywords, escaped hashtag literals (escapeRegExp), or a constant test fixture. It does not accept executable regular-expression syntax from feed/user input."
+    },
+    {
+      "path": "src/lib/twitter/oauth.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 385,
+      "sha256": "d1d2a8e3c80a4d698d5a6d6ae392fb0f1b9671fb1e29f237edf898147663b206",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/utils/panel-actions.ts",
+      "rule": "javascript.lang.security.html-in-template-string",
+      "line": 31,
+      "sha256": "5276ae144204eeb235c40758ea7bd69f7756c9883543e1b26f2e5834df80e2e4",
+      "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
+    },
+    {
+      "path": "src/lib/utils/storage-migration.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 46,
+      "sha256": "969e7a02a33e235eb04d982d8516465cd3322b285b2c84ae05820ca53d042b76",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/visual/video-generation-service.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 682,
+      "sha256": "442ff3e1fd3949868bc56d6e424da3789127156282b48477615c348f99160b41",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/visual/video-generation-service.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 762,
+      "sha256": "442ff3e1fd3949868bc56d6e424da3789127156282b48477615c348f99160b41",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    },
+    {
+      "path": "src/lib/ws/redis-bridge.ts",
+      "rule": "javascript.lang.security.audit.unsafe-formatstring",
+      "line": 95,
+      "sha256": "13ae02a33477ae1aeb4ad157ba094d7107f74615496ece24fcc552058ffa8a7f",
+      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+    }
+  ],
+  "parserLimitations": [
+    {
+      "path": "src/app/api/aegis/pivot-suggestions/route.test.ts",
+      "message": "Syntax error at line src/app/api/aegis/pivot-suggestions/route.test.ts:31:\n `,` was unexpected",
+      "sha256": "463faa357e865f43d5be7360eeb807eba9456196812d7f40a406d94a92f2b781",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/app/api/outbound/drafts/[id]/approve/route.test.ts",
+      "message": "Syntax error at line src/app/api/outbound/drafts/[id]/approve/route.test.ts:15:\n `,` was unexpected",
+      "sha256": "f48f76eb005532d9e9a0014c3fe0901f254b0a03475c7604a616a6484b4fa74e",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/app/api/outbound/drafts/[id]/reject/route.test.ts",
+      "message": "Syntax error at line src/app/api/outbound/drafts/[id]/reject/route.test.ts:12:\n `,` was unexpected",
+      "sha256": "c1706bc49e564b7e5cccf3b6c0dec0f2f025a91fab0ae62347b6d7db5bf6a337",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/app/api/outbound/drafts/route.test.ts",
+      "message": "Syntax error at line src/app/api/outbound/drafts/route.test.ts:18:\n `,` was unexpected",
+      "sha256": "de74a4a6c95895a2111a6f110ff56b9cc75ca2b4f727d69cac334fc3c709785c",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/app/api/outbound/email-me/route.test.ts",
+      "message": "Syntax error at line src/app/api/outbound/email-me/route.test.ts:22:\n `,` was unexpected",
+      "sha256": "923796f33d2063e7e951d4b8455dccc8f95ddbd47a0488438f6933491dc82150",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/app/api/outbound/email-me/route.ts",
+      "message": "Syntax error at line src/app/api/outbound/email-me/route.ts:121:\n `\u0000` was unexpected",
+      "sha256": "0093e5b4bb6393d56122f8e1bdbadac5fd545e4f213d0daeca3c7ae6036755a7",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/app/api/outbound/escalate/route.test.ts",
+      "message": "Syntax error at line src/app/api/outbound/escalate/route.test.ts:22:\n `,` was unexpected",
+      "sha256": "e3273c2c7ea2135d2878bbf6b8cc2ee51e71a61ea493199213272d09fe847bd9",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/app/api/outbound/x/stage/route.test.ts",
+      "message": "Syntax error at line src/app/api/outbound/x/stage/route.test.ts:18:\n `,` was unexpected",
+      "sha256": "6200f9b20ab528b3ecc7df6a71af2abda6ffcbcd2789f6c0410a6f248a7a8150",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/app/api/twitter/breaking/route.test.ts",
+      "message": "Syntax error at line src/app/api/twitter/breaking/route.test.ts:14:\n `,` was unexpected",
+      "sha256": "774978195f540c69cdc8258480e1bc05e8efc1d0cf9ba34007f0d08580731fe5",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/app/api/twitter/daily-brief/route.test.ts",
+      "message": "Syntax error at line src/app/api/twitter/daily-brief/route.test.ts:15:\n `,` was unexpected",
+      "sha256": "29308d8f11da6fa6db2e5832f7df5ef7f65bb6ebad930c7b7dd15d05f92df4c5",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/app/api/twitter/status/route.test.ts",
+      "message": "Syntax error at line src/app/api/twitter/status/route.test.ts:40:\n `,` was unexpected",
+      "sha256": "f342452b27e1f9d29fdca4faa93a67b844056a19c4c3764e311a0e4b5eda9104",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/lib/agent/types.ts",
+      "message": "Syntax error at line src/lib/agent/types.ts:104:\n `import('@/lib/types').ToolCall` was unexpected",
+      "sha256": "7e9aeca4dae47393f41f38ac00d32683f58431df91d689d32be6d00679627d88",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/lib/hooks/use-agent-stream.ts",
+      "message": "Syntax error at line src/lib/hooks/use-agent-stream.ts:1017:\n `,` was unexpected",
+      "sha256": "9bf0f6cb3bfd17fe654d220607fe98f568844b83c3124fac1701a8a9a0980a78",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/lib/hooks/use-companion-stream.ts",
+      "message": "Syntax error at line src/lib/hooks/use-companion-stream.ts:648:\n `|` was unexpected",
+      "sha256": "32802e6ad4fc6cf019b93b2d9463de8ab387ebe2e2f3cd3f8233107e194444a1",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/lib/outbound/publish.test.ts",
+      "message": "Syntax error at line src/lib/outbound/publish.test.ts:18:\n `,` was unexpected",
+      "sha256": "56185b569c1cd3d2f944fed7caafece915aef6bd8715c49f5c37fc626c6f11e2",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/lib/store/agent-store.ts",
+      "message": "Syntax error at line src/lib/store/agent-store.ts:30:\n `import('@/lib/store/youtube-store').YouTubeVideo` was unexpected",
+      "sha256": "c9b93fe3ee1746eae75cdb224d8dd276ba3f2e96f1a119c78b293ec2493510cc",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/lib/store/companion-store.ts",
+      "message": "Syntax error at line src/lib/store/companion-store.ts:52:\n `import('@/lib/store/youtube-store').YouTubeVideo` was unexpected",
+      "sha256": "45dd77b209f6df84d06ac1fc28cdc7fbfdfa8f449da240fb8ec8b2f92f53e550",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    },
+    {
+      "path": "src/lib/visual/orchestrator.test.ts",
+      "message": "Syntax error at line src/lib/visual/orchestrator.test.ts:30:\n `>()` was unexpected",
+      "sha256": "fc04b2809815c4d1233be4c9ad4c2e564427f2b24cd181c926bc63356900b12b",
+      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+    }
+  ]
+}
