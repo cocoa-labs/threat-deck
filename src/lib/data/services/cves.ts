@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 import { fetchKevCatalog, fetchRecentCves } from '@/lib/data/collectors/cve-feed';
+import { feedResponse } from '@/lib/data/feed-response';
 import type { CVE } from '@/lib/types';
 
 function withCacheHeaders(response: NextResponse): NextResponse {
@@ -71,14 +72,14 @@ export async function GET(request: Request) {
     const trimmed = filtered.slice(0, limit);
 
     return withCacheHeaders(
-      NextResponse.json({
+      feedResponse({
         data: trimmed,
         count: trimmed.length,
         timestamp: new Date().toISOString(),
       }),
     );
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch CVEs' },
       { status: 500 },
     );

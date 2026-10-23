@@ -8,203 +8,203 @@
       "path": "src/app/api/aegis/compromised-orgs/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 94,
-      "sha256": "d8eb2348c3269ab3c55f37fc6513c9b1064c85a4805bbe405942dfcf07ecb929",
+      "sha256": "7c20ca1174055a8b29b72350b9e679ba1329c7e24af6c13f2678153c66090de0",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/compromised-orgs/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 95,
-      "sha256": "d8eb2348c3269ab3c55f37fc6513c9b1064c85a4805bbe405942dfcf07ecb929",
+      "sha256": "7c20ca1174055a8b29b72350b9e679ba1329c7e24af6c13f2678153c66090de0",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/compromised-orgs/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 100,
-      "sha256": "d8eb2348c3269ab3c55f37fc6513c9b1064c85a4805bbe405942dfcf07ecb929",
+      "sha256": "7c20ca1174055a8b29b72350b9e679ba1329c7e24af6c13f2678153c66090de0",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/cves/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 124,
-      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "sha256": "3b7b8b529ed0f8abca0fcdff6fdd0d1efce5d239aa6847273da99ab11fbc1b15",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/cves/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 139,
-      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "sha256": "3b7b8b529ed0f8abca0fcdff6fdd0d1efce5d239aa6847273da99ab11fbc1b15",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/cves/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 140,
-      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "sha256": "3b7b8b529ed0f8abca0fcdff6fdd0d1efce5d239aa6847273da99ab11fbc1b15",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/cves/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 140,
-      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "sha256": "3b7b8b529ed0f8abca0fcdff6fdd0d1efce5d239aa6847273da99ab11fbc1b15",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/cves/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 148,
-      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "sha256": "3b7b8b529ed0f8abca0fcdff6fdd0d1efce5d239aa6847273da99ab11fbc1b15",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/cves/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 157,
-      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "sha256": "3b7b8b529ed0f8abca0fcdff6fdd0d1efce5d239aa6847273da99ab11fbc1b15",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/cves/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 165,
-      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "sha256": "3b7b8b529ed0f8abca0fcdff6fdd0d1efce5d239aa6847273da99ab11fbc1b15",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/cves/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 167,
-      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "sha256": "3b7b8b529ed0f8abca0fcdff6fdd0d1efce5d239aa6847273da99ab11fbc1b15",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/cves/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 246,
-      "sha256": "1c038aae37ba55a6e3a4555998feec195e0f1673cc026f8dc5957330f3f78f98",
+      "sha256": "3b7b8b529ed0f8abca0fcdff6fdd0d1efce5d239aa6847273da99ab11fbc1b15",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/defenses/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 128,
-      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "sha256": "52c619103833c957a7a750d8177c67543abd8bd52a67a813d0def73ade4ab5a1",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/defenses/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 129,
-      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "sha256": "52c619103833c957a7a750d8177c67543abd8bd52a67a813d0def73ade4ab5a1",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/defenses/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 130,
-      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "sha256": "52c619103833c957a7a750d8177c67543abd8bd52a67a813d0def73ade4ab5a1",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/defenses/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 141,
-      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "sha256": "52c619103833c957a7a750d8177c67543abd8bd52a67a813d0def73ade4ab5a1",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/defenses/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 146,
-      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "sha256": "52c619103833c957a7a750d8177c67543abd8bd52a67a813d0def73ade4ab5a1",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/defenses/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 206,
-      "sha256": "e5feca4d3c256e21d5b961b4aeb6ad4c109c348f95774e29637de94f43414953",
+      "sha256": "52c619103833c957a7a750d8177c67543abd8bd52a67a813d0def73ade4ab5a1",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/incidents/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 128,
-      "sha256": "2a9de37dee2c4f62d70e6037750dd4eaaa0c9859425e16c98312b2febf807345",
+      "sha256": "89bb7b0df2f8c0f11a4fb2a54383f56da43da55102c1a5845b19bc85ea6dcf4d",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/incidents/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 139,
-      "sha256": "2a9de37dee2c4f62d70e6037750dd4eaaa0c9859425e16c98312b2febf807345",
+      "sha256": "89bb7b0df2f8c0f11a4fb2a54383f56da43da55102c1a5845b19bc85ea6dcf4d",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/incidents/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 144,
-      "sha256": "2a9de37dee2c4f62d70e6037750dd4eaaa0c9859425e16c98312b2febf807345",
+      "sha256": "89bb7b0df2f8c0f11a4fb2a54383f56da43da55102c1a5845b19bc85ea6dcf4d",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/incidents/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 204,
-      "sha256": "2a9de37dee2c4f62d70e6037750dd4eaaa0c9859425e16c98312b2febf807345",
+      "sha256": "89bb7b0df2f8c0f11a4fb2a54383f56da43da55102c1a5845b19bc85ea6dcf4d",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/kev/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 152,
-      "sha256": "72d5521d1af1ca3da96f2b09ffec6e62edfb5ec1963a1f120abfa948b719a61d",
+      "sha256": "4d3b5274be048f1e8b4935a5df07621c66c17c7f134077982210f68a768226e5",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/kev/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 168,
-      "sha256": "72d5521d1af1ca3da96f2b09ffec6e62edfb5ec1963a1f120abfa948b719a61d",
+      "sha256": "4d3b5274be048f1e8b4935a5df07621c66c17c7f134077982210f68a768226e5",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/kev/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 173,
-      "sha256": "72d5521d1af1ca3da96f2b09ffec6e62edfb5ec1963a1f120abfa948b719a61d",
+      "sha256": "4d3b5274be048f1e8b4935a5df07621c66c17c7f134077982210f68a768226e5",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/threat-actors/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 122,
-      "sha256": "6af86256d6bc8f1036e3d54e81c5531d309d486c5334b1d43f30ccb963e1893b",
+      "sha256": "fb40a3247ad94df0a2a89061f345ae18358b6151ab4ab37a1f478dd1ed6b7bd6",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/threat-actors/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 136,
-      "sha256": "6af86256d6bc8f1036e3d54e81c5531d309d486c5334b1d43f30ccb963e1893b",
+      "sha256": "fb40a3247ad94df0a2a89061f345ae18358b6151ab4ab37a1f478dd1ed6b7bd6",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/threat-actors/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 192,
-      "sha256": "6af86256d6bc8f1036e3d54e81c5531d309d486c5334b1d43f30ccb963e1893b",
+      "sha256": "fb40a3247ad94df0a2a89061f345ae18358b6151ab4ab37a1f478dd1ed6b7bd6",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
       "path": "src/app/api/aegis/threat-actors/view/route.ts",
       "rule": "javascript.lang.security.html-in-template-string",
       "line": 201,
-      "sha256": "6af86256d6bc8f1036e3d54e81c5531d309d486c5334b1d43f30ccb963e1893b",
+      "sha256": "fb40a3247ad94df0a2a89061f345ae18358b6151ab4ab37a1f478dd1ed6b7bd6",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
@@ -245,15 +245,15 @@
     {
       "path": "src/lib/data/collectors/breach-feed.ts",
       "rule": "javascript.lang.security.audit.detect-non-literal-regexp",
-      "line": 268,
-      "sha256": "1e551cd723abbbfaa8980d54c831c07a07735b054c017f02de83c5131d98ed67",
+      "line": 269,
+      "sha256": "8d575e86cd1e00d113aeba67e06cc45039661366d24a7bb672a3a545af4370d7",
       "disposition": "The expression interpolates fixed severity keywords, escaped hashtag literals (escapeRegExp), or a constant test fixture. It does not accept executable regular-expression syntax from feed/user input."
     },
     {
       "path": "src/lib/data/collectors/breach-feed.ts",
       "rule": "javascript.lang.security.audit.unsafe-formatstring",
-      "line": 396,
-      "sha256": "1e551cd723abbbfaa8980d54c831c07a07735b054c017f02de83c5131d98ed67",
+      "line": 397,
+      "sha256": "8d575e86cd1e00d113aeba67e06cc45039661366d24a7bb672a3a545af4370d7",
       "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
     },
     {
@@ -266,22 +266,22 @@
     {
       "path": "src/lib/data/collectors/earnings.ts",
       "rule": "javascript.lang.security.audit.unsafe-formatstring",
-      "line": 584,
-      "sha256": "c86aa18fa571fd6f3f43a60153cf394d127a39e889b5a52c5ad17438b3d373a1",
+      "line": 585,
+      "sha256": "8f6f37d8ac72546197cae65df240675209ae74e74f1b5d63a7cf8ec68263ccb6",
       "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
     },
     {
       "path": "src/lib/data/collectors/fed-calendar.ts",
       "rule": "javascript.lang.security.audit.unsafe-formatstring",
-      "line": 283,
-      "sha256": "56b587dc6724baadcbacd419a503390136a4a9dc7e0fc7c410ef8f171744f7ba",
+      "line": 284,
+      "sha256": "3674222be16329ddc2bb4809a0f7f0f1dedfd987da57c5e6e6fe6f94347d7763",
       "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
     },
     {
       "path": "src/lib/data/collectors/fed.ts",
       "rule": "javascript.lang.security.audit.unsafe-formatstring",
-      "line": 217,
-      "sha256": "4d703c51ecd570a46439d40fb3696671b51aa6f4bcd5babee61eeb78f4fdec3b",
+      "line": 220,
+      "sha256": "b9d565784afc86691d9059fd7b27ef912c78eb722cc71fc78aa4e61a2048f113",
       "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
     },
     {
@@ -315,15 +315,15 @@
     {
       "path": "src/lib/data/collectors/vendor-patches.ts",
       "rule": "javascript.lang.security.audit.detect-non-literal-regexp",
-      "line": 199,
-      "sha256": "9c780e386e31f54cba7df0b631583b6064b685e5376a3188dd2483e35f5c85be",
+      "line": 200,
+      "sha256": "6ae08dd3ce597d8375657223692157fdf129bbe063295ef2666c31372c4e4012",
       "disposition": "The expression interpolates fixed severity keywords, escaped hashtag literals (escapeRegExp), or a constant test fixture. It does not accept executable regular-expression syntax from feed/user input."
     },
     {
       "path": "src/lib/data/collectors/vendor-patches.ts",
       "rule": "javascript.lang.security.audit.unsafe-formatstring",
-      "line": 253,
-      "sha256": "9c780e386e31f54cba7df0b631583b6064b685e5376a3188dd2483e35f5c85be",
+      "line": 254,
+      "sha256": "6ae08dd3ce597d8375657223692157fdf129bbe063295ef2666c31372c4e4012",
       "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
     },
     {
@@ -343,8 +343,8 @@
     {
       "path": "src/lib/db/migrate.ts",
       "rule": "javascript.lang.security.audit.unsafe-formatstring",
-      "line": 165,
-      "sha256": "a42f03d8c49207e2d69104ee39899e965b24ac67fb4002e5753e146d5cfd3a19",
+      "line": 167,
+      "sha256": "ecad41814e06422b08fab5f8c43fdf1e3b8f85ad05223a846bb17fda6fddcba9",
       "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
     },
     {
@@ -397,13 +397,6 @@
       "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
     },
     {
-      "path": "src/lib/security/dashboard-csp.test.ts",
-      "rule": "javascript.lang.security.audit.detect-non-literal-regexp",
-      "line": 24,
-      "sha256": "9a38bafad4158307a7d7426096e50d1a6f273edea8c98adf4a785d8988b54932",
-      "disposition": "The expression interpolates fixed severity keywords, escaped hashtag literals (escapeRegExp), or a constant test fixture. It does not accept executable regular-expression syntax from feed/user input."
-    },
-    {
       "path": "src/lib/twitter/content/format.ts",
       "rule": "javascript.lang.security.audit.detect-non-literal-regexp",
       "line": 66,
@@ -427,8 +420,8 @@
     {
       "path": "src/lib/utils/panel-actions.ts",
       "rule": "javascript.lang.security.html-in-template-string",
-      "line": 31,
-      "sha256": "5276ae144204eeb235c40758ea7bd69f7756c9883543e1b26f2e5834df80e2e4",
+      "line": 39,
+      "sha256": "49505a71137367205f7b80e05b40f49d0b5de044dd6b3f3477bad06d1cd36d1a",
       "disposition": "Manually reviewed: HTML viewers escape every database value with safe(), constrain navigation with safeLink(), and interpolate only fixed markup or formatted primitives. RSS XML escapes content. Other matches build plain model context, not HTML sinks. Authenticated viewers remain covered by the route policy."
     },
     {
@@ -560,8 +553,8 @@
     },
     {
       "path": "src/lib/store/agent-store.ts",
-      "message": "Syntax error at line src/lib/store/agent-store.ts:30:\n `import('@/lib/store/youtube-store').YouTubeVideo` was unexpected",
-      "sha256": "c9b93fe3ee1746eae75cdb224d8dd276ba3f2e96f1a119c78b293ec2493510cc",
+      "message": "Syntax error at line src/lib/store/agent-store.ts:25:\n `import('@/lib/store/youtube-store').YouTubeVideo` was unexpected",
+      "sha256": "5c5e0757e07d05d96bc25ff1fea4f55aaecff4e8056eca46dd51488528ad204d",
       "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
     },
     {

@@ -17,8 +17,11 @@
 !public/data/
 !public/data/**
 !public/twitter-connected.html
+!public/scripts/
+!public/scripts/**
 !scripts/
 !scripts/parse-office.mjs
+!scripts/cleanup-attachments.ts
 !migrations/
 !migrations/*.sql
 src/**/*.test.*

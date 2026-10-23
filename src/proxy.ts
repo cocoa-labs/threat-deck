@@ -28,6 +28,7 @@
  */
 
 import { type NextRequest, NextResponse } from 'next/server';
+import { contentSecurityPolicy } from '@/lib/security/csp';
 
 // ─── Path filtering ────────────────────────────────────────────────────────
 
@@ -56,6 +57,8 @@ export function proxy(request: NextRequest): NextResponse {
       ? crypto.randomUUID()
       : Math.random().toString(36).slice(2));
 
+  const nonce = Buffer.from(crypto.getRandomValues(new Uint8Array(24))).toString('base64');
+  const csp = contentSecurityPolicy(nonce, request.nextUrl.pathname.startsWith('/feed/'));
   const response = NextResponse.next({
     request: {
       // Propagate the ID downstream so route handlers / server components can
@@ -64,11 +67,15 @@ export function proxy(request: NextRequest): NextResponse {
       headers: (() => {
         const h = new Headers(request.headers);
         h.set('x-request-id', requestId);
+        h.set('x-nonce', nonce);
+        h.set('Content-Security-Policy', csp);
         return h;
       })(),
     },
   });
   response.headers.set('x-request-id', requestId);
+  response.headers.set('Content-Security-Policy', csp);
+  response.headers.set('Cache-Control', 'private, no-store');
 
   const pathname = request.nextUrl.pathname;
   if (shouldSkipLog(pathname)) {

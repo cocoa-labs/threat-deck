@@ -1349,10 +1349,24 @@ export function AgentDrawer() {
   const activeXPostPollsRef = useRef<Set<string>>(new Set());
   const xPostJobs = useAgentStore((s) => s.xPostJobs);
 
+  const [clearStatus, setClearStatus] = useState('');
   const clearConversation = useCallback(() => {
     clearConversationBase();
     useCompanionStore.getState().clearCompanionMessages();
-    fetch('/api/agent/context?userId=anonymous', { method: 'DELETE' }).catch(() => {});
+    void fetch('/api/agent/context', { method: 'DELETE' })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('not_confirmed');
+        setClearStatus(
+          (await response.json()).storageDeletion === 'pending'
+            ? 'Context cleared. File cleanup is pending; see Private files.'
+            : 'Context cleared.',
+        );
+      })
+      .catch(() =>
+        setClearStatus(
+          'Server deletion was not confirmed. Retry clearing context or use Private files.',
+        ),
+      );
   }, [clearConversationBase]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -1668,6 +1682,11 @@ export function AgentDrawer() {
           >
             {drawerFullscreen ? <Minimize2 size={12} /> : <Maximize2 size={12} />}
           </button>
+          {clearStatus && (
+            <span role="status" className="text-xs">
+              {clearStatus}
+            </span>
+          )}
           <button
             type="button"
             onClick={clearConversation}

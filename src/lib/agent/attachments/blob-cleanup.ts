@@ -1,10 +1,21 @@
+import {
+  claimAttachmentDeletions,
+  completeFileDeletion,
+  failFileDeletion,
+} from '@/lib/db/queries/attachment-deletions';
 import { deleteVisualBlob } from '@/lib/storage/vercel-blob';
-import type { AgentAttachmentRow } from './types';
 
-export async function deleteAttachmentBlobs(row: AgentAttachmentRow): Promise<void> {
-  const pathnames = [row.blob_pathname, row.model_pathname].filter(
-    (value): value is string => typeof value === 'string' && value.length > 0,
+/** Bounded, leased, idempotent retries survive process restarts and provider outages. */
+export async function retryAttachmentDeletions(ownerEmail?: string): Promise<void> {
+  const jobs = await claimAttachmentDeletions(ownerEmail);
+  await Promise.all(
+    jobs.map(async (job) => {
+      try {
+        await deleteVisualBlob(job.pathname);
+        await completeFileDeletion(job.pathname, job.attempts);
+      } catch {
+        await failFileDeletion(job.pathname, job.attempts);
+      }
+    }),
   );
-
-  await Promise.allSettled(pathnames.map((pathname) => deleteVisualBlob(pathname)));
 }

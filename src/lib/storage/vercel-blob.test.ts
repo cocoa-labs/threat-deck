@@ -76,7 +76,9 @@ describe('vercel-blob client', () => {
     it('forwards pathname to @vercel/blob del', async () => {
       vi.mocked(blob.del).mockResolvedValueOnce(undefined as never);
       await deleteVisualBlob('outbound-visuals/abc.png');
-      expect(blob.del).toHaveBeenCalledWith('outbound-visuals/abc.png');
+      expect(blob.del).toHaveBeenCalledWith('outbound-visuals/abc.png', {
+        abortSignal: expect.any(AbortSignal),
+      });
     });
   });
 

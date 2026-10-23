@@ -19,10 +19,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const HTML_PATH = resolve(process.cwd(), 'public/twitter-connected.html');
 
 function extractInlineScript(): string {
-  const html = readFileSync(HTML_PATH, 'utf8');
-  const match = html.match(/<script>([\s\S]*?)<\/script>/);
-  if (!match?.[1]) throw new Error('no inline <script> found in twitter-connected.html');
-  return match[1];
+  expect(readFileSync(HTML_PATH, 'utf8')).toContain('src="/scripts/twitter-connected.js"');
+  return readFileSync(resolve(process.cwd(), 'public/scripts/twitter-connected.js'), 'utf8');
 }
 
 interface FakeEl {

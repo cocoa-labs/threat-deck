@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { fetchEarningsCalendar } from '@/lib/data/collectors/earnings';
+import { feedResponse } from '@/lib/data/feed-response';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -8,14 +8,14 @@ export async function GET(request: Request) {
 
   try {
     const data = await fetchEarningsCalendar({ days, limit });
-    const response = NextResponse.json({ data, timestamp: new Date().toISOString() });
+    const response = feedResponse({ data, timestamp: new Date().toISOString() });
     response.headers.set(
       'Cache-Control',
       'public, max-age=900, s-maxage=1800, stale-while-revalidate=900',
     );
     return response;
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch earnings data' },
       { status: 500 },
     );

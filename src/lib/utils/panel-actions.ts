@@ -1,4 +1,7 @@
+import { feedFields } from '@/lib/data/panel-feeds';
+import { dataProvenance } from '@/lib/data/provenance';
 import { useAgentStore } from '@/lib/store/agent-store';
+import { useDataStore } from '@/lib/store/data-store';
 
 export interface PanelContext {
   sourcePanel: string;
@@ -6,6 +9,7 @@ export interface PanelContext {
   relatedItems?: Record<string, unknown>[];
   trendData?: Record<string, unknown>;
   timestamp?: string;
+  provenance?: ReturnType<typeof dataProvenance>;
 }
 
 /**
@@ -18,6 +22,10 @@ export interface PanelContext {
  * All panel clicks use concise mode — short, sourced insight with option to expand.
  */
 export function prefillAgent(prompt: string, context?: PanelContext) {
+  if (context) {
+    const field = feedFields[context.sourcePanel as keyof typeof feedFields];
+    if (field) context = { ...context, provenance: dataProvenance(useDataStore.getState()[field]) };
+  }
   if (context?.trendData) {
     const td = context.trendData;
     // Normalize URL keys so both url and sourceUrl are available for correlation

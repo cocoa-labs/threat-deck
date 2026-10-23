@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
 import {
   fetchTwitterSearch,
   fetchTwitterTimeline,
   type TwitterSearchFilter,
 } from '@/lib/data/collectors/twitter';
+import { feedResponse } from '@/lib/data/feed-response';
 import type { Tweet } from '@/lib/types';
 
 const VALID_FILTERS = new Set(['markets', 'geopolitics', 'policy', 'crypto', 'ai', 'infosec']);
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
         ? await fetchTwitterSearch(query, filter)
         : await fetchTwitterTimeline();
 
-    const response = NextResponse.json({
+    const response = feedResponse({
       data,
       count: data.length,
       timestamp: new Date().toISOString(),
@@ -33,7 +33,7 @@ export async function GET(request: Request) {
     );
     return response;
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch tweets' },
       { status: 500 },
     );

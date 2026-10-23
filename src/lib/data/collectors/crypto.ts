@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 import { safeFetch } from '@/lib/security/safe-fetch';
 import type { CryptoPrice } from '@/lib/types';
 import { checkRateLimit, getCached, setCache } from '../rate-limiter';
@@ -84,7 +85,7 @@ export async function fetchCryptoPrices(limit: number = 20): Promise<CryptoPrice
   if (cached) return cached.slice(0, limit);
 
   if (!checkRateLimit('coingecko')) {
-    return DEMO_CRYPTO.slice(0, limit);
+    return demoData(DEMO_CRYPTO).slice(0, limit);
   }
 
   try {
@@ -107,7 +108,7 @@ export async function fetchCryptoPrices(limit: number = 20): Promise<CryptoPrice
     if (!res.ok) {
       const body = await res.text().catch(() => '');
       console.warn(`[Crypto] CoinGecko API returned ${res.status}: ${body.slice(0, 200)}`);
-      return DEMO_CRYPTO.slice(0, limit);
+      return demoData(DEMO_CRYPTO).slice(0, limit);
     }
 
     const data: CoinGeckoMarketItem[] = await res.json();
@@ -131,7 +132,7 @@ export async function fetchCryptoPrices(limit: number = 20): Promise<CryptoPrice
       '[Crypto] Failed to fetch prices:',
       error instanceof Error ? error.message : error,
     );
-    return DEMO_CRYPTO.slice(0, limit);
+    return demoData(DEMO_CRYPTO).slice(0, limit);
   }
 }
 

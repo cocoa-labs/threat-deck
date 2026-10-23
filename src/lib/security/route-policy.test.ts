@@ -107,3 +107,18 @@ describe('API security boundary', () => {
     expect((await withRoutePolicy('/api/cron/aegis-ingest', handler)(req)).status).toBe(200);
   });
 });
+
+it('keeps same-origin sign-out available when Redis denies cost-bearing mutations', async () => {
+  fixtures.allowed = false;
+  const handler = vi.fn(async (_request: Request) => Response.json({ ok: true }));
+  const route = withRoutePolicy('/api/auth/[...nextauth]', handler);
+  const make = (origin: string) =>
+    new Request('https://deck.example.org/api/auth/signout', {
+      method: 'POST',
+      headers: { origin },
+      body: 'csrfToken=synthetic',
+    });
+  expect((await route(make('https://deck.example.org'))).status).toBe(200);
+  expect((await route(make('https://attacker.example'))).status).toBe(403);
+  expect(handler).toHaveBeenCalledTimes(1);
+});

@@ -1,8 +1,10 @@
 // @vitest-environment node
-import { expect, it } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import * as XLSX from 'xlsx';
 import { parseOffice } from './office-parser';
 
+beforeEach(() => vi.stubEnv('ENABLE_OFFICE_INGESTION', 'true'));
+afterEach(() => vi.unstubAllEnvs());
 it('parses a synthetic spreadsheet in the bounded subprocess', async () => {
   const book = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(
@@ -31,4 +33,11 @@ it('rejects malformed and expansion-bomb archives before parsing', async () => {
   data.writeUInt16LE(1, 88);
   data.writeUInt32LE(20, 94);
   await expect(parseOffice('spreadsheet', data)).rejects.toThrow('invalid_or_oversized');
+});
+
+it('does not start the Office parser unless explicitly enabled', async () => {
+  vi.stubEnv('ENABLE_OFFICE_INGESTION', undefined);
+  await expect(parseOffice('docx', Buffer.from('bad archive'))).rejects.toThrow(
+    'office_ingestion_disabled',
+  );
 });

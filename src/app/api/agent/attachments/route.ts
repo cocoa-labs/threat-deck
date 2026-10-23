@@ -1,6 +1,7 @@
-import { deleteAttachmentBlobs } from '@/lib/agent/attachments/blob-cleanup';
+import { retryAttachmentDeletions } from '@/lib/agent/attachments/blob-cleanup';
 import { toAttachmentSummary } from '@/lib/agent/attachments/validation';
 import { auth } from '@/lib/auth';
+import { pendingAttachmentDeletions } from '@/lib/db/queries/attachment-deletions';
 import {
   listAttachmentsForOwner,
   softDeleteChatAttachmentsForOwner,
@@ -17,7 +18,11 @@ async function routeGETImplementation(): Promise<Response> {
   }
 
   const rows = await listAttachmentsForOwner({ ownerEmail });
-  return Response.json({ ok: true, attachments: rows.map(toAttachmentSummary) });
+  return Response.json({
+    ok: true,
+    attachments: rows.map(toAttachmentSummary),
+    pendingDeletions: await pendingAttachmentDeletions(ownerEmail),
+  });
 }
 
 async function routeDELETEImplementation(): Promise<Response> {
@@ -28,8 +33,17 @@ async function routeDELETEImplementation(): Promise<Response> {
   }
 
   const rows = await softDeleteChatAttachmentsForOwner(ownerEmail);
-  await Promise.allSettled(rows.map((row) => deleteAttachmentBlobs(row)));
-  return Response.json({ ok: true, deleted: rows.length });
+  await retryAttachmentDeletions(ownerEmail);
+  const pending = await pendingAttachmentDeletions(ownerEmail);
+  return Response.json(
+    {
+      ok: true,
+      deleted: rows.length,
+      storageDeletion: pending ? 'pending' : 'complete',
+      pendingFiles: pending,
+    },
+    { status: pending ? 202 : 200 },
+  );
 }
 
 export const GET = withRoutePolicy('/api/agent/attachments', routeGETImplementation);

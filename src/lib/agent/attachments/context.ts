@@ -1,5 +1,6 @@
 import type Anthropic from '@anthropic-ai/sdk';
 import { readPrivateFile } from '@/lib/storage/private-files';
+import { requireAttachmentIngestion } from './office-policy';
 import type { AgentAttachmentRow } from './types';
 
 const ATTACHMENT_TEXT_LIMIT = 24_000;
@@ -39,6 +40,11 @@ export async function buildAttachmentContentBlocks(params: {
   ];
 
   for (const [index, row] of params.attachments.entries()) {
+    requireAttachmentIngestion({
+      kind: row.kind,
+      filename: row.filename,
+      contentType: row.content_type,
+    });
     blocks.push({
       type: 'text',
       text: `${attachmentHeader(row, index)}${

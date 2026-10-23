@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 import { fetchKevCatalog } from '@/lib/data/collectors/cve-feed';
+import { feedResponse } from '@/lib/data/feed-response';
 
 function withCacheHeaders(response: NextResponse): NextResponse {
   response.headers.set(
@@ -18,14 +19,14 @@ export async function GET(request: Request) {
     const kev = await fetchKevCatalog(limit);
 
     return withCacheHeaders(
-      NextResponse.json({
+      feedResponse({
         data: kev,
         count: kev.length,
         timestamp: new Date().toISOString(),
       }),
     );
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch KEV catalog' },
       { status: 500 },
     );

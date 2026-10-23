@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 import type { Tweet, TweetDomain } from '@/lib/types';
 import { fetchWithTimeout } from '../fetch-with-timeout';
 import { checkRateLimit, getCached, isBackedOff, setBackoff, setCache } from '../rate-limiter';
@@ -628,14 +629,14 @@ export async function fetchTwitterTimeline(): Promise<Tweet[]> {
   const cached = await getCached<Tweet[]>(cacheKey);
   if (cached) return cached;
 
-  if (isBackedOff('twitter')) return DEMO_TWEETS;
+  if (isBackedOff('twitter')) return demoData(DEMO_TWEETS);
 
   if (!checkRateLimit('twitter')) {
-    return DEMO_TWEETS;
+    return demoData(DEMO_TWEETS);
   }
 
   const token = BEARER_TOKEN();
-  if (!token) return DEMO_TWEETS;
+  if (!token) return demoData(DEMO_TWEETS);
 
   try {
     // Primary: single search query
@@ -646,7 +647,7 @@ export async function fetchTwitterTimeline(): Promise<Tweet[]> {
       tweets = await fetchTimelinePerAccount();
     }
 
-    if (tweets.length === 0) return DEMO_TWEETS;
+    if (tweets.length === 0) return demoData(DEMO_TWEETS);
 
     // Filter with time-based exemption for fresh tweets
     const result = filterByEngagement(tweets);
@@ -661,7 +662,7 @@ export async function fetchTwitterTimeline(): Promise<Tweet[]> {
       '[Twitter] Failed to fetch timeline:',
       error instanceof Error ? error.message : error,
     );
-    return DEMO_TWEETS;
+    return demoData(DEMO_TWEETS);
   }
 }
 
@@ -687,7 +688,7 @@ export async function fetchTwitterSearch(
   const cached = await getCached<Tweet[]>(cacheKey);
   if (cached) return cached;
 
-  const demoFallback = DEMO_TWEETS.filter((t) =>
+  const demoFallback = demoData(DEMO_TWEETS).filter((t) =>
     t.text.toLowerCase().includes(query.toLowerCase()),
   );
 
@@ -707,7 +708,7 @@ export async function fetchTwitterSearch(
     const path = `/tweets/search/recent?query=${encodedQuery}&max_results=20&tweet.fields=${TWEET_FIELDS}&expansions=${EXPANSIONS}&user.fields=${USER_FIELDS}`;
     const { data: response } = await twitterFetch(path);
 
-    if (!response?.data) return DEMO_TWEETS;
+    if (!response?.data) return demoData(DEMO_TWEETS);
 
     const users = new Map<string, TwitterV2User>();
     for (const user of response.includes?.users ?? []) {
@@ -719,7 +720,7 @@ export async function fetchTwitterSearch(
     return tweets;
   } catch (error) {
     console.warn('[Twitter] Failed to search:', error instanceof Error ? error.message : error);
-    return DEMO_TWEETS;
+    return demoData(DEMO_TWEETS);
   }
 }
 

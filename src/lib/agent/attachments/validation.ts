@@ -126,7 +126,8 @@ export function validateAttachmentInput(params: {
 }):
   | { ok: true; kind: AgentAttachmentKind; contentType: string; filename: string }
   | { ok: false; error: string } {
-  if (params.id && !isUuid(params.id)) return { ok: false, error: 'invalid_attachment_id' };
+  if (params.id !== undefined && !isUuid(params.id))
+    return { ok: false, error: 'invalid_attachment_id' };
   if (!Number.isFinite(params.sizeBytes) || params.sizeBytes < 0) {
     return { ok: false, error: 'invalid_size' };
   }
@@ -138,6 +139,10 @@ export function validateAttachmentInput(params: {
   const contentType = inferContentType(filename, params.contentType);
   const kind = detectAttachmentKind(filename, contentType);
   if (!kind) return { ok: false, error: 'unsupported_file_type' };
+  const extensionKind = EXTENSION_KIND[extensionOf(filename)];
+  if (extensionKind && extensionKind !== kind) return { ok: false, error: 'file_type_mismatch' };
+  if (!(ALLOWED_ATTACHMENT_MIME_TYPES as readonly string[]).includes(contentType))
+    return { ok: false, error: 'unsupported_file_type' };
 
   return { ok: true, kind, contentType, filename };
 }

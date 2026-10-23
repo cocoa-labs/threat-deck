@@ -1,6 +1,7 @@
 import type { AgentAttachmentKind, AgentAttachmentRow } from '@/lib/agent/attachments/types';
-import { MAX_ACTIVE_ATTACHMENTS } from '@/lib/agent/attachments/validation';
+import { MAX_ACTIVE_ATTACHMENTS, safeAttachmentPath } from '@/lib/agent/attachments/validation';
 import { db, query, queryOne } from '../client';
+import { queueAttachmentFileDeletion } from './attachment-deletions';
 
 export async function createPendingAttachment(params: {
   id: string;
@@ -24,8 +25,8 @@ export async function createPendingAttachment(params: {
     if (Number(count.rows[0]?.count ?? MAX_ACTIVE_ATTACHMENTS) >= MAX_ACTIVE_ATTACHMENTS)
       throw new Error('active_attachment_cap_reached');
     const result = await client.query<AgentAttachmentRow>(
-      `INSERT INTO agent_attachments(id,owner_email,filename,content_type,size_bytes,kind,status)
-       VALUES($1,$2,$3,$4,$5,$6,'uploading') ON CONFLICT(id) DO NOTHING RETURNING *`,
+      `INSERT INTO agent_attachments(id,owner_email,filename,content_type,size_bytes,kind,status,blob_pathname)
+       VALUES($1,$2,$3,$4,$5,$6,'uploading',$7) ON CONFLICT(id) DO NOTHING RETURNING *`,
       [
         params.id,
         params.ownerEmail,
@@ -33,6 +34,7 @@ export async function createPendingAttachment(params: {
         params.contentType,
         params.sizeBytes,
         params.kind,
+        safeAttachmentPath(params.id, params.filename),
       ],
     );
     const row = result.rows[0];
@@ -67,7 +69,7 @@ export async function markAttachmentUploaded(params: {
   contentType?: string;
   sizeBytes?: number;
 }): Promise<AgentAttachmentRow | null> {
-  return queryOne<AgentAttachmentRow>(
+  const row = await queryOne<AgentAttachmentRow>(
     `UPDATE agent_attachments SET
        status = CASE WHEN status = 'processing' OR status = 'ready' THEN status ELSE 'uploaded' END,
        blob_url = $3,
@@ -89,6 +91,13 @@ export async function markAttachmentUploaded(params: {
       params.sizeBytes,
     ],
   );
+  if (!row && params.blobPathname)
+    await queueAttachmentFileDeletion({
+      id: params.id,
+      ownerEmail: params.ownerEmail,
+      pathname: params.blobPathname!,
+    });
+  return row;
 }
 
 export async function getAttachmentForOwner(params: {
@@ -175,7 +184,7 @@ export async function completeAttachmentProcessing(params: {
     size: number;
   };
 }): Promise<AgentAttachmentRow | null> {
-  return queryOne<AgentAttachmentRow>(
+  const row = await queryOne<AgentAttachmentRow>(
     `UPDATE agent_attachments SET
        status = 'ready',
        parsed_text = $3,
@@ -205,6 +214,13 @@ export async function completeAttachmentProcessing(params: {
       params.modelBlob?.size,
     ],
   );
+  if (!row && params.modelBlob?.pathname)
+    await queueAttachmentFileDeletion({
+      id: params.id,
+      ownerEmail: params.ownerEmail,
+      pathname: params.modelBlob.pathname,
+    });
+  return row;
 }
 
 export async function failAttachmentProcessing(params: {
@@ -235,7 +251,6 @@ export async function softDeleteAttachmentForOwner(params: {
        deleted_at = NOW()
      WHERE id = $1
        AND owner_email = $2
-       AND deleted_at IS NULL
      RETURNING *`,
     [params.id, params.ownerEmail],
   );
@@ -255,4 +270,16 @@ export async function softDeleteChatAttachmentsForOwner(
     [ownerEmail],
   );
   return result.rows;
+}
+
+export async function reserveAttachmentPreview(
+  id: string,
+  ownerEmail: string,
+  pathname: string,
+): Promise<void> {
+  const row = await queryOne(
+    `UPDATE agent_attachments SET model_pathname=$3 WHERE id=$1 AND owner_email=$2 AND status='processing' AND deleted_at IS NULL RETURNING id`,
+    [id, ownerEmail, pathname],
+  );
+  if (!row) throw new Error('attachment_no_longer_available');
 }

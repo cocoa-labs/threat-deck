@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { fetchPredictionMarkets } from '@/lib/data/collectors/polymarket';
+import { feedResponse } from '@/lib/data/feed-response';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -8,7 +8,7 @@ export async function GET(request: Request) {
 
   try {
     const data = await fetchPredictionMarkets({ category, limit });
-    const response = NextResponse.json({
+    const response = feedResponse({
       data,
       count: data.length,
       timestamp: new Date().toISOString(),
@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     );
     return response;
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch prediction markets' },
       { status: 500 },
     );

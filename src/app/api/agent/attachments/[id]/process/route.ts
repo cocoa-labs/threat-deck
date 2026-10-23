@@ -1,3 +1,4 @@
+import { requireAttachmentIngestion } from '@/lib/agent/attachments/office-policy';
 import { processAgentAttachment } from '@/lib/agent/attachments/parser';
 import { isUuid, toAttachmentSummary } from '@/lib/agent/attachments/validation';
 import { auth } from '@/lib/auth';
@@ -51,6 +52,20 @@ async function routePOSTImplementation(
   const existing = await getAttachmentForOwner({ id, ownerEmail });
   if (!existing) {
     return Response.json({ ok: false, error: 'not_found' }, { status: 404 });
+  }
+  try {
+    requireAttachmentIngestion({
+      kind: existing.kind,
+      filename: existing.filename,
+      contentType: existing.content_type,
+    });
+    if (typeof body.blob?.contentType === 'string')
+      requireAttachmentIngestion({
+        filename: existing.filename,
+        contentType: body.blob.contentType,
+      });
+  } catch {
+    return Response.json({ ok: false, error: 'office_ingestion_disabled' }, { status: 503 });
   }
   if (existing.status === 'ready') {
     return Response.json({ ok: true, attachment: toAttachmentSummary(existing) });

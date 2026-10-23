@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { feedResponse } from '@/lib/data/feed-response';
 import { geocodeForward } from '@/lib/mapbox/geocode-api';
 
 export async function GET(request: Request) {
@@ -6,14 +6,14 @@ export async function GET(request: Request) {
   const query = searchParams.get('q');
 
   if (!query || query.trim().length === 0) {
-    return NextResponse.json({ error: 'Missing query parameter "q"' }, { status: 400 });
+    return feedResponse({ error: 'Missing query parameter "q"' }, { status: 400 });
   }
 
   const result = await geocodeForward(query.trim());
 
   if (!result) {
-    return NextResponse.json({ result: null });
+    return feedResponse({ result: null });
   }
 
-  return NextResponse.json({ result });
+  return feedResponse({ result });
 }

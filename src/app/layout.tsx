@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { headers } from 'next/headers';
 import { ThemeProvider } from 'next-themes';
 import { AccentThemeProvider } from '@/components/layout/AccentThemeProvider';
 import './globals.css';
@@ -31,17 +32,24 @@ export const metadata: Metadata = {
   // Icons auto-discovered from src/app/icon.png + src/app/apple-icon.png.
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistMono.variable} ${vt323.variable} ${instrumentSerif.variable} antialiased bg-[var(--bg-primary)] text-[var(--text-primary)]`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          nonce={nonce}
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
           <AccentThemeProvider>{children}</AccentThemeProvider>
         </ThemeProvider>
       </body>

@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { fetchGovernmentContracts } from '@/lib/data/collectors/government';
+import { feedResponse } from '@/lib/data/feed-response';
 import type { GovernmentContract } from '@/lib/types';
 
 export async function GET(request: Request) {
@@ -20,14 +20,14 @@ export async function GET(request: Request) {
       url: r.url,
     }));
 
-    const response = NextResponse.json({ results, timestamp: new Date().toISOString() });
+    const response = feedResponse({ results, timestamp: new Date().toISOString() });
     response.headers.set(
       'Cache-Control',
       'public, max-age=900, s-maxage=1800, stale-while-revalidate=900',
     );
     return response;
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch government contracts' },
       { status: 500 },
     );

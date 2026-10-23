@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AgentStatusIndicator } from '@/components/agent/AgentStatusIndicator';
+import { isOfficeAttachment } from '@/lib/agent/attachments/office-policy';
 import {
   MAX_ACTIVE_ATTACHMENTS,
   MAX_ATTACHMENTS_PER_MESSAGE,
@@ -307,14 +308,37 @@ export function AgentCommandBar() {
     clearConversation();
     useCompanionStore.getState().clearCompanionMessages();
     // Fire-and-forget: clear server-side exchanges
-    fetch('/api/agent/context?userId=anonymous', { method: 'DELETE' }).catch(() => {});
+    void fetch('/api/agent/context', { method: 'DELETE' })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('delete_failed');
+        if ((await response.json()).storageDeletion === 'pending')
+          setUploadError(
+            'Context cleared. Storage deletion is pending and will retry automatically.',
+          );
+      })
+      .catch(() =>
+        setUploadError('Server context deletion was not confirmed. Retry clearing context.'),
+      );
   }, [clearConversation]);
 
   const handleRemoveAttachment = useCallback(
     (id: string) => {
       releasePreviewUrl(useAgentStore.getState().activeAttachments.find((item) => item.id === id));
       removeActiveAttachment(id);
-      fetch(`/api/agent/attachments/${id}`, { method: 'DELETE' }).catch(() => {});
+      void fetch(`/api/agent/attachments/${id}`, { method: 'DELETE' })
+        .then(async (response) => {
+          if (!response.ok) throw new Error('delete_failed');
+          const result = await response.json();
+          if (result.storageDeletion === 'pending')
+            setUploadError(
+              'Attachment access removed. Storage deletion is pending and will retry automatically.',
+            );
+        })
+        .catch(() => {
+          setUploadError(
+            'Attachment deletion was not confirmed. Reload to retry; the server may still hold the file.',
+          );
+        });
     },
     [removeActiveAttachment],
   );
@@ -348,6 +372,12 @@ export function AgentCommandBar() {
           sizeBytes: file.size,
         });
 
+        if (validated.ok && isOfficeAttachment(validated)) {
+          setUploadError(
+            'Office and spreadsheet ingestion is disabled pending parser isolation. Use plain text, PDF or images.',
+          );
+          continue;
+        }
         if (!validated.ok) {
           const message = validated.error.replace(/_/g, ' ');
           addActiveAttachment(failedAttachmentFromFile(file, id, message));
@@ -575,7 +605,7 @@ export function AgentCommandBar() {
           type="file"
           multiple
           className="hidden"
-          accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.docx,.xlsx,.xls,.csv,.tsv,.txt,.md,.markdown,.json,.ndjson,image/png,image/jpeg,image/webp,image/gif,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv,text/plain,text/markdown,application/json"
+          accept=".png,.jpg,.jpeg,.webp,.gif,.pdf,.txt,.md,.markdown,.json,.ndjson,image/png,image/jpeg,image/webp,image/gif,application/pdf,text/plain,text/markdown,application/json"
           onChange={handleInputFiles}
         />
 

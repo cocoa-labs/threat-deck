@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 /**
  * MITRE ATT&CK collector — downloads the enterprise STIX 2.1 bundle from
  * the MITRE CTI GitHub repo and extracts tactics, techniques, and groups.
@@ -275,7 +276,7 @@ function findMitreExternalRef(
  */
 export async function fetchMitreAttackTactics(): Promise<MitreTactic[]> {
   const bundle = await fetchBundle();
-  if (!bundle?.objects) return DEMO_TACTICS;
+  if (!bundle?.objects) return demoData(DEMO_TACTICS);
 
   const tactics: MitreTactic[] = [];
   for (const obj of bundle.objects) {
@@ -292,10 +293,13 @@ export async function fetchMitreAttackTactics(): Promise<MitreTactic[]> {
     });
   }
 
-  if (tactics.length === 0) return DEMO_TACTICS;
+  if (tactics.length === 0) return demoData(DEMO_TACTICS);
 
   tactics.sort((a, b) => a.tacticId.localeCompare(b.tacticId));
-  return tactics;
+  return tactics.map((row) => ({
+    ...row,
+    _provenance: (bundle as unknown as { _provenance?: unknown })._provenance,
+  }));
 }
 
 /**
@@ -304,7 +308,7 @@ export async function fetchMitreAttackTactics(): Promise<MitreTactic[]> {
  */
 export async function fetchMitreAttackTechniques(): Promise<MitreTechnique[]> {
   const bundle = await fetchBundle();
-  if (!bundle?.objects) return DEMO_TECHNIQUES;
+  if (!bundle?.objects) return demoData(DEMO_TECHNIQUES);
 
   const techniques: MitreTechnique[] = [];
   for (const obj of bundle.objects) {
@@ -339,10 +343,13 @@ export async function fetchMitreAttackTechniques(): Promise<MitreTechnique[]> {
     });
   }
 
-  if (techniques.length === 0) return DEMO_TECHNIQUES;
+  if (techniques.length === 0) return demoData(DEMO_TECHNIQUES);
 
   techniques.sort((a, b) => a.techniqueId.localeCompare(b.techniqueId));
-  return techniques;
+  return techniques.map((row) => ({
+    ...row,
+    _provenance: (bundle as unknown as { _provenance?: unknown })._provenance,
+  }));
 }
 
 /**
@@ -351,7 +358,7 @@ export async function fetchMitreAttackTechniques(): Promise<MitreTechnique[]> {
  */
 export async function fetchMitreAttackGroups(): Promise<ThreatActor[]> {
   const bundle = await fetchBundle();
-  if (!bundle?.objects) return DEMO_GROUPS;
+  if (!bundle?.objects) return demoData(DEMO_GROUPS);
 
   const groups: ThreatActor[] = [];
   for (const obj of bundle.objects) {
@@ -378,8 +385,11 @@ export async function fetchMitreAttackGroups(): Promise<ThreatActor[]> {
     });
   }
 
-  if (groups.length === 0) return DEMO_GROUPS;
+  if (groups.length === 0) return demoData(DEMO_GROUPS);
 
   groups.sort((a, b) => a.displayName.localeCompare(b.displayName));
-  return groups;
+  return groups.map((row) => ({
+    ...row,
+    _provenance: (bundle as unknown as { _provenance?: unknown })._provenance,
+  }));
 }

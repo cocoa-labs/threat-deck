@@ -12,12 +12,7 @@ import type {
   Severity,
   ToolCall,
 } from '@/lib/types';
-import { migrateLocalStorageKey } from '@/lib/utils/storage-migration';
 import type { VisualBriefSourceContext } from '@/lib/visual/visual-brief';
-
-// Phase 7.2 rename: klammer-agent → threatdeck-agent. Run BEFORE persist
-// middleware initializes so the existing data carries over into the new key.
-migrateLocalStorageKey('klammer-agent', 'threatdeck-agent');
 
 export interface ConversationMessage {
   role: 'user' | 'assistant';
@@ -270,10 +265,6 @@ const MAX_HISTORY = 20;
 const MAX_MESSAGES = 100;
 const MAX_CONVERSATIONS = 50;
 const MAX_BRIEFS = 20;
-
-function stripLocalPreview(attachment: AgentAttachmentUiState): AgentAttachmentUiState {
-  return { ...attachment, localPreviewUrl: undefined };
-}
 
 export const useAgentStore = create<AgentState>()(
   persist(
@@ -659,89 +650,29 @@ export const useAgentStore = create<AgentState>()(
     }),
     {
       name: 'threatdeck-agent',
-      // Bumped from default (v0) to v1 in Phase 14 when lockedMode joined the
-      // persisted shape. Zustand v5 requires a `migrate` callback for any
-      // version bump — without it, the middleware DISCARDS the v0 payload and
-      // hands `undefined` to `merge`, silently wiping all persisted state
-      // (conversations, commandHistory, messages, recentBriefs, attachments).
-      //
-      // The pre-Phase-14 payload shape is a strict subset of v1 (just missing
-      // the `lockedMode` field), so migration is the identity function — we
-      // return the persisted state verbatim and let `merge` below default the
-      // missing `lockedMode` to `null` (AUTO). See agent-store.test.ts §migration
-      // for end-to-end coverage.
-      version: 1,
-      // The v0 shape (pre-Phase-14) is a strict subset of v1 — same
-      // conversations / commandHistory / messages / recentBriefs /
-      // activeAttachments fields, just missing `lockedMode`. We coerce any
-      // missing field to its safe default so the partialize shape contract
-      // is honored without an `any` cast.
-      migrate: (persistedState, _fromVersion) => {
-        const stored =
-          (persistedState as Partial<{
-            conversations: Conversation[];
-            commandHistory: string[];
-            messages: ConversationMessage[];
-            recentBriefs: BriefSummary[];
-            activeAttachments: AgentAttachmentUiState[];
-            lockedMode: AgentMode | null;
-            autonomousAlertsEnabled: boolean;
-            breakingAlertThreshold: BreakingAlertThreshold;
-          }>) ?? {};
-        return {
-          conversations: stored.conversations ?? [],
-          commandHistory: stored.commandHistory ?? [],
-          messages: stored.messages ?? [],
-          recentBriefs: stored.recentBriefs ?? [],
-          activeAttachments: stored.activeAttachments ?? [],
-          lockedMode: stored.lockedMode ?? null,
-          autonomousAlertsEnabled: stored.autonomousAlertsEnabled ?? true,
-          breakingAlertThreshold: stored.breakingAlertThreshold ?? 'critical',
-        };
-      },
+      version: 2,
+      // Only non-sensitive preferences survive a reload. Never hydrate legacy
+      // conversations, commands, attachments, briefs or provider responses.
+      migrate: () => ({}),
       partialize: (state) => ({
-        conversations: state.conversations,
-        commandHistory: state.commandHistory,
-        messages: state.messages,
-        recentBriefs: state.recentBriefs,
-        activeAttachments: state.activeAttachments.map(stripLocalPreview),
         lockedMode: state.lockedMode,
         autonomousAlertsEnabled: state.autonomousAlertsEnabled,
         breakingAlertThreshold: state.breakingAlertThreshold,
-        lastSeenAt: state.lastSeenAt,
       }),
       merge: (persisted, current) => {
         const stored = persisted as
-          | {
-              conversations?: Conversation[];
-              commandHistory?: string[];
-              messages?: ConversationMessage[];
-              recentBriefs?: BriefSummary[];
-              activeAttachments?: AgentAttachmentUiState[];
-              lockedMode?: AgentMode | null;
-              autonomousAlertsEnabled?: boolean;
-              breakingAlertThreshold?: BreakingAlertThreshold;
-              lastSeenAt?: string | null;
-            }
+          | Partial<
+              Pick<
+                typeof current,
+                'lockedMode' | 'autonomousAlertsEnabled' | 'breakingAlertThreshold'
+              >
+            >
           | undefined;
-
         return {
           ...current,
-          conversations: stored?.conversations ?? current.conversations,
-          commandHistory: stored?.commandHistory ?? current.commandHistory,
-          messages: stored?.messages ?? current.messages,
-          recentBriefs: stored?.recentBriefs ?? current.recentBriefs,
-          activeAttachments:
-            stored?.activeAttachments?.map(stripLocalPreview) ?? current.activeAttachments,
-          // Pre-Phase-14 payloads (v0) lack lockedMode — coerce to the AUTO default.
-          // detectedMode is deliberately NOT persisted: it should reset to 'anchor'
-          // on each session and be driven by stream markers thereafter.
           lockedMode: stored?.lockedMode ?? null,
           autonomousAlertsEnabled: stored?.autonomousAlertsEnabled ?? true,
           breakingAlertThreshold: stored?.breakingAlertThreshold ?? 'critical',
-          lastSeenAt: stored?.lastSeenAt ?? null,
-          drawerOpen: false,
-          drawerFullscreen: false,
         };
       },
     },

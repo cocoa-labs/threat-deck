@@ -1,4 +1,5 @@
 import { fetchHibpBreaches } from '@/lib/data/collectors/breach-feed';
+import { dataProvenance } from '@/lib/data/provenance';
 import { query } from '@/lib/db/client';
 import { recordRun } from './cursor';
 import type { IngestSummary } from './ingest-cves';
@@ -25,6 +26,7 @@ export async function ingestBreaches(): Promise<IngestSummary> {
     const breaches = await fetchHibpBreaches(100);
 
     for (const b of breaches) {
+      if (dataProvenance(b).state === 'demo') continue;
       if (!isValidDate(b.disclosedAt)) continue; // NOT NULL timestamptz.
 
       // App-level dedup (no UNIQUE constraint to lean on).

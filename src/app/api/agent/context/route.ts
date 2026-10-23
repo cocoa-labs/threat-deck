@@ -1,3 +1,4 @@
+import { pendingAttachmentDeletions } from '@/lib/db/queries/attachment-deletions';
 import { withRoutePolicy } from '@/lib/security/route-policy';
 /**
  * Phase 13 Tier 1 — auth + scope-to-session hardening.
@@ -18,7 +19,7 @@ import { withRoutePolicy } from '@/lib/security/route-policy';
  */
 
 import { NextResponse } from 'next/server';
-import { deleteAttachmentBlobs } from '@/lib/agent/attachments/blob-cleanup';
+import { retryAttachmentDeletions } from '@/lib/agent/attachments/blob-cleanup';
 import { AUDIT_ACTIONS, recordAudit } from '@/lib/audit';
 import { auth } from '@/lib/auth';
 import { clearConversationExchanges } from '@/lib/db/queries/agent';
@@ -36,8 +37,8 @@ async function routeDELETEImplementation(request: Request): Promise<NextResponse
     // Always scope to the authenticated user — explicitly override any
     // `userId` query param a caller might send. Pre-Tier-1 the param was
     // honored verbatim, letting `?userId=admin` wipe the admin's history.
-    const deletedAttachments = await softDeleteChatAttachmentsForOwner(actorEmail);
-    await Promise.allSettled(deletedAttachments.map((row) => deleteAttachmentBlobs(row)));
+    await softDeleteChatAttachmentsForOwner(actorEmail);
+    await retryAttachmentDeletions(actorEmail);
     await clearConversationExchanges({ userId: actorEmail });
 
     void recordAudit({
@@ -49,7 +50,11 @@ async function routeDELETEImplementation(request: Request): Promise<NextResponse
       targetId: actorEmail,
     });
 
-    return NextResponse.json({ ok: true });
+    const pending = await pendingAttachmentDeletions(actorEmail);
+    return NextResponse.json(
+      { ok: true, storageDeletion: pending ? 'pending' : 'complete', pendingFiles: pending },
+      { status: pending ? 202 : 200 },
+    );
   } catch (err) {
     void recordAudit({
       action: AUDIT_ACTIONS.AGENT_CONTEXT_CLEARED,

@@ -3,6 +3,7 @@ import {
   fetchThreatfoxIndicators,
   fetchUrlhausIocs,
 } from '@/lib/data/collectors/threat-iocs';
+import { dataProvenance } from '@/lib/data/provenance';
 import { query } from '@/lib/db/client';
 import { recordRun } from './cursor';
 import type { IngestSummary } from './ingest-cves';
@@ -39,6 +40,7 @@ export async function ingestIocs(): Promise<IngestSummary> {
     const iocs = [...urlhaus, ...malwarebazaar, ...threatfox];
 
     for (const ioc of iocs) {
+      if (dataProvenance(ioc).state === 'demo') continue;
       if (!ioc.value) continue; // value is NOT NULL UNIQUE — skip empties.
       await query(
         `INSERT INTO aegis_iocs

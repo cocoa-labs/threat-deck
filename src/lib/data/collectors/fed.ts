@@ -74,6 +74,7 @@ const DEMO_KEY_MAP: Record<string, keyof FedData> = {
 
 /** Backfill any missing series from DEMO_FED so all 14 cards render. */
 function backfillFromDemo(result: FedData): FedData {
+  if (process.env.ENABLE_DEMO_DATA !== 'true') return result;
   const demoKeys: string[] = [];
 
   for (const [_indicator, fedKey] of Object.entries(DEMO_KEY_MAP)) {
@@ -101,7 +102,9 @@ async function fedFallback(): Promise<FedData> {
   if (lastGood) {
     return backfillFromDemo({ ...lastGood, stale: true });
   }
-  return { ...DEMO_FED, stale: true, _demo: true };
+  return process.env.ENABLE_DEMO_DATA === 'true'
+    ? { ...DEMO_FED, stale: true, _demo: true }
+    : { stale: true };
 }
 
 // ─── Public API ───

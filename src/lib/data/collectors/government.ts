@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 import { safeFetch } from '@/lib/security/safe-fetch';
 import { checkRateLimit, getCached, setCache } from '../rate-limiter';
 
@@ -84,7 +85,8 @@ export async function fetchGovernmentContracts(
   if (cached) return cached;
 
   if (!checkRateLimit('usaspending')) {
-    return DEMO_CONTRACTS;
+    const results = demoData(DEMO_CONTRACTS.results);
+    return { results, page_metadata: { page: 1, hasNext: false, total: results.length } };
   }
 
   try {
@@ -125,13 +127,15 @@ export async function fetchGovernmentContracts(
 
     if (!res.ok) {
       console.warn(`[Government] USASpending API returned ${res.status}`);
-      return DEMO_CONTRACTS;
+      const results = demoData(DEMO_CONTRACTS.results);
+      return { results, page_metadata: { page: 1, hasNext: false, total: results.length } };
     }
 
     const data: USASpendingApiResponse = await res.json();
 
     if (!data.results || data.results.length === 0) {
-      return DEMO_CONTRACTS;
+      const results = demoData(DEMO_CONTRACTS.results);
+      return { results, page_metadata: { page: 1, hasNext: false, total: results.length } };
     }
 
     const result: USASpendingResponse = {
@@ -162,7 +166,8 @@ export async function fetchGovernmentContracts(
       '[Government] Failed to fetch contracts:',
       error instanceof Error ? error.message : error,
     );
-    return DEMO_CONTRACTS;
+    const results = demoData(DEMO_CONTRACTS.results);
+    return { results, page_metadata: { page: 1, hasNext: false, total: results.length } };
   }
 }
 

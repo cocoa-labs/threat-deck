@@ -58,10 +58,10 @@ function buildSimulationHtml(): string {
     <div><strong>Runtime:</strong> ~200&ndash;500ms typical</div>
   </div>
   <div style="font-size:11px;color:#888">See the Max response for full distributions and scenario breakdowns.</div>
-  <button onclick="window.close()" style="margin-top:18px">Close Tab</button>
+  <button id="close-viewer" style="margin-top:18px">Close Tab</button>
   <div class="close-hint">This tab will close automatically in 5 seconds</div>
 </div>
-<script>setTimeout(function(){window.close()},5000)</script>
+<script src="/scripts/aegis-viewer.js" defer></script>
 </body>
 </html>`;
 }

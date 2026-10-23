@@ -1,4 +1,5 @@
 import type Anthropic from '@anthropic-ai/sdk';
+import { dataProvenance } from '@/lib/data/provenance';
 import { toolEnabled, validateToolInput } from '@/lib/security/tool-policy';
 import type { ToolCategory, ToolDefinition } from './types';
 
@@ -132,7 +133,20 @@ class ToolRegistryImpl {
     this.lastExecution.set(name, Date.now());
 
     try {
-      return await tool.handler(applyContext(input, context));
+      const result = await tool.handler(applyContext(input, context));
+      if (dataProvenance(result).state === 'demo') {
+        const data =
+          result && typeof result === 'object' && !Array.isArray(result)
+            ? result
+            : { data: result };
+        return {
+          ...data,
+          provenance: 'demo',
+          warning:
+            'Synthetic demonstration data. Do not present as verified intelligence, source evidence, or publishable content.',
+        };
+      }
+      return result;
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       return { error: `Tool "${name}" failed: ${message}` };

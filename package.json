@@ -1,6 +1,6 @@
 {
   "name": "@cocoa-labs/threat-deck",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack --port 3002",
@@ -25,7 +25,8 @@
     "test:integration": "node scripts/test-integration.mjs",
     "typecheck": "tsc --noEmit",
     "test:db:prepare": "node scripts/prepare-test-db.mjs",
-    "test:container": "node scripts/container-smoke.mjs"
+    "test:container": "node scripts/container-smoke.mjs",
+    "files:cleanup": "tsx scripts/cleanup-attachments.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.75.0",

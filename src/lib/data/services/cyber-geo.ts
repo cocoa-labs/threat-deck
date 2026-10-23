@@ -1,3 +1,4 @@
+import { feedResponse } from '@/lib/data/feed-response';
 /**
  * GET /api/data/cyber-geo
  *
@@ -19,7 +20,7 @@
  * Vercel Functions automatically respect these headers.
  */
 
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 import { query } from '@/lib/db/client';
 import type {
   CyberCategory,
@@ -236,7 +237,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     const markers = rows.map(rowToMarker);
 
     return withCacheHeaders(
-      NextResponse.json({
+      feedResponse({
         data: markers,
         count: markers.length,
         timestamp: new Date().toISOString(),
@@ -250,7 +251,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     const message = err instanceof Error ? err.message : 'cyber-geo query failed';
     console.error('[cyber-geo] query error:', message);
     return withCacheHeaders(
-      NextResponse.json({
+      feedResponse({
         data: [],
         count: 0,
         timestamp: new Date().toISOString(),

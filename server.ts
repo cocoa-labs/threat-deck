@@ -5,6 +5,7 @@
 
 import { createServer } from 'node:http';
 import next from 'next';
+import { isCapabilityEnabled } from './src/lib/security/capabilities';
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = process.env.HOSTNAME || 'localhost';
@@ -66,7 +67,7 @@ async function main() {
   }
 
   // Paid/autonomous background work requires an explicit opt-in.
-  if (process.env.ENABLE_AUTOMATION === 'true') try {
+  if (isCapabilityEnabled('automation')) try {
     const { registerAllFeeds, feedManager } = await import('./src/lib/feeds/manager.js');
     await registerAllFeeds();
     await feedManager.startAll();
@@ -75,6 +76,10 @@ async function main() {
     console.warn('[Server] Feed connectors not available:', (err as Error).message);
   }
 
+  // Storage cleanup is maintenance for explicit user deletions, not autonomous publishing.
+  const { retryAttachmentDeletions } = await import('./src/lib/agent/attachments/blob-cleanup.js');
+  const cleanupTimer = setInterval(() => { void retryAttachmentDeletions().catch(() => console.warn('[Server] Attachment cleanup deferred; will retry')); }, 60_000);
+  cleanupTimer.unref();
   server.listen(port, () => {
     console.log(`[Server] Cocoa AI Threat Deck ready at http://${hostname}:${port}`);
     console.log('[Server] WebSocket endpoint: /ws (use TLS at your reverse proxy)');
@@ -83,6 +88,7 @@ async function main() {
   // Graceful shutdown
   const shutdown = async () => {
     console.log('[Server] Shutting down...');
+    clearInterval(cleanupTimer);
     try {
       const { feedManager } = await import('./src/lib/feeds/manager.js');
       await feedManager.stopAll();

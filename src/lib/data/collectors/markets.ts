@@ -110,9 +110,9 @@ export async function fetchQuotes(symbols: string[]): Promise<MarketSnapshot[]> 
 
   if (!API_KEY()) {
     console.warn('[Markets] No MASSIVE_API_KEY or POLYGON_API_KEY set — returning fallback');
-    return symbols.map((s) => createFallback(s));
+    return [];
   }
-  if (!checkRateLimit('massive')) return symbols.map((s) => createFallback(s));
+  if (!checkRateLimit('massive')) return [];
 
   try {
     // Try intraday snapshot first (real-time during market hours)
@@ -129,10 +129,10 @@ export async function fetchQuotes(symbols: string[]): Promise<MarketSnapshot[]> 
     if (worthCaching) {
       await setCache(cacheKey, results);
     }
-    return results;
+    return results.filter((row) => row.price > 0);
   } catch (err) {
     console.warn('[Markets] fetchQuotes error:', (err as Error).message);
-    return symbols.map((s) => createFallback(s));
+    return [];
   }
 }
 
@@ -143,7 +143,7 @@ async function fetchSnapshot(symbols: string[]): Promise<MarketSnapshot[]> {
   const res = await safeFetch(url, { cache: 'no-store' });
   if (!res.ok) {
     console.warn(`[Markets] Snapshot returned ${res.status} from ${MASSIVE_BASE}`);
-    return symbols.map((s) => createFallback(s));
+    return [];
   }
 
   const json = await res.json();

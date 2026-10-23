@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 import { safeFetch } from '@/lib/security/safe-fetch';
 import type { CongressTrade } from '@/lib/types';
 import { checkRateLimit, getCached, setCache } from '../rate-limiter';
@@ -95,11 +96,11 @@ export async function fetchCongressTrades(params?: CongressTradeParams): Promise
 
   const apiKey = API_KEY();
   if (!apiKey) {
-    return filterTrades(DEMO_TRADES, params);
+    return filterTrades(demoData(DEMO_TRADES), params);
   }
 
   if (!checkRateLimit('quiver')) {
-    return filterTrades(DEMO_TRADES, params);
+    return filterTrades(demoData(DEMO_TRADES), params);
   }
 
   try {
@@ -131,7 +132,7 @@ export async function fetchCongressTrades(params?: CongressTradeParams): Promise
     }
 
     if (trades.length === 0) {
-      return filterTrades(DEMO_TRADES, params);
+      return filterTrades(demoData(DEMO_TRADES), params);
     }
 
     // Sort by filed date descending
@@ -144,7 +145,7 @@ export async function fetchCongressTrades(params?: CongressTradeParams): Promise
       '[Congress] Failed to fetch trades:',
       error instanceof Error ? error.message : error,
     );
-    return filterTrades(DEMO_TRADES, params);
+    return filterTrades(demoData(DEMO_TRADES), params);
   }
 }
 

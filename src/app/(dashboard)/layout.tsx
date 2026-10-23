@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { ConfigurationNotice } from '@/components/ConfigurationNotice';
+import { OperatorPrivacyBoundary } from '@/components/providers/OperatorPrivacyBoundary';
 import { auth, isEmailAllowed } from '@/lib/auth';
 import DashboardShell from './DashboardShell';
 
@@ -21,8 +22,7 @@ import DashboardShell from './DashboardShell';
  * `await auth()` call in a Server Component while preserving every Zustand
  * store and React hook that the existing dashboard relies on.
  *
- * No sign-out button is rendered yet — for v1 single-tenant, the redirect IS
- * the gate. Sign-out UI lands in Phase 7.2.
+ * Client state is cleared before an operator session is displayed.
  */
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -32,9 +32,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   return (
-    <>
+    <OperatorPrivacyBoundary key={session.user.email} email={session.user.email}>
       <ConfigurationNotice />
       <DashboardShell>{children}</DashboardShell>
-    </>
+    </OperatorPrivacyBoundary>
   );
 }
