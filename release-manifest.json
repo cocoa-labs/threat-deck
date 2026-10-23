@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "0.1.0",
+  "release": "0.1.1",
   "files": [
     {
       "path": ".dockerignore",
@@ -344,7 +344,7 @@
     },
     {
       "path": "sbom.cdx.json",
-      "sha256": "f124f5cbaeafe7743bc9040ca699053ce6f3a1258e1fccbcdc72e7c8755085a0"
+      "sha256": "948badd4a6e37207c2f2e954d8a754fa9eab8dbaca26923fce0081f5f51a517f"
     },
     {
       "path": "scripts/backfill-nvd-history.ts",

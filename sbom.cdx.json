@@ -21,7 +21,7 @@
     "component": {
       "bom-ref": "@cocoa-labs/threat-deck@0.1.1",
       "type": "library",
-      "name": "hacking-monitor",
+      "name": "@cocoa-labs/threat-deck",
       "version": "0.1.1",
       "scope": "required",
       "purl": "pkg:npm/%40cocoa-labs/threat-deck@0.1.1",
