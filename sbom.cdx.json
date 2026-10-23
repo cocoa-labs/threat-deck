@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:0e69bfc4-8c35-4505-870e-830e9b5edaeb",
+  "serialNumber": "urn:uuid:84586cf2-9a3e-4d76-9db7-12320d17fa7a",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-23T20:23:03.461Z",
+    "timestamp": "2026-10-23T20:34:36.529Z",
     "lifecycles": [
       {
         "phase": "pre-build"
@@ -11224,34 +11224,6 @@
         {
           "license": {
             "id": "Apache-2.0"
-          }
-        }
-      ]
-    },
-    {
-      "bom-ref": "zod@4.1.11",
-      "type": "library",
-      "name": "zod",
-      "version": "4.1.11",
-      "scope": "required",
-      "purl": "pkg:npm/zod@4.1.11",
-      "properties": [],
-      "externalReferences": [
-        {
-          "type": "distribution",
-          "url": "https://registry.npmjs.org/zod/-/zod-4.1.11.tgz"
-        }
-      ],
-      "hashes": [
-        {
-          "alg": "SHA-512",
-          "content": "58fb2ac312134b6b73c756f38482ac12cd7d0010f9be60956b8c41a36b6afd2ad5e11359b5fc2cd449c25905cceb287c6c3d3c6b589dbe4079319481899b23c2"
-        }
-      ],
-      "licenses": [
-        {
-          "license": {
-            "id": "MIT"
           }
         }
       ]
@@ -34569,12 +34541,8 @@
       "ref": "@vercel/cli-config@0.3.1",
       "dependsOn": [
         "xdg-app-paths@5.5.1",
-        "zod@4.1.11"
+        "zod@4.6.7"
       ]
-    },
-    {
-      "ref": "zod@4.1.11",
-      "dependsOn": []
     },
     {
       "ref": "@vercel/cli-exec@1.0.1",

@@ -120,7 +120,7 @@
     },
     {
       "path": "docs/RELEASE-NOTES.md",
-      "sha256": "5b19185c8c24559c04b4820f110f22c693a809eac44a0350efe3e5cc5be0bc2b"
+      "sha256": "aed1ebe57d1709f824f9a8428d69fcc22a73559d3c3d0bec4b7820e6e58ba60d"
     },
     {
       "path": "docs/SECURITY-ARCHITECTURE.md",
@@ -264,11 +264,11 @@
     },
     {
       "path": "package-lock.json",
-      "sha256": "a3183cb34ca9c26251a069338206241f45c6757b135153a2ed775162134aa628"
+      "sha256": "9fd0bc5d886eba6c1725afd73df08d847e95ae1b888193ec47b5780e09ff96fe"
     },
     {
       "path": "package.json",
-      "sha256": "100395137080f4346fe757bbf03eb94447d06de439ebe4fd47f6e4dcc8d2f1bb"
+      "sha256": "8ef9ba9864b6d7048956382189accc49d6c45da9ce2e329e6f574ec5f9cba46e"
     },
     {
       "path": "playwright.config.ts",
@@ -344,7 +344,7 @@
     },
     {
       "path": "sbom.cdx.json",
-      "sha256": "4ec8031388da9d27cf5b8e37ec9277914b8bf9c56e6414cacb903515face3c66"
+      "sha256": "f124f5cbaeafe7743bc9040ca699053ce6f3a1258e1fccbcdc72e7c8755085a0"
     },
     {
       "path": "scripts/backfill-nvd-history.ts",
