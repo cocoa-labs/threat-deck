@@ -85,7 +85,7 @@
     "resend": "^6.12.3",
     "rss-parser": "^3.13.0",
     "sharp": "0.35.5",
-    "sigma": "^3.0.3",
+    "sigma": "^4.0.3",
     "tailwind-merge": "^3.4.0",
     "three": "^0.182.0",
     "undici": "8.12.3",
