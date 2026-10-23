@@ -80,7 +80,7 @@ describe('fetchFedData — resilience', () => {
     expect((caches['fed:lastgood:v3'] as FedData).gdp?.value).toBe(30000);
   });
 
-  it('fails fast to stale demo data when FRED returns 502 and no snapshot exists', async () => {
+  it('returns unavailable without inventing figures when FRED returns 502', async () => {
     const { fetchFedData } = await loadFed({
       fetchImpl: async () => ({ ok: false, status: 502, json: async () => ({}) }),
     });
@@ -88,8 +88,8 @@ describe('fetchFedData — resilience', () => {
     const result = await fetchFedData(['gdp']);
 
     expect(result.stale).toBe(true);
-    expect(result._demo).toBe(true);
-    expect(result.gdp?.value).toBeCloseTo(28_781.5, 1); // DEMO_FED.gdp
+    expect(result._demo).toBeFalsy();
+    expect(result.gdp).toBeUndefined();
   });
 
   it('fails fast (does not hang) when the FRED fetch aborts/rejects', async () => {
@@ -105,7 +105,7 @@ describe('fetchFedData — resilience', () => {
     const result = await fetchFedData(['gdp']);
 
     expect(result.stale).toBe(true);
-    expect(result._demo).toBe(true);
+    expect(result._demo).toBeFalsy();
   });
 
   it('serves last-known-good REAL data flagged stale during an outage', async () => {

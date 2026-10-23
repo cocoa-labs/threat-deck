@@ -23,6 +23,7 @@ import type { Freshness } from '@/lib/utils/freshness';
  */
 
 const COLOR: Record<Freshness, string> = {
+  unavailable: 'var(--text-dim)',
   live: 'var(--severity-low)', // === --crt-glow Matrix green
   delayed: 'var(--severity-medium)',
   stale: 'var(--severity-critical)',
@@ -30,6 +31,7 @@ const COLOR: Record<Freshness, string> = {
 };
 
 const LABEL: Record<Freshness, string> = {
+  unavailable: 'UNAVAILABLE',
   live: 'LIVE',
   delayed: 'DELAYED',
   stale: 'STALE',
@@ -37,6 +39,7 @@ const LABEL: Record<Freshness, string> = {
 };
 
 const TITLE: Record<Freshness, string> = {
+  unavailable: 'Unavailable — no verified source acquisition time; no current data confirmed',
   live: 'Live — data refreshed within the live window',
   delayed: 'Delayed — polling, data is slightly behind',
   stale: 'Stale — feed is overdue for a refresh',

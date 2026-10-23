@@ -1,10 +1,11 @@
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 import {
   fetchCommodities,
   fetchIndices,
   fetchQuotes,
   fetchSectors,
 } from '@/lib/data/collectors/markets';
+import { feedResponse } from '@/lib/data/feed-response';
 
 function withCacheHeaders(response: NextResponse) {
   response.headers.set(
@@ -22,17 +23,17 @@ export async function GET(request: Request) {
   try {
     if (symbols) {
       const data = await fetchQuotes(symbols.split(','));
-      return withCacheHeaders(NextResponse.json({ data, timestamp: new Date().toISOString() }));
+      return withCacheHeaders(feedResponse({ data, timestamp: new Date().toISOString() }));
     }
 
     switch (type) {
       case 'sectors': {
         const data = await fetchSectors();
-        return withCacheHeaders(NextResponse.json({ data, timestamp: new Date().toISOString() }));
+        return withCacheHeaders(feedResponse({ data, timestamp: new Date().toISOString() }));
       }
       case 'commodities': {
         const data = await fetchCommodities();
-        return withCacheHeaders(NextResponse.json({ data, timestamp: new Date().toISOString() }));
+        return withCacheHeaders(feedResponse({ data, timestamp: new Date().toISOString() }));
       }
       default: {
         const [indices, sectors, commodities] = await Promise.all([
@@ -41,7 +42,7 @@ export async function GET(request: Request) {
           fetchCommodities(),
         ]);
         return withCacheHeaders(
-          NextResponse.json({
+          feedResponse({
             indices,
             sectors,
             commodities,
@@ -51,7 +52,7 @@ export async function GET(request: Request) {
       }
     }
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch markets' },
       { status: 500 },
     );

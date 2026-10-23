@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 import { safeFetch } from '@/lib/security/safe-fetch';
 import type { PredictionMarket } from '@/lib/types';
 import { checkRateLimit, getCached, setCache } from '../rate-limiter';
@@ -82,7 +83,7 @@ export async function fetchPredictionMarkets(
   if (cached) return filterMarkets(cached, params);
 
   if (!checkRateLimit('polymarket')) {
-    return filterMarkets(DEMO_MARKETS, params);
+    return filterMarkets(demoData(DEMO_MARKETS), params);
   }
 
   try {
@@ -96,13 +97,13 @@ export async function fetchPredictionMarkets(
 
     if (!res.ok) {
       console.warn(`[Polymarket] Gamma API returned ${res.status}`);
-      return filterMarkets(DEMO_MARKETS, params);
+      return filterMarkets(demoData(DEMO_MARKETS), params);
     }
 
     const events: GammaEvent[] = await res.json();
 
     if (!Array.isArray(events) || events.length === 0) {
-      return filterMarkets(DEMO_MARKETS, params);
+      return filterMarkets(demoData(DEMO_MARKETS), params);
     }
 
     const markets: PredictionMarket[] = [];
@@ -125,7 +126,7 @@ export async function fetchPredictionMarkets(
     }
 
     if (markets.length === 0) {
-      return filterMarkets(DEMO_MARKETS, params);
+      return filterMarkets(demoData(DEMO_MARKETS), params);
     }
 
     markets.sort((a, b) => b.volume - a.volume);
@@ -137,7 +138,7 @@ export async function fetchPredictionMarkets(
       '[Polymarket] Failed to fetch markets:',
       error instanceof Error ? error.message : error,
     );
-    return filterMarkets(DEMO_MARKETS, params);
+    return filterMarkets(demoData(DEMO_MARKETS), params);
   }
 }
 

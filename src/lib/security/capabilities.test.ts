@@ -62,3 +62,20 @@ describe('capability enforcement', () => {
     ).toMatchObject({ operatorEmail: 'owner@example.org' });
   });
 });
+
+it('preserves side-effect markers when labeling synthetic tool evidence', async () => {
+  ToolRegistry.register({
+    name: 'release_demo_marker',
+    description: 'fixture',
+    category: ToolCategory.DATA_RETRIEVAL,
+    requiresApproval: false,
+    cooldownSeconds: 0,
+    tokenBudget: 100,
+    inputSchema: { type: 'object', properties: {} },
+    handler: async () => ({ __map_command: { type: 'test' }, isFallback: true }),
+  });
+  expect(await ToolRegistry.execute('release_demo_marker', {})).toMatchObject({
+    __map_command: { type: 'test' },
+    provenance: 'demo',
+  });
+});

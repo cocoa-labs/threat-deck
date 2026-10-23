@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 import {
   fetchRSSFeedResult,
   fetchRSSFeeds,
@@ -6,6 +6,7 @@ import {
   normalizeNewsCategory,
 } from '@/lib/data/collectors/rss';
 import { fetchTwitterTimeline } from '@/lib/data/collectors/twitter';
+import { feedResponse } from '@/lib/data/feed-response';
 import { buildTopPulseItems } from '@/lib/data/top-pulse';
 
 function withCacheHeaders(response: NextResponse, profile: 'default' | 'top-pulse' = 'default') {
@@ -45,7 +46,7 @@ export async function GET(request: Request) {
       );
 
       return withCacheHeaders(
-        NextResponse.json({
+        feedResponse({
           items: allItems.slice(0, limit),
           timestamp: new Date().toISOString(),
         }),
@@ -68,7 +69,7 @@ export async function GET(request: Request) {
       });
 
       return withCacheHeaders(
-        NextResponse.json({
+        feedResponse({
           items: pulse.items,
           count: pulse.items.length,
           sourceStats: pulse.sourceStats,
@@ -80,7 +81,7 @@ export async function GET(request: Request) {
 
     if (category) {
       if (!normalizeNewsCategory(category)) {
-        return NextResponse.json(
+        return feedResponse(
           {
             error: `Unknown news category: ${category}`,
             requestedCategory: category,
@@ -92,7 +93,7 @@ export async function GET(request: Request) {
 
       const result = await fetchRSSFeedResult(category, limit);
       return withCacheHeaders(
-        NextResponse.json({
+        feedResponse({
           requestedCategory: result.requestedCategory,
           category: result.category,
           items: result.items,
@@ -113,14 +114,14 @@ export async function GET(request: Request) {
     );
 
     return withCacheHeaders(
-      NextResponse.json({
+      feedResponse({
         feeds: results,
         categories,
         timestamp: new Date().toISOString(),
       }),
     );
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch news' },
       { status: 500 },
     );

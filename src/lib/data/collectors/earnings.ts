@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 import { safeFetch } from '@/lib/security/safe-fetch';
 import type { EarningsEvent } from '@/lib/types';
 import { checkRateLimit, getCached, setCache } from '../rate-limiter';
@@ -961,7 +962,7 @@ export async function fetchEarningsCalendar(
 
   // Neither key available → demo data
   if (!avKey && !fhKey) {
-    return DEMO_EARNINGS.slice(0, limit);
+    return demoData(DEMO_EARNINGS).slice(0, limit);
   }
 
   const today = todayStr();
@@ -1058,13 +1059,13 @@ export async function fetchEarningsCalendar(
     }
 
     if (merged.length === 0) {
-      return DEMO_EARNINGS.slice(0, limit);
+      return demoData(DEMO_EARNINGS).slice(0, limit);
     }
 
     await setCache(cacheKey, merged, 1800);
     return merged.slice(0, limit);
   } catch (error) {
     console.warn('[Earnings] Failed to fetch:', error instanceof Error ? error.message : error);
-    return DEMO_EARNINGS.slice(0, limit);
+    return demoData(DEMO_EARNINGS).slice(0, limit);
   }
 }

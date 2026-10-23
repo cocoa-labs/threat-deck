@@ -4,9 +4,12 @@ import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { AgentStatusIndicator } from '@/components/agent/AgentStatusIndicator';
+import { PrivateFilesControl } from '@/components/agent/PrivateFilesControl';
 import { CocoaWordmark } from '@/components/brand/CocoaWordmark';
 import { ConnectionStatus } from '@/components/layout/ConnectionStatus';
 import { ForecastChips } from '@/components/layout/ForecastChips';
+import { SignOutControl } from '@/components/providers/OperatorPrivacyBoundary';
+import { useFeedProvenance } from '@/lib/hooks/use-feed-provenance';
 import { useAgentStore } from '@/lib/store/agent-store';
 import { useDataStore } from '@/lib/store/data-store';
 import { cn } from '@/lib/utils/cn';
@@ -93,6 +96,8 @@ export function Header() {
   }, []);
 
   // Cyber quick tickers — critical CVE count + KEV count
+  const cveProvenance = useFeedProvenance('cvePipeline');
+  const kevProvenance = useFeedProvenance('kevAlerts');
   const criticalCount = cves.filter((c) => c.severity === 'critical').length;
   const kevCount = kev.length;
 
@@ -126,7 +131,7 @@ export function Header() {
       <div className="flex items-center gap-1 px-4">
         <CyberChip
           label="CRIT"
-          value={criticalCount}
+          value={cveProvenance?.state === 'live' ? criticalCount : '—'}
           tone="critical"
           title="Ask Max about critical CVEs"
           onClick={() =>
@@ -141,7 +146,7 @@ export function Header() {
         />
         <CyberChip
           label="KEV"
-          value={kevCount}
+          value={kevProvenance?.state === 'live' ? kevCount : '—'}
           tone="warning"
           title="Ask Max about known-exploited vulnerabilities"
           onClick={() =>
@@ -172,6 +177,8 @@ export function Header() {
           </button>
         )}
 
+        <PrivateFilesControl />
+        <SignOutControl />
         {/* Agent status */}
         <div className="flex items-center gap-1.5">
           <AgentStatusIndicator />

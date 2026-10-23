@@ -89,7 +89,13 @@ export function withRoutePolicy<A extends unknown[]>(
     for (const capability of routeCapabilities(path)) {
       if (!isCapabilityEnabled(capability)) return reject(`capability_disabled:${capability}`, 503);
     }
-    if (mutating || cron || authEntry || internal || path === '/api/ws/token') {
+    // Signing out must remain available during a Redis outage. Origin, CSRF
+    // (Auth.js), and bounded-body validation still apply; no paid work is done.
+    const signOut =
+      authEntry &&
+      request.method === 'POST' &&
+      new URL(request.url).pathname === '/api/auth/signout';
+    if (!signOut && (mutating || cron || authEntry || internal || path === '/api/ws/token')) {
       const routeKey = authEntry ? new URL(request.url).pathname : path;
       const limit = await checkRateLimit(
         `route:${routeKey}:${identity}`,

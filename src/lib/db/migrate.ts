@@ -95,6 +95,8 @@ async function applyMigration(client: Client, migration: DiscoveredMigration): P
   await client.query('BEGIN');
   try {
     const demo = ['003_initial_seed', '007_mitre_ttps_seed'].includes(migration.name);
+    if (demo && process.env.INSTALL_DEMO_DATA === 'true' && process.env.ENABLE_DEMO_DATA !== 'true')
+      throw new Error('Demo seed installation also requires ENABLE_DEMO_DATA=true');
     if (!demo || process.env.INSTALL_DEMO_DATA === 'true') await client.query(migration.sql);
     await client.query('INSERT INTO schema_migrations (migration_name, checksum) VALUES ($1, $2)', [
       migration.name,

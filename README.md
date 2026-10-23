@@ -42,7 +42,7 @@ npm run db:migrate
 npm run dev
 ```
 
-The local login bypass requires an explicit flag, development mode, and a loopback URL. Production always requires authentication. `npm run dev:full` includes WebSockets; `npm run dev` uses HTTP polling. The dashboard starts without AI, X, Gmail, media, or outbound-email credentials. Mapbox needs your own public token to show the basemap. Empty panels and configuration notices are expected before data is ingested. Collectors may show labeled demonstration/fallback data on upstream failure; do not interpret it as live intelligence.
+The local login bypass requires an explicit flag, development mode, and a loopback URL. Production always requires authentication. `npm run dev:full` includes WebSockets; `npm run dev` uses HTTP polling. The dashboard starts without AI, X, Gmail, media, or outbound-email credentials. Mapbox needs your own public token to show the basemap. Empty panels and configuration notices are expected before data is ingested. Collectors return unavailable data on upstream failure unless a real cached snapshot remains. Panel labels use source acquisition time, so polling does not make old data appear live. Synthetic samples require `ENABLE_DEMO_DATA=true`; demo mode labels those records and disables external publishing and autonomous jobs.
 
 ## Optional integrations
 
@@ -56,7 +56,10 @@ Credentials alone never enable optional capabilities. Set the matching flag deli
 | Gmail access | `ENABLE_GMAIL_ACCESS` | Your delegated service account and selected mailbox |
 | Images/video | `ENABLE_MEDIA_GENERATION` | Private Blob store, provider key, positive media budget |
 | Scheduled jobs | `ENABLE_AUTOMATION` | Scheduler, random `CRON_SECRET`, relevant feature flags |
+| Demonstration samples | `ENABLE_DEMO_DATA` | Separate demonstration installation; disables email/X publishing, jobs and public feeds |
 | Public Cyber Wire | `ENABLE_PUBLIC_FEED` | Explicit consent to expose the feed's selected database content |
+
+Office/spreadsheet ingestion is disabled by default, including DOCX, XLS/XLSX, CSV and TSV. The existing subprocess has resource limits but is not an OS sandbox. Leave `ENABLE_OFFICE_INGESTION=false` until you supply filesystem/network isolation; the standard file picker accepts images, PDFs and plain text. The experimental server override is not a supported security boundary.
 
 The X composer and agent publishing tools create drafts. Inspect the text, recipients and attachments in the approval queue before approving publication. An edit after review requires another review. Failed or uncertain publication attempts stay claimed to avoid duplicates; review the provider's state before creating a replacement draft. Legacy direct X publication endpoints return HTTP 410.
 
@@ -83,4 +86,4 @@ Tests do not load personal environment files. Integration and browser tests use 
 
 First-party source is licensed under [Apache-2.0](LICENSE); [NOTICE](NOTICE) and [third-party notices](THIRD_PARTY_NOTICES.md) apply. Cocoa AI branding is retained; the license does not grant trademark rights. Mapbox, GSAP, fonts, dependencies and external feeds retain their own terms.
 
-The v0.1.0 release publishes source for self-hosting. It does not include a hosted service, production data, credentials, or historical private repository commits. Please report vulnerabilities through [GitHub private vulnerability reporting](https://github.com/cocoa-labs/threat-deck/security/advisories/new).
+The v0.1.x releases publish source for self-hosting. It does not include a hosted service, production data, credentials, or historical private repository commits. Please report vulnerabilities through [GitHub private vulnerability reporting](https://github.com/cocoa-labs/threat-deck/security/advisories/new).

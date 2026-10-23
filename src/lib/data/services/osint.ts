@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 import { fetchOSINTFeeds, getOSINTCategories } from '@/lib/data/collectors/osint';
+import { feedResponse } from '@/lib/data/feed-response';
 
 function withCacheHeaders(response: NextResponse) {
   response.headers.set(
@@ -18,7 +19,7 @@ export async function GET(request: Request) {
     if (category) {
       const items = await fetchOSINTFeeds(category, limit);
       return withCacheHeaders(
-        NextResponse.json({
+        feedResponse({
           category,
           items,
           count: items.length,
@@ -37,14 +38,14 @@ export async function GET(request: Request) {
     );
 
     return withCacheHeaders(
-      NextResponse.json({
+      feedResponse({
         feeds: results,
         categories,
         timestamp: new Date().toISOString(),
       }),
     );
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch OSINT feeds' },
       { status: 500 },
     );

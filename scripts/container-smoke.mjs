@@ -16,5 +16,13 @@ try {
   if(!csrf.ok || typeof (await csrf.json()).csrfToken!=='string')throw new Error('Production login configuration failed');
   if((await fetch(base+'/api/data/cves')).status!==401)throw new Error('Private API accessible');
   if((await fetch(base+'/feed/cyber-wire.rss')).status!==404)throw new Error('Public feed enabled by default');
-  console.log('Container smoke passed: non-root, healthy, login configured, APIs closed, public feeds disabled.');
+  for (const asset of ['/scripts/aegis-viewer.js','/scripts/twitter-connected.js']) {
+    const response=await fetch(base+asset);
+    if (!response.ok || !(response.headers.get('content-type')||'').includes('javascript')) throw new Error('Required CSP-compatible script missing: '+asset);
+  }
+  const policy=(await fetch(base+'/login')).headers.get('content-security-policy')||'';
+  const scripts=policy.split(';').find(part=>part.trim().startsWith('script-src '))||'';
+  if (!scripts.includes("'nonce-") || scripts.includes("'unsafe-inline'") || scripts.includes("'unsafe-eval'")) throw new Error('Production script CSP is not strict');
+  docker(['exec',name,'npm','run','files:cleanup']);
+  console.log('Container smoke passed: non-root, healthy, login configured, APIs closed, public feeds disabled, CSP scripts present, cleanup command available.');
 }finally{spawnSync('docker',['rm','-f',name],{stdio:'ignore'});}

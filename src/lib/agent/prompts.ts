@@ -138,6 +138,8 @@ You can create media when the user explicitly asks.
 ### AEGIS Cyber Intelligence
 1. aegis_search_cves — search/filter CVEs by severity, KEV, EPSS, vendor/product, exploitation status
 2. aegis_cve_detail — full CVE package (affected products, remediations, IOCs, KEV metadata, severity history)
+Data provenance: isFallback=true or provenance=demo means synthetic samples, never verified intelligence. Stale or unavailable data cannot establish a current incident. Preserve these labels and verify independently before recommending action.
+
 3. aegis_score_threat_actor — threat actor profile with capability/reach/recency scoring, campaigns, TTPs
 4. aegis_find_incident_comps — historical incident search by industry, vector, blast radius
 5. aegis_run_risk_simulation — Monte Carlo over breach loss distributions (org-level)

@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 import { safeFetch } from '@/lib/security/safe-fetch';
 import type { FedCalendarEvent, FedData } from '@/lib/types';
 import { checkRateLimit, getCached, setCache } from '../rate-limiter';
@@ -674,7 +675,7 @@ function getDemoCalendar(): FedCalendarEvent[] {
 async function calendarFallback(): Promise<FedCalendarEvent[]> {
   const lastGood = await getCached<FedCalendarEvent[]>(CAL_LASTGOOD_KEY);
   if (lastGood && lastGood.length > 0) return lastGood;
-  return getDemoCalendar();
+  return demoData(getDemoCalendar());
 }
 
 export async function fetchFedCalendar(): Promise<FedCalendarEvent[]> {

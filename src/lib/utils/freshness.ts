@@ -1,4 +1,4 @@
-export type Freshness = 'live' | 'delayed' | 'stale' | 'demo';
+export type Freshness = 'live' | 'delayed' | 'stale' | 'demo' | 'unavailable';
 
 /** Classify data age. ageMs <= liveMs → live; <= staleMs → delayed; else stale. */
 export function freshnessFromAge(

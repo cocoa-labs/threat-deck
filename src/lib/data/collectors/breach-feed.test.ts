@@ -11,7 +11,7 @@
  * The two headlines below are the exact ones that misfired.
  */
 
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { stableNumericId } from '@/lib/utils/stable-id';
 import { fetchHibpBreaches, inferSeverityFromTitle } from './breach-feed';
 
@@ -87,9 +87,11 @@ describe('inferSeverityFromTitle', () => {
 });
 
 describe('fetchHibpBreaches', () => {
+  beforeEach(() => vi.stubEnv('ENABLE_DEMO_DATA', 'true'));
   afterEach(() => {
     rateLimiterMock.isBackedOff.mockReturnValue(false);
     vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
   });
 
   it('serves demo breaches tagged isFallback so the activation watcher can skip them', async () => {

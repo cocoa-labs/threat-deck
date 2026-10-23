@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { fetchWhaleTransactions } from '@/lib/data/collectors/whales';
+import { feedResponse } from '@/lib/data/feed-response';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -10,7 +10,7 @@ export async function GET(request: Request) {
 
   try {
     const data = await fetchWhaleTransactions({ min_value, blockchain });
-    const response = NextResponse.json({
+    const response = feedResponse({
       data,
       count: data.length,
       timestamp: new Date().toISOString(),
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     );
     return response;
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch whale transactions' },
       { status: 500 },
     );

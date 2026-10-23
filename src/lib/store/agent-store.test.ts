@@ -148,7 +148,7 @@ describe('agent-store — drawer fullscreen preservation', () => {
 // This describe owns its own localStorage stub + module re-import so the
 // hydration step picks up the pre-populated v0 payload.
 describe('agent-store — v0 → v1 persist migration', () => {
-  it('preserves a v0 payload through the version bump (no data wipe)', async () => {
+  it('discards legacy unscoped sensitive data on upgrade', async () => {
     const v0Payload = {
       state: {
         conversations: [
@@ -200,11 +200,10 @@ describe('agent-store — v0 → v1 persist migration', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     const state = freshStore.getState();
-    expect(state.conversations.map((c) => c.id)).toEqual(['conv-old']);
-    expect(state.commandHistory).toEqual(['hello max']);
-    expect(state.messages.length).toBe(2);
-    expect(state.messages[0]?.content).toBe('hi');
-    expect(state.messages[1]?.content).toBe('hi back');
+    expect(state.conversations).toEqual([]);
+    expect(state.commandHistory).toEqual([]);
+    expect(state.messages).toEqual([]);
+    expect(memoryStore.get('threatdeck-agent')).not.toContain('hi back');
     // Missing-from-v0 lockedMode defaults to AUTO.
     expect(state.lockedMode).toBeNull();
     // detectedMode is intentionally NOT persisted — resets to 'anchor' each session.

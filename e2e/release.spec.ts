@@ -91,3 +91,57 @@ test('publication shows complete recipients and content before an explicit appro
   await expect(page.getByText('Email sent to the reviewed recipients.')).toBeVisible();
   expect(approved).toBe(true);
 });
+
+test('production CSP uses fresh nonces and blocks injected inline scripts and event handlers',async({page,context})=>{
+  await operator(context);
+  const response=await page.goto('/');
+  const policy=response!.headers()['content-security-policy']!;
+  const script=policy.split(';').find(part=>part.trim().startsWith('script-src '))!;
+  expect(script).not.toContain("'unsafe-inline'");expect(script).not.toContain("'unsafe-eval'");
+  const nonce=script.match(/'nonce-([^']+)'/)![1];
+  await expect(page.getByRole('button',{name:'Sign out & clear device'})).toBeVisible();
+  const inline=await page.locator('script:not([src])').evaluateAll(elements=>elements.map(el=>(el as HTMLScriptElement).nonce));
+  expect(inline.length).toBeGreaterThan(0);expect(inline.every(value=>value===nonce)).toBe(true);
+  await page.evaluate(()=>{
+    const script=document.createElement('script');script.textContent='document.body.dataset.injected="yes"';document.body.appendChild(script);
+    const button=document.createElement('button');button.setAttribute('onclick','document.body.dataset.injected="yes"');document.body.appendChild(button);button.click();button.remove();
+  });
+  expect(await page.locator('body').getAttribute('data-injected')).toBeNull();
+  const other=await context.request.get('/login',{headers:{'x-nonce':'attacker-controlled'}});
+  expect(other.headers()['content-security-policy']).not.toContain(nonce);
+  expect(other.headers()['content-security-policy']).not.toContain('attacker-controlled');
+});
+test('legacy local data is discarded and sign-out clears all tabs and the session',async({page,context})=>{
+  await operator(context);
+  await page.addInitScript(()=>{
+    if (!sessionStorage.getItem('fixture-seeded')) {
+      localStorage.setItem('threatdeck-agent',JSON.stringify({version:1,state:{messages:[{role:'assistant',content:'PRIVATE LEGACY TRANSCRIPT',timestamp:1}],recentBriefs:[{headline:'PRIVATE LEGACY BRIEF'}]}}));
+      localStorage.setItem('klammer-agent','PRIVATE LEGACY COPY');sessionStorage.setItem('fixture-seeded','1');
+    }
+  });
+  await page.goto('/');await expect(page.getByRole('button',{name:'Sign out & clear device'})).toBeVisible();
+  await expect(page.getByText('PRIVATE LEGACY TRANSCRIPT',{exact:false})).toHaveCount(0);
+  expect(await page.evaluate(()=>JSON.stringify(localStorage))).not.toContain('PRIVATE LEGACY');
+  const second=await context.newPage();await second.goto('/');await expect(second.getByRole('button',{name:'Sign out & clear device'})).toBeVisible();
+  await page.getByRole('button',{name:'Sign out & clear device'}).click();
+  await expect(page).toHaveURL(/\/login/);await expect(second).toHaveURL(/\/login/);
+  expect((await context.request.get('/api/data/cves')).status()).toBe(401);
+  expect(await page.evaluate(()=>localStorage.getItem('threatdeck-agent'))).toBeNull();
+  await page.goBack();await expect(page.getByText('PRIVATE LEGACY TRANSCRIPT',{exact:false})).toHaveCount(0);
+});
+test('Office uploads are rejected before minting storage tokens and are absent from the picker',async({page,context})=>{
+  await operator(context);await page.goto('/');
+  await expect(page.getByRole('button',{name:'Sign out & clear device'})).toBeVisible();
+  const accept=await page.locator('input[type=file]').first().getAttribute('accept');expect(accept).not.toContain('docx');expect(accept).not.toContain('spreadsheet');
+  const id='c0de0000-0000-4000-8000-000000000001';
+  const response=await context.request.post('/api/agent/attachments/upload',{headers:{origin:'http://localhost:3302'},data:{type:'blob.generate-client-token',payload:{pathname:`agent-attachments/uploads/${id}/sample.docx`,clientPayload:JSON.stringify({id,filename:'sample.docx',contentType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document',sizeBytes:10})}}});
+  expect(response.status()).toBe(400);expect(await response.json()).toMatchObject({ok:false,error:'office_ingestion_disabled'});
+});
+
+test('AEGIS viewers keep their close control under the production CSP',async({page,context})=>{
+  await operator(context);
+  await page.addInitScript(()=>{window.close=()=>{document.documentElement.dataset.closeAttempt='yes';};});
+  await page.goto('/api/aegis/cves/view?id=CVE-2024-3094');
+  await page.getByRole('button',{name:'Close Tab',exact:true}).click();
+  await expect(page.locator('html')).toHaveAttribute('data-close-attempt','yes');
+});

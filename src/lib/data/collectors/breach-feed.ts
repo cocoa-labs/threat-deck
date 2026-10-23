@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 import { safeFetch } from '@/lib/security/safe-fetch';
 /**
  * Breach disclosures + national CERT advisory collector.
@@ -294,8 +295,8 @@ export async function fetchHibpBreaches(limit: number = 100): Promise<BreachDisc
   const cached = await getCached<BreachDisclosure[]>(cacheKey);
   if (cached) return cached;
 
-  if (isBackedOff('hibp')) return DEMO_BREACHES.slice(0, limit);
-  if (!checkRateLimit('hibp')) return DEMO_BREACHES.slice(0, limit);
+  if (isBackedOff('hibp')) return demoData(DEMO_BREACHES).slice(0, limit);
+  if (!checkRateLimit('hibp')) return demoData(DEMO_BREACHES).slice(0, limit);
 
   try {
     const res = await fetchWithTimeout(HIBP_URL, {
@@ -305,16 +306,16 @@ export async function fetchHibpBreaches(limit: number = 100): Promise<BreachDisc
 
     if (res.status === 429) {
       setBackoff('hibp', 15 * 60_000);
-      return DEMO_BREACHES.slice(0, limit);
+      return demoData(DEMO_BREACHES).slice(0, limit);
     }
     if (!res.ok) {
       console.warn(`[Breach] HIBP returned ${res.status}`);
-      return DEMO_BREACHES.slice(0, limit);
+      return demoData(DEMO_BREACHES).slice(0, limit);
     }
 
     const raw = (await res.json()) as HibpBreach[];
     if (!Array.isArray(raw) || raw.length === 0) {
-      return DEMO_BREACHES.slice(0, limit);
+      return demoData(DEMO_BREACHES).slice(0, limit);
     }
 
     const breaches: BreachDisclosure[] = raw.map((b) => {
@@ -353,7 +354,7 @@ export async function fetchHibpBreaches(limit: number = 100): Promise<BreachDisc
     return trimmed;
   } catch (err) {
     console.warn('[Breach] HIBP fetch failed:', err instanceof Error ? err.message : err);
-    return DEMO_BREACHES.slice(0, limit);
+    return demoData(DEMO_BREACHES).slice(0, limit);
   }
 }
 
@@ -418,20 +419,26 @@ export async function fetchCertAdvisories(
 
   if (isBackedOff('cert_advisories')) {
     return issuer
-      ? DEMO_CERT_ADVISORIES.filter((a) => a.issuer === issuer).slice(0, limit)
-      : DEMO_CERT_ADVISORIES.slice(0, limit);
+      ? demoData(DEMO_CERT_ADVISORIES)
+          .filter((a) => a.issuer === issuer)
+          .slice(0, limit)
+      : demoData(DEMO_CERT_ADVISORIES).slice(0, limit);
   }
   if (!checkRateLimit('cert_advisories')) {
     return issuer
-      ? DEMO_CERT_ADVISORIES.filter((a) => a.issuer === issuer).slice(0, limit)
-      : DEMO_CERT_ADVISORIES.slice(0, limit);
+      ? demoData(DEMO_CERT_ADVISORIES)
+          .filter((a) => a.issuer === issuer)
+          .slice(0, limit)
+      : demoData(DEMO_CERT_ADVISORIES).slice(0, limit);
   }
 
   const feeds = issuer ? CERT_FEEDS.filter((f) => f.issuer === issuer) : CERT_FEEDS;
   if (feeds.length === 0) {
     return issuer
-      ? DEMO_CERT_ADVISORIES.filter((a) => a.issuer === issuer).slice(0, limit)
-      : DEMO_CERT_ADVISORIES.slice(0, limit);
+      ? demoData(DEMO_CERT_ADVISORIES)
+          .filter((a) => a.issuer === issuer)
+          .slice(0, limit)
+      : demoData(DEMO_CERT_ADVISORIES).slice(0, limit);
   }
 
   try {
@@ -457,8 +464,10 @@ export async function fetchCertAdvisories(
     if (advisories.length === 0) {
       if (!anyFulfilled) setBackoff('cert_advisories', 5 * 60_000);
       return issuer
-        ? DEMO_CERT_ADVISORIES.filter((a) => a.issuer === issuer).slice(0, limit)
-        : DEMO_CERT_ADVISORIES.slice(0, limit);
+        ? demoData(DEMO_CERT_ADVISORIES)
+            .filter((a) => a.issuer === issuer)
+            .slice(0, limit)
+        : demoData(DEMO_CERT_ADVISORIES).slice(0, limit);
     }
 
     const trimmed = dedupeAdvisoriesByIdentity(advisories).slice(0, limit);
@@ -466,7 +475,7 @@ export async function fetchCertAdvisories(
     return trimmed;
   } catch (err) {
     console.warn('[CERT] Unexpected failure:', err instanceof Error ? err.message : err);
-    return DEMO_CERT_ADVISORIES.slice(0, limit);
+    return demoData(DEMO_CERT_ADVISORIES).slice(0, limit);
   }
 }
 

@@ -1,3 +1,4 @@
+import { NextRequest } from 'next/server';
 import { handlers } from '@/lib/auth';
 import { withRoutePolicy } from '@/lib/security/route-policy';
 
@@ -18,4 +19,7 @@ import { withRoutePolicy } from '@/lib/security/route-policy';
  */
 
 export const GET = withRoutePolicy('/api/auth/[...nextauth]', handlers.GET);
-export const POST = withRoutePolicy('/api/auth/[...nextauth]', handlers.POST);
+// Body bounding returns a standard Request; Auth.js requires NextRequest.nextUrl.
+export const POST = withRoutePolicy('/api/auth/[...nextauth]', (request: Request) =>
+  handlers.POST(new NextRequest(request)),
+);

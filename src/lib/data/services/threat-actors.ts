@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 import { fetchMitreAttackGroups } from '@/lib/data/collectors/mitre-attack';
+import { feedResponse } from '@/lib/data/feed-response';
 import type { ThreatActorType } from '@/lib/types';
 
 function withCacheHeaders(response: NextResponse): NextResponse {
@@ -43,14 +44,14 @@ export async function GET(request: Request) {
     const trimmed = actors.slice(0, limit);
 
     return withCacheHeaders(
-      NextResponse.json({
+      feedResponse({
         data: trimmed,
         count: trimmed.length,
         timestamp: new Date().toISOString(),
       }),
     );
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch threat actors' },
       { status: 500 },
     );

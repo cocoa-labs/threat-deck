@@ -181,10 +181,10 @@ function buildKevHtml(kev: Record<string, unknown>): string {
     <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" rel="noopener">CISA KEV Catalog &rarr;</a>
   </div>
 
-  <button onclick="window.close()">Close Tab</button>
+  <button id="close-viewer">Close Tab</button>
   <div class="close-hint">This tab will close automatically in 5 seconds</div>
 </div>
-<script>setTimeout(function(){window.close()},5000)</script>
+<script src="/scripts/aegis-viewer.js" defer></script>
 </body>
 </html>`;
 }

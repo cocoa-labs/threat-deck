@@ -6,6 +6,7 @@ import { ChannelSelector } from '@/components/panels/ChannelSelector';
 import { CRTFrame } from '@/components/panels/CRTFrame';
 import { FreshnessTelltale } from '@/components/panels/FreshnessTelltale';
 import { useSlotId } from '@/components/panels/PanelSlot';
+import { useFeedProvenance } from '@/lib/hooks/use-feed-provenance';
 import { usePanelsStore } from '@/lib/store/panels-store';
 import type { PanelId, SlotId } from '@/lib/types';
 import { cn } from '@/lib/utils/cn';
@@ -44,12 +45,15 @@ export function PanelShell({
   title,
   subtitle,
   slotId: slotIdProp,
-  lastUpdated,
-  freshness,
+  lastUpdated: suppliedLastUpdated,
+  freshness: suppliedFreshness,
   noPadding,
   className,
   children,
 }: PanelShellProps) {
+  const provenance = useFeedProvenance(id);
+  const lastUpdated = provenance ? provenance.fetchedAt : suppliedLastUpdated;
+  const freshness = provenance ? provenance.state : suppliedFreshness;
   const contextSlotId = useSlotId();
   const slotId = slotIdProp ?? contextSlotId;
 

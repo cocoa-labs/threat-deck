@@ -7,11 +7,19 @@ export const CAPABILITY_FLAGS = {
   media: 'ENABLE_MEDIA_GENERATION',
   automation: 'ENABLE_AUTOMATION',
   publicFeed: 'ENABLE_PUBLIC_FEED',
+  officeIngestion: 'ENABLE_OFFICE_INGESTION',
+  demoData: 'ENABLE_DEMO_DATA',
 } as const;
 
 export type Capability = keyof typeof CAPABILITY_FLAGS;
 
 export function isCapabilityEnabled(capability: Capability): boolean {
+  // Demonstration installations cannot publish synthetic evidence or trigger jobs.
+  if (
+    process.env.ENABLE_DEMO_DATA === 'true' &&
+    ['email', 'x', 'automation', 'publicFeed'].includes(capability)
+  )
+    return false;
   return process.env[CAPABILITY_FLAGS[capability]] === 'true';
 }
 

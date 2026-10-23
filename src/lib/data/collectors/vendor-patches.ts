@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 import { safeFetch } from '@/lib/security/safe-fetch';
 /**
  * Vendor security advisories collector — fetches RSS feeds from major
@@ -66,7 +67,7 @@ const VENDOR_FEEDS: VendorFeed[] = [
   // HTML page (which breaks the XML parser) and the update guide is a JSON API.
   // Microsoft CVEs surface via NVD/KEV + the @MsftSecIntel X feed instead.
   // Apple — TODO: scrape — Apple does not publish a clean security RSS feed.
-  // The collector falls through to DEMO_ADVISORIES for vendor='apple'.
+  // The collector falls through to demoData(DEMO_ADVISORIES) for vendor='apple'.
   // Ubuntu USN
   {
     vendor: 'ubuntu',
@@ -261,7 +262,7 @@ async function parseVendorFeed(feed: VendorFeed, limit: number): Promise<Advisor
 
 /**
  * Fetch vendor security advisories. Pass a single vendor to filter; omit for all.
- * Returns DEMO_ADVISORIES on total failure — never throws.
+ * Returns demoData(DEMO_ADVISORIES) on total failure — never throws.
  */
 export async function fetchVendorAdvisories(
   vendor?: VendorKey,
@@ -278,29 +279,26 @@ export async function fetchVendorAdvisories(
 
   if (isBackedOff('vendor_patches')) {
     return vendor
-      ? DEMO_ADVISORIES.filter((a) => (a.title ?? '').toLowerCase().includes(vendor)).slice(
-          0,
-          limit,
-        )
-      : DEMO_ADVISORIES.slice(0, limit);
+      ? demoData(DEMO_ADVISORIES)
+          .filter((a) => (a.title ?? '').toLowerCase().includes(vendor))
+          .slice(0, limit)
+      : demoData(DEMO_ADVISORIES).slice(0, limit);
   }
   if (!checkRateLimit('vendor_patches')) {
     return vendor
-      ? DEMO_ADVISORIES.filter((a) => (a.title ?? '').toLowerCase().includes(vendor)).slice(
-          0,
-          limit,
-        )
-      : DEMO_ADVISORIES.slice(0, limit);
+      ? demoData(DEMO_ADVISORIES)
+          .filter((a) => (a.title ?? '').toLowerCase().includes(vendor))
+          .slice(0, limit)
+      : demoData(DEMO_ADVISORIES).slice(0, limit);
   }
 
   const feeds = vendor ? VENDOR_FEEDS.filter((f) => f.vendor === vendor) : VENDOR_FEEDS;
 
   // If a vendor was requested but no feed exists (e.g., Apple), return demo.
   if (vendor && feeds.length === 0) {
-    return DEMO_ADVISORIES.filter((a) => (a.title ?? '').toLowerCase().includes(vendor)).slice(
-      0,
-      limit,
-    );
+    return demoData(DEMO_ADVISORIES)
+      .filter((a) => (a.title ?? '').toLowerCase().includes(vendor))
+      .slice(0, limit);
   }
 
   try {
@@ -327,11 +325,10 @@ export async function fetchVendorAdvisories(
       // Treat zero-result + all-failures as a soft 429 to throttle retries.
       if (!anyFulfilled) setBackoff('vendor_patches', 5 * 60_000);
       return vendor
-        ? DEMO_ADVISORIES.filter((a) => (a.title ?? '').toLowerCase().includes(vendor)).slice(
-            0,
-            limit,
-          )
-        : DEMO_ADVISORIES.slice(0, limit);
+        ? demoData(DEMO_ADVISORIES)
+            .filter((a) => (a.title ?? '').toLowerCase().includes(vendor))
+            .slice(0, limit)
+        : demoData(DEMO_ADVISORIES).slice(0, limit);
     }
 
     const trimmed = dedupeAdvisoriesByIdentity(advisories).slice(0, limit);
@@ -339,7 +336,7 @@ export async function fetchVendorAdvisories(
     return trimmed;
   } catch (err) {
     console.warn('[Vendor Patches] Unexpected failure:', err instanceof Error ? err.message : err);
-    return DEMO_ADVISORIES.slice(0, limit);
+    return demoData(DEMO_ADVISORIES).slice(0, limit);
   }
 }
 

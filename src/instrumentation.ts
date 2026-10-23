@@ -66,8 +66,8 @@ export async function register(): Promise<void> {
   if (process.env.NEXT_RUNTIME !== 'nodejs') return;
   const { connectRedis } = await import('@/lib/redis/client');
   await connectRedis();
-  if (process.env.ENABLE_AUTOMATION !== 'true' || process.env.ENABLE_X_PUBLISHING !== 'true')
-    return;
+  const { isCapabilityEnabled } = await import('./lib/security/capabilities');
+  if (!isCapabilityEnabled('automation') || !isCapabilityEnabled('x')) return;
   if (process.env.VERCEL) return; // production keep-alive is the Vercel cron
 
   setTimeout(() => {

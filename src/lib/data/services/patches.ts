@@ -1,9 +1,10 @@
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 import {
   fetchVendorAdvisories,
   getSupportedVendors,
   type VendorKey,
 } from '@/lib/data/collectors/vendor-patches';
+import { feedResponse } from '@/lib/data/feed-response';
 
 function withCacheHeaders(response: NextResponse): NextResponse {
   response.headers.set(
@@ -25,7 +26,7 @@ export async function GET(request: Request) {
   // vendors" — so a caller who asked to narrow got the full set back with no
   // way to tell. An absent param still means all vendors, which is correct.
   if (vendorParam && !supported.has(vendorParam)) {
-    return NextResponse.json(
+    return feedResponse(
       { error: 'invalid_vendor', vendor: vendorParam, valid: getSupportedVendors() },
       { status: 400 },
     );
@@ -35,14 +36,14 @@ export async function GET(request: Request) {
   try {
     const data = await fetchVendorAdvisories(vendor, limit);
     return withCacheHeaders(
-      NextResponse.json({
+      feedResponse({
         data,
         count: data.length,
         timestamp: new Date().toISOString(),
       }),
     );
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch vendor patches' },
       { status: 500 },
     );

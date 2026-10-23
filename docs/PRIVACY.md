@@ -4,7 +4,7 @@ Threat Deck is self-hosted. The maintainers do not operate a telemetry receiver 
 
 ## Data boundaries
 
-- **Local browser:** layout preferences and recent agent messages/briefs persist in localStorage. Clear site storage when leaving a shared device. Logout does not erase browser history, downloaded files or all localStorage.
+- **Local browser:** layout and non-sensitive agent preferences may persist. Chat transcripts, commands, attachment details and briefs are no longer written to localStorage; legacy records are discarded on upgrade. “Sign out & clear device” clears Threat Deck storage, revokes the browser session, and closes the dashboard in other tabs. It does not erase browser history, downloads or copies already held by external providers. Saved server-side briefs may return after a new login.
 - **PostgreSQL:** intelligence, saved briefs/conversations, drafts, audit events, attachments metadata, parsed file content, generated-media metadata, OAuth tokens (encrypted), jobs and budget reservations persist. Operators in one installation share most dashboard data. Attachments and private media content routes also enforce owner checks.
 - **Redis:** caches, rate windows, session-issued WebSocket ticket IDs and feed state persist according to TTLs. Compose enables persistence for operational Redis.
 - **Private Blob:** original uploads, optimized model inputs and unpublished generated media remain in your private store. Possession of a URL is not authorization. Explicit approved publication may copy bytes to X or email recipients; those external copies follow the recipient/provider's retention rules.
@@ -14,7 +14,11 @@ Threat Deck is self-hosted. The maintainers do not operate a telemetry receiver 
 
 ## Retention
 
-There is no comprehensive automatic retention policy in v0.1.0. Some caches and temporary jobs expire, but saved database rows, audit logs, private objects and backups may persist indefinitely. Deleting an attachment through the application is best-effort across database and object storage. Set your own database/object lifecycle and backup retention policies, verify deletion, and clear browser storage separately. Disconnecting an integration does not delete copies already held by its provider.
+There is no comprehensive automatic retention policy in v0.1.1. Saved intelligence, conversations, generated media, audit events and backups still need an installation-specific retention policy.
+
+Attachment deletion is tracked: a database transaction revokes access, removes extracted text, summaries and file pointers, and queues provider deletion. Storage failures remain visible in **Private files** and retry with bounded backoff. New uploads can take at least 16 minutes to reach final storage deletion while issued upload grants expire; in-flight previews are also tracked. The integrated server retries every minute. Serverless/native `next dev` installations must schedule `npm run files:cleanup` with their own database and Blob credentials, or use **Retry pending deletions**. Each run processes at most ten due files; failures retain the jobs. Monitor pending counts and the `attachment_file_deletions` table.
+
+The cleanup queue does not cover old orphaned objects that were never recorded, prior public Blob objects, backups, exported files or provider copies already sent. Review those separately during upgrade. Removing an attachment does not redact content previously quoted in saved conversations, briefs, drafts or published messages. Database and backup lifecycle controls remain the operator’s responsibility. Disconnecting an integration does not delete provider copies.
 
 ## Costs and limits
 

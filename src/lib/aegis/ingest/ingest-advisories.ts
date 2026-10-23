@@ -1,6 +1,7 @@
 import { fetchCertAdvisories } from '@/lib/data/collectors/breach-feed';
 import { fetchGithubAdvisories } from '@/lib/data/collectors/github-advisories';
 import { fetchVendorAdvisories } from '@/lib/data/collectors/vendor-patches';
+import { dataProvenance } from '@/lib/data/provenance';
 import { query } from '@/lib/db/client';
 import { recordRun } from './cursor';
 import type { IngestSummary } from './ingest-cves';
@@ -35,6 +36,7 @@ export async function ingestAdvisories(): Promise<IngestSummary> {
     const advisories = [...cert, ...vendor, ...ghsa];
 
     for (const adv of advisories) {
+      if (dataProvenance(adv).state === 'demo') continue;
       const advisoryId = adv.advisoryId?.trim();
       if (!advisoryId) continue; // nullable UNIQUE → null ids never dedupe.
       if (!isValidDate(adv.publishedAt)) continue; // NOT NULL timestamptz.

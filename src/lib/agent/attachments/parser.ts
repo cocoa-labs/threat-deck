@@ -1,10 +1,12 @@
 import { createHash } from 'node:crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import sharp from 'sharp';
+import { reserveAttachmentPreview } from '@/lib/db/queries/attachments';
 import { budgetedAIFetch } from '@/lib/security/budget';
 import { privatePathFromUrl, readPrivateFile } from '@/lib/storage/private-files';
 import { uploadVisualBlob } from '@/lib/storage/vercel-blob';
 import { parseOffice } from './office-parser';
+import { requireAttachmentIngestion } from './office-policy';
 import type { AgentAttachmentRow, AttachmentProcessingResult } from './types';
 import { MAX_ATTACHMENT_BYTES } from './validation';
 
@@ -100,10 +102,13 @@ async function parseImageAttachment(
       .jpeg({ quality: 86, mozjpeg: true })
       .toBuffer();
 
-    modelBlob = await uploadVisualBlob(`agent-attachments/previews/${row.id}.jpg`, preview, {
+    const previewPath = `agent-attachments/previews/${row.id}.jpg`;
+    await reserveAttachmentPreview(row.id, row.owner_email, previewPath);
+    modelBlob = await uploadVisualBlob(previewPath, preview, {
       contentType: 'image/jpeg',
       addRandomSuffix: false,
-      cacheControlMaxAge: 60 * 60 * 24 * 30,
+      cacheControlMaxAge: 0,
+      timeoutMs: 30_000,
     });
   }
 
@@ -267,6 +272,11 @@ let activeParsers = 0;
 export async function processAgentAttachment(
   row: AgentAttachmentRow,
 ): Promise<AttachmentProcessingResult> {
+  requireAttachmentIngestion({
+    kind: row.kind,
+    filename: row.filename,
+    contentType: row.content_type,
+  });
   if (activeParsers >= 2) throw new Error('parser_concurrency_limit');
   activeParsers++;
   try {

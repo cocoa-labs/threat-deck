@@ -21,6 +21,7 @@ export interface BlobUploadResult {
 }
 
 export interface UploadOptions {
+  timeoutMs?: number;
   contentType?: string;
   cacheControlMaxAge?: number; // seconds; default 1 year
   addRandomSuffix?: boolean; // default true to prevent collisions
@@ -39,6 +40,7 @@ export async function uploadVisualBlob(
 
   const result = await put(pathnamePrefix, data, {
     access: 'private',
+    ...(options.timeoutMs ? { abortSignal: AbortSignal.timeout(options.timeoutMs) } : {}),
     contentType: options.contentType ?? 'application/octet-stream',
     cacheControlMaxAge: options.cacheControlMaxAge ?? 0,
     addRandomSuffix: options.addRandomSuffix ?? true,
@@ -53,7 +55,7 @@ export async function uploadVisualBlob(
 }
 
 export async function deleteVisualBlob(pathname: string): Promise<void> {
-  await del(pathname);
+  await del(pathname, { abortSignal: AbortSignal.timeout(10_000) });
 }
 
 export async function headVisualBlob(pathname: string): Promise<BlobUploadResult | null> {

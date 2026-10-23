@@ -1,5 +1,6 @@
 import { spawn } from 'node:child_process';
 import { join } from 'node:path';
+import { requireAttachmentIngestion } from './office-policy';
 
 export function parseOffice(
   kind: 'docx' | 'spreadsheet',
@@ -9,6 +10,9 @@ export function parseOffice(
   summary: string;
   structured: Record<string, unknown>;
 }> {
+  if (process.env.ENABLE_OFFICE_INGESTION !== 'true')
+    return Promise.reject(new Error('office_ingestion_disabled'));
+  requireAttachmentIngestion({ kind, filename: kind === 'docx' ? 'input.docx' : 'input.xlsx' });
   return new Promise((resolve, reject) => {
     const child = spawn(
       process.execPath,

@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 import { safeFetch } from '@/lib/security/safe-fetch';
 import type { WhaleTransaction } from '@/lib/types';
 import { checkRateLimit, getCached, setCache } from '../rate-limiter';
@@ -78,11 +79,11 @@ export async function fetchWhaleTransactions(params?: WhaleParams): Promise<Whal
 
   const apiKey = API_KEY();
   if (!apiKey) {
-    return filterWhales(DEMO_WHALES, params);
+    return filterWhales(demoData(DEMO_WHALES), params);
   }
 
   if (!checkRateLimit('whale_alert')) {
-    return filterWhales(DEMO_WHALES, params);
+    return filterWhales(demoData(DEMO_WHALES), params);
   }
 
   try {
@@ -99,13 +100,13 @@ export async function fetchWhaleTransactions(params?: WhaleParams): Promise<Whal
 
     if (!res.ok) {
       console.warn(`[Whales] Whale Alert API returned ${res.status}`);
-      return filterWhales(DEMO_WHALES, params);
+      return filterWhales(demoData(DEMO_WHALES), params);
     }
 
     const data: WhaleAlertResponse = await res.json();
 
     if (!data.transactions || data.transactions.length === 0) {
-      return filterWhales(DEMO_WHALES, params);
+      return filterWhales(demoData(DEMO_WHALES), params);
     }
 
     const transactions: WhaleTransaction[] = data.transactions.map((tx) => {
@@ -137,7 +138,7 @@ export async function fetchWhaleTransactions(params?: WhaleParams): Promise<Whal
       '[Whales] Failed to fetch transactions:',
       error instanceof Error ? error.message : error,
     );
-    return filterWhales(DEMO_WHALES, params);
+    return filterWhales(demoData(DEMO_WHALES), params);
   }
 }
 

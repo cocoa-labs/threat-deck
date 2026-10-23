@@ -5,6 +5,7 @@
  */
 
 import { isRedisConnected, redis } from '@/lib/redis/client';
+import { stampProvenance } from './provenance';
 
 interface RateLimitEntry {
   count: number;
@@ -38,7 +39,7 @@ export function isBackedOff(source: string): boolean {
   return true;
 }
 
-const CACHE_PREFIX = 'klammer:cache:';
+const CACHE_PREFIX = 'threatdeck:cache:v2:';
 
 // Requests per minute by source
 const RATE_LIMITS: Record<string, number> = {
@@ -160,11 +161,12 @@ export async function getCached<T>(key: string): Promise<T | null> {
     try {
       const raw = await redis.get(`${CACHE_PREFIX}${key}`);
       if (raw) {
-        const parsed = JSON.parse(raw) as T;
+        const entry = JSON.parse(raw) as CacheEntry;
+        if (!entry || !Number.isFinite(entry.expiresAt) || entry.expiresAt <= Date.now())
+          return null;
+        const parsed = entry.data as T;
         // Write-through to memory for speed on subsequent hits
-        const prefix = key.split(':')[0] ?? 'default';
-        const ttl = CACHE_TTL[prefix] ?? 300;
-        memCache.set(key, { data: parsed, expiresAt: Date.now() + ttl * 1000 });
+        memCache.set(key, entry);
         return parsed;
       }
     } catch {
@@ -189,16 +191,18 @@ export async function setCache(key: string, data: unknown, ttlOverride?: number)
   const prefix = key.split(':')[0] ?? 'default';
   const ttl = ttlOverride ?? CACHE_TTL[prefix] ?? 300;
 
+  const expiresAt = Date.now() + ttl * 1000;
+  stampProvenance(data, Date.now(), expiresAt);
   // Always write to memory (synchronous, fast)
   memCache.set(key, {
     data,
-    expiresAt: Date.now() + ttl * 1000,
+    expiresAt,
   });
 
   // Write-through to Redis (async, best-effort)
   if (isRedisConnected()) {
     try {
-      await redis.set(`${CACHE_PREFIX}${key}`, JSON.stringify(data), 'EX', ttl);
+      await redis.set(`${CACHE_PREFIX}${key}`, JSON.stringify({ data, expiresAt }), 'EX', ttl);
     } catch {
       // Redis write failed, memory cache still has it
     }

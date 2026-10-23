@@ -1,9 +1,10 @@
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 import {
   fetchMalwareBazaarSamples,
   fetchThreatfoxIndicators,
   fetchUrlhausIocs,
 } from '@/lib/data/collectors/threat-iocs';
+import { feedResponse } from '@/lib/data/feed-response';
 import type { IOC, IocType } from '@/lib/types';
 
 function withCacheHeaders(response: NextResponse): NextResponse {
@@ -67,14 +68,14 @@ export async function GET(request: Request) {
     const trimmed = iocs.slice(0, limit);
 
     return withCacheHeaders(
-      NextResponse.json({
+      feedResponse({
         data: trimmed,
         count: trimmed.length,
         timestamp: new Date().toISOString(),
       }),
     );
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch IOCs' },
       { status: 500 },
     );

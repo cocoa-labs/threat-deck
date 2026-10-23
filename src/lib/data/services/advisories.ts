@@ -1,10 +1,11 @@
-import { NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 import {
   type CertIssuer,
   fetchCertAdvisories,
   getSupportedCertIssuers,
 } from '@/lib/data/collectors/breach-feed';
 import { fetchVendorAdvisories, getSupportedVendors } from '@/lib/data/collectors/vendor-patches';
+import { feedResponse } from '@/lib/data/feed-response';
 import type { Advisory, CveSeverity } from '@/lib/types';
 
 function withCacheHeaders(response: NextResponse): NextResponse {
@@ -39,7 +40,7 @@ export async function GET(request: Request) {
     // `microsoft` et al are the likely mistake: they're vendors, and vendor
     // filtering lives on the sibling route.
     const isVendorName = (getSupportedVendors() as string[]).includes(issuerParam);
-    return NextResponse.json(
+    return feedResponse(
       {
         error: 'invalid_issuer',
         issuer: issuerParam,
@@ -53,7 +54,7 @@ export async function GET(request: Request) {
   }
 
   if (severityParam && !VALID_SEVERITIES.has(severityParam as CveSeverity)) {
-    return NextResponse.json(
+    return feedResponse(
       {
         error: 'invalid_severity',
         severity: severityParam,
@@ -110,14 +111,14 @@ export async function GET(request: Request) {
     const trimmed = advisories.slice(0, limit);
 
     return withCacheHeaders(
-      NextResponse.json({
+      feedResponse({
         data: trimmed,
         count: trimmed.length,
         timestamp: new Date().toISOString(),
       }),
     );
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch advisories' },
       { status: 500 },
     );

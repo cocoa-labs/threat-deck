@@ -1,7 +1,7 @@
 import type { HandleUploadBody } from '@vercel/blob/client';
 import { handleUpload } from '@vercel/blob/client';
+import { requireAttachmentIngestion } from '@/lib/agent/attachments/office-policy';
 import {
-  ALLOWED_ATTACHMENT_MIME_TYPES,
   MAX_ACTIVE_ATTACHMENTS,
   MAX_ATTACHMENT_BYTES,
   safeAttachmentPath,
@@ -9,6 +9,7 @@ import {
 } from '@/lib/agent/attachments/validation';
 import { auth } from '@/lib/auth';
 import { isEmailAllowed } from '@/lib/auth/allowlist';
+import { queueAttachmentFileDeletion } from '@/lib/db/queries/attachment-deletions';
 import {
   countActiveAttachmentsForOwner,
   createPendingAttachment,
@@ -69,6 +70,18 @@ async function routePOSTImplementation(request: Request): Promise<Response> {
   }
 
   try {
+    // Enforce file policy before the storage SDK even inspects credentials.
+    if (body.type === 'blob.generate-client-token') {
+      const payload = parseClientPayload(body.payload.clientPayload ?? null);
+      const checked = validateAttachmentInput({
+        id: typeof payload.id === 'string' ? payload.id : '',
+        filename: typeof payload.filename === 'string' ? payload.filename : '',
+        contentType: typeof payload.contentType === 'string' ? payload.contentType : undefined,
+        sizeBytes: typeof payload.sizeBytes === 'number' ? payload.sizeBytes : -1,
+      });
+      if (!checked.ok) throw new Error(checked.error);
+      requireAttachmentIngestion(checked);
+    }
     const jsonResponse = await handleUpload({
       request,
       body,
@@ -82,6 +95,7 @@ async function routePOSTImplementation(request: Request): Promise<Response> {
         const sizeBytes = typeof payload.sizeBytes === 'number' ? payload.sizeBytes : -1;
         const validated = validateAttachmentInput({ id, filename, contentType, sizeBytes });
         if (!validated.ok) throw new Error(validated.error);
+        requireAttachmentIngestion(validated);
 
         const expectedPrefix = `agent-attachments/uploads/${id}/`;
         if (!pathname.startsWith(expectedPrefix) || pathname !== safeAttachmentPath(id, filename)) {
@@ -103,7 +117,7 @@ async function routePOSTImplementation(request: Request): Promise<Response> {
         });
 
         return {
-          allowedContentTypes: [...ALLOWED_ATTACHMENT_MIME_TYPES],
+          allowedContentTypes: [validated.contentType],
           maximumSizeInBytes: MAX_ATTACHMENT_BYTES,
           validUntil: Date.now() + 15 * 60 * 1000,
           addRandomSuffix: false,
@@ -113,12 +127,20 @@ async function routePOSTImplementation(request: Request): Promise<Response> {
       },
       async onUploadCompleted({ blob, tokenPayload }) {
         const payload = parseTokenPayload(tokenPayload);
-        if (!payload || !isEmailAllowed(payload.ownerEmail)) throw new Error('unauthorized');
+        if (!payload) throw new Error('unauthorized');
         if (
           privatePathFromUrl(blob.url) !== blob.pathname ||
           !blob.pathname.startsWith(`agent-attachments/uploads/${payload.id}/`)
         )
           throw new Error('invalid_private_upload');
+        if (!isEmailAllowed(payload.ownerEmail)) {
+          await queueAttachmentFileDeletion({
+            id: payload.id,
+            ownerEmail: payload.ownerEmail,
+            pathname: blob.pathname,
+          });
+          return;
+        }
         await markAttachmentUploaded({
           id: payload.id,
           ownerEmail: payload.ownerEmail,

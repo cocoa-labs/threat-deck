@@ -1,3 +1,4 @@
+import { demoData } from '@/lib/data/fallback';
 /**
  * Threat IOC collector — fetches indicators of compromise from abuse.ch
  * free public APIs.
@@ -160,15 +161,15 @@ function buildAbusechHeaders(): Record<string, string> {
 
 /**
  * Fetch recent malicious URLs from URLhaus.
- * Returns DEMO_IOCS on failure — never throws.
+ * Returns demoData(DEMO_IOCS) on failure — never throws.
  */
 export async function fetchUrlhausIocs(limit: number = 100): Promise<IOC[]> {
   const cacheKey = `iocs:urlhaus:${limit}:v1`;
   const cached = await getCached<IOC[]>(cacheKey);
   if (cached) return cached;
 
-  if (isBackedOff('abusech')) return DEMO_IOCS.filter((i) => i.source === 'urlhaus');
-  if (!checkRateLimit('abusech')) return DEMO_IOCS.filter((i) => i.source === 'urlhaus');
+  if (isBackedOff('abusech')) return demoData(DEMO_IOCS).filter((i) => i.source === 'urlhaus');
+  if (!checkRateLimit('abusech')) return demoData(DEMO_IOCS).filter((i) => i.source === 'urlhaus');
 
   try {
     // URLhaus' recent-URLs endpoint is GET-only (POST → 405 "http_get_expected").
@@ -181,16 +182,16 @@ export async function fetchUrlhausIocs(limit: number = 100): Promise<IOC[]> {
 
     if (res.status === 429) {
       setBackoff('abusech', 15 * 60_000);
-      return DEMO_IOCS.filter((i) => i.source === 'urlhaus');
+      return demoData(DEMO_IOCS).filter((i) => i.source === 'urlhaus');
     }
     if (!res.ok) {
       console.warn(`[IOC] URLhaus returned ${res.status} — abuse.ch may require ABUSECH_AUTH_KEY`);
-      return DEMO_IOCS.filter((i) => i.source === 'urlhaus');
+      return demoData(DEMO_IOCS).filter((i) => i.source === 'urlhaus');
     }
 
     const data = (await res.json()) as UrlhausResponse;
     if (data.query_status !== 'ok' || !data.urls) {
-      return DEMO_IOCS.filter((i) => i.source === 'urlhaus');
+      return demoData(DEMO_IOCS).filter((i) => i.source === 'urlhaus');
     }
 
     const iocs: IOC[] = data.urls.slice(0, limit).map((e) => ({
@@ -204,27 +205,29 @@ export async function fetchUrlhausIocs(limit: number = 100): Promise<IOC[]> {
     }));
 
     const filtered = iocs.filter((i) => i.value);
-    if (filtered.length === 0) return DEMO_IOCS.filter((i) => i.source === 'urlhaus');
+    if (filtered.length === 0) return demoData(DEMO_IOCS).filter((i) => i.source === 'urlhaus');
 
     await setCache(cacheKey, filtered);
     return filtered;
   } catch (err) {
     console.warn('[IOC] URLhaus fetch failed:', err instanceof Error ? err.message : err);
-    return DEMO_IOCS.filter((i) => i.source === 'urlhaus');
+    return demoData(DEMO_IOCS).filter((i) => i.source === 'urlhaus');
   }
 }
 
 /**
  * Fetch recent malware samples from MalwareBazaar.
- * Returns DEMO_IOCS on failure — never throws.
+ * Returns demoData(DEMO_IOCS) on failure — never throws.
  */
 export async function fetchMalwareBazaarSamples(limit: number = 100): Promise<IOC[]> {
   const cacheKey = `iocs:malwarebazaar:${limit}:v1`;
   const cached = await getCached<IOC[]>(cacheKey);
   if (cached) return cached;
 
-  if (isBackedOff('abusech')) return DEMO_IOCS.filter((i) => i.source === 'malwarebazaar');
-  if (!checkRateLimit('abusech')) return DEMO_IOCS.filter((i) => i.source === 'malwarebazaar');
+  if (isBackedOff('abusech'))
+    return demoData(DEMO_IOCS).filter((i) => i.source === 'malwarebazaar');
+  if (!checkRateLimit('abusech'))
+    return demoData(DEMO_IOCS).filter((i) => i.source === 'malwarebazaar');
 
   try {
     const res = await fetchWithTimeout(MALWARE_BAZAAR_URL, {
@@ -236,18 +239,18 @@ export async function fetchMalwareBazaarSamples(limit: number = 100): Promise<IO
 
     if (res.status === 429) {
       setBackoff('abusech', 15 * 60_000);
-      return DEMO_IOCS.filter((i) => i.source === 'malwarebazaar');
+      return demoData(DEMO_IOCS).filter((i) => i.source === 'malwarebazaar');
     }
     if (!res.ok) {
       console.warn(
         `[IOC] MalwareBazaar returned ${res.status} — abuse.ch may require ABUSECH_AUTH_KEY`,
       );
-      return DEMO_IOCS.filter((i) => i.source === 'malwarebazaar');
+      return demoData(DEMO_IOCS).filter((i) => i.source === 'malwarebazaar');
     }
 
     const data = (await res.json()) as MbResponse;
     if (data.query_status !== 'ok' || !data.data) {
-      return DEMO_IOCS.filter((i) => i.source === 'malwarebazaar');
+      return demoData(DEMO_IOCS).filter((i) => i.source === 'malwarebazaar');
     }
 
     const iocs: IOC[] = data.data.slice(0, limit).map((e) => ({
@@ -265,27 +268,29 @@ export async function fetchMalwareBazaarSamples(limit: number = 100): Promise<IO
     }));
 
     const filtered = iocs.filter((i) => i.value);
-    if (filtered.length === 0) return DEMO_IOCS.filter((i) => i.source === 'malwarebazaar');
+    if (filtered.length === 0)
+      return demoData(DEMO_IOCS).filter((i) => i.source === 'malwarebazaar');
 
     await setCache(cacheKey, filtered);
     return filtered;
   } catch (err) {
     console.warn('[IOC] MalwareBazaar fetch failed:', err instanceof Error ? err.message : err);
-    return DEMO_IOCS.filter((i) => i.source === 'malwarebazaar');
+    return demoData(DEMO_IOCS).filter((i) => i.source === 'malwarebazaar');
   }
 }
 
 /**
  * Fetch recent IOCs from ThreatFox (last 1 day).
- * Returns DEMO_IOCS on failure — never throws.
+ * Returns demoData(DEMO_IOCS) on failure — never throws.
  */
 export async function fetchThreatfoxIndicators(limit: number = 100): Promise<IOC[]> {
   const cacheKey = `iocs:threatfox:${limit}:v1`;
   const cached = await getCached<IOC[]>(cacheKey);
   if (cached) return cached;
 
-  if (isBackedOff('abusech')) return DEMO_IOCS.filter((i) => i.source === 'threatfox');
-  if (!checkRateLimit('abusech')) return DEMO_IOCS.filter((i) => i.source === 'threatfox');
+  if (isBackedOff('abusech')) return demoData(DEMO_IOCS).filter((i) => i.source === 'threatfox');
+  if (!checkRateLimit('abusech'))
+    return demoData(DEMO_IOCS).filter((i) => i.source === 'threatfox');
 
   try {
     const res = await fetchWithTimeout(THREATFOX_URL, {
@@ -297,18 +302,18 @@ export async function fetchThreatfoxIndicators(limit: number = 100): Promise<IOC
 
     if (res.status === 429) {
       setBackoff('abusech', 15 * 60_000);
-      return DEMO_IOCS.filter((i) => i.source === 'threatfox');
+      return demoData(DEMO_IOCS).filter((i) => i.source === 'threatfox');
     }
     if (!res.ok) {
       console.warn(
         `[IOC] ThreatFox returned ${res.status} — abuse.ch may require ABUSECH_AUTH_KEY`,
       );
-      return DEMO_IOCS.filter((i) => i.source === 'threatfox');
+      return demoData(DEMO_IOCS).filter((i) => i.source === 'threatfox');
     }
 
     const data = (await res.json()) as TfResponse;
     if (data.query_status !== 'ok' || !data.data) {
-      return DEMO_IOCS.filter((i) => i.source === 'threatfox');
+      return demoData(DEMO_IOCS).filter((i) => i.source === 'threatfox');
     }
 
     const iocs: IOC[] = data.data.slice(0, limit).map((e) => ({
@@ -327,12 +332,12 @@ export async function fetchThreatfoxIndicators(limit: number = 100): Promise<IOC
     }));
 
     const filtered = iocs.filter((i) => i.value);
-    if (filtered.length === 0) return DEMO_IOCS.filter((i) => i.source === 'threatfox');
+    if (filtered.length === 0) return demoData(DEMO_IOCS).filter((i) => i.source === 'threatfox');
 
     await setCache(cacheKey, filtered);
     return filtered;
   } catch (err) {
     console.warn('[IOC] ThreatFox fetch failed:', err instanceof Error ? err.message : err);
-    return DEMO_IOCS.filter((i) => i.source === 'threatfox');
+    return demoData(DEMO_IOCS).filter((i) => i.source === 'threatfox');
   }
 }

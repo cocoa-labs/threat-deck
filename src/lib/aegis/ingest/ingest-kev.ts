@@ -1,4 +1,5 @@
 import { fetchKevCatalog } from '@/lib/data/collectors/cve-feed';
+import { dataProvenance } from '@/lib/data/provenance';
 import { query } from '@/lib/db/client';
 import { recordRun } from './cursor';
 import type { IngestSummary } from './ingest-cves';
@@ -26,6 +27,7 @@ export async function ingestKev(): Promise<IngestSummary> {
   try {
     const kevs = await fetchKevCatalog(500);
     for (const k of kevs) {
+      if (dataProvenance(k).state === 'demo') continue;
       try {
         await query(
           `INSERT INTO aegis_kev

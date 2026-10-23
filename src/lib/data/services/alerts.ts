@@ -1,3 +1,4 @@
+import { feedResponse } from '@/lib/data/feed-response';
 /**
  * The dashboard's read window onto `aegis_pipeline_alerts` — the alert spine.
  *
@@ -9,7 +10,6 @@
  * `location` — the gate the hero breaking-alert overlay reads.
  */
 
-import { NextResponse } from 'next/server';
 import { resolveAlertGeo } from '@/lib/aegis/alert-geo';
 import { toAlertHistoryItem } from '@/lib/aegis/alert-mapper';
 import { listPipelineAlerts, type PipelineAlertStatus } from '@/lib/db/queries/pipeline-alerts';
@@ -66,13 +66,13 @@ export async function GET(request: Request) {
     const geo = await resolveAlertGeo(rows);
     const data = rows.map((row) => toAlertHistoryItem(row, geo.get(String(row.id))));
 
-    return NextResponse.json({
+    return feedResponse({
       data,
       count: data.length,
       timestamp: new Date().toISOString(),
     });
   } catch (err) {
-    return NextResponse.json(
+    return feedResponse(
       { error: err instanceof Error ? err.message : 'Failed to fetch alerts' },
       { status: 500 },
     );
