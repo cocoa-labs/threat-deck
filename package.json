@@ -65,7 +65,7 @@
     "graphology-layout-forceatlas2": "^0.10.1",
     "gsap": "^3.14.2",
     "hls.js": "^1.6.15",
-    "ioredis": "^5.9.2",
+    "ioredis": "^6.0.0",
     "ipaddr.js": "2.3.0",
     "lightweight-charts": "^5.1.0",
     "lucide-react": "^0.563.0",
