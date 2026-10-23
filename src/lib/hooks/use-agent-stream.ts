@@ -1195,6 +1195,7 @@ export function useAgentStream() {
         const decoder = new TextDecoder();
         let buffer = '';
         let fullText = '';
+        let isError = false;
 
         // Phase 14 — three-mode posture marker handling.
         //
@@ -1372,6 +1373,11 @@ export function useAgentStream() {
                   };
                 }
               } else if (parsed.type === 'error') {
+                isError = true;
+                fullText += `${fullText ? '\n\n' : ''}${parsed.data}`;
+                clearStreamingText();
+                appendStreamingText(stripAllModeMarkers(fullText));
+                markerProcessed = true;
                 setStatus('error');
               }
             } catch {
@@ -1432,7 +1438,7 @@ export function useAgentStream() {
           .filter((item): item is NonNullable<typeof item> => item != null);
 
         setLatestResponse(
-          { text: fullText, toolCalls: [], model: 'claude-sonnet-4-6' },
+          { text: fullText, toolCalls: [], model: 'claude-sonnet-4-6', isError },
           channelSwitchRef.current ?? undefined,
           validation.repairCount > 0 ? validation.repairCount : undefined,
           youtubeResultsRef.current ?? undefined,
@@ -1460,10 +1466,11 @@ export function useAgentStream() {
           generatedMediaRef.current,
           emailWhenReadyRef.current,
         );
-        completeConversation(conversationId, fullText);
+        if (isError) failConversation(conversationId);
+        else completeConversation(conversationId, fullText);
 
         // If this conversation generated a brief, save it
-        if (pendingBriefRef.current && fullText.length > 100) {
+        if (!isError && pendingBriefRef.current && fullText.length > 100) {
           const { topic, format } = pendingBriefRef.current;
           const briefContent = stripPreamble(fullText);
           const headline = extractHeadline(briefContent, topic);
@@ -1493,7 +1500,7 @@ export function useAgentStream() {
         }
 
         // Auto-extract locations from agent response for ephemeral markers
-        if (fullText.length > 50) {
+        if (!isError && fullText.length > 50) {
           try {
             const { extractLocationsFromText } = await import('@/lib/agent/extract-locations');
             const locations = extractLocationsFromText(fullText);

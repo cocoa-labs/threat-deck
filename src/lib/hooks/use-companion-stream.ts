@@ -781,6 +781,7 @@ export function useCompanionStream() {
         const decoder = new TextDecoder();
         let buffer = '';
         let fullText = '';
+        let isError = false;
 
         // Phase 14 — three-mode posture marker handling (mirror of
         // use-agent-stream.ts per Rule #23 dual-stream marker parity). The
@@ -918,6 +919,11 @@ export function useCompanionStream() {
                   };
                 }
                 // NOTE: __brief markers are intentionally NOT processed in companion mode
+              } else if (parsed.type === 'error') {
+                isError = true;
+                fullText += `${fullText ? '\n\n' : ''}${parsed.data}`;
+                setCompanionStreamingText(stripAllModeMarkers(fullText));
+                markerProcessed = true;
               }
             } catch {
               // Malformed SSE line, skip
@@ -956,6 +962,7 @@ export function useCompanionStream() {
           id: `msg-${Date.now()}-assistant`,
           role: 'assistant',
           content: fullText,
+          isError,
           timestamp: new Date().toISOString(),
           ...(channelSwitchRef.current ? { channelSwitch: channelSwitchRef.current } : {}),
           ...(youtubeResultsRef.current ? { youtubeResults: youtubeResultsRef.current } : {}),
@@ -971,6 +978,7 @@ export function useCompanionStream() {
         useAgentStore.getState().addMessage({
           role: 'assistant',
           content: fullText,
+          isError,
           timestamp: Date.now(),
           origin: 'companion',
           agentMode: detectedAgentMode,

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { ingestProvenance } from '@/lib/aegis/ingest/provenance';
 import { query } from '@/lib/db/client';
 import { withRoutePolicy } from '@/lib/security/route-policy';
 
@@ -76,7 +77,9 @@ async function routeGETImplementation(request: Request) {
 
     const result = await query<Record<string, unknown>>(sql, params);
 
+    const provenance = await ingestProvenance('threat-actors');
     const data = result.rows.map((r) => ({
+      _provenance: provenance,
       actorId: r.actor_id,
       displayName: r.display_name,
       aliases: r.aliases,
@@ -101,6 +104,7 @@ async function routeGETImplementation(request: Request) {
       NextResponse.json({
         data,
         count: data.length,
+        provenance,
         timestamp: new Date().toISOString(),
       }),
     );

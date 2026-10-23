@@ -46,22 +46,26 @@ The local login bypass requires an explicit flag, development mode, and a loopba
 
 ## Optional integrations
 
+For a self-hosted custom server (`npm run dev:full` or `npm start`), explicitly set `ENABLE_AEGIS_INGEST=true` to populate the database-backed panels on startup and refresh hourly. This collects public cyber feeds without enabling autonomous AI, email, or publishing. The first NVD import covers the last day of modifications and can take several minutes with the public rate limit; subsequent runs fetch deltas. MITRE profiles do not include analyst-assigned scores, campaign history, or verified activity dates. Those fields remain empty until supported data is supplied. Plain `next dev` and serverless hosting need a separate ingestion runner.
+
 Credentials alone never enable optional capabilities. Set the matching flag deliberately:
 
 | Feature | Flag | Additional configuration |
 | --- | --- | --- |
-| AI analyst | `ENABLE_AI` | Anthropic key; positive daily reservation budget |
+| AI analyst | `ENABLE_AI` | Anthropic key; optional operator-set spending cap |
 | Email publishing | `ENABLE_OUTBOUND_EMAIL` | Verified sender, allowed recipients |
 | X publishing | `ENABLE_X_PUBLISHING` | Your X handle, OAuth app, independent encryption key |
 | Gmail access | `ENABLE_GMAIL_ACCESS` | Your delegated service account and selected mailbox |
-| Images/video | `ENABLE_MEDIA_GENERATION` | Private Blob store, provider key, positive media budget |
+| Images/video | `ENABLE_MEDIA_GENERATION` | Private Blob store, provider key; optional operator-set spending cap |
 | Scheduled jobs | `ENABLE_AUTOMATION` | Scheduler, random `CRON_SECRET`, relevant feature flags |
 | Demonstration samples | `ENABLE_DEMO_DATA` | Separate demonstration installation; disables email/X publishing, jobs and public feeds |
 | Public Cyber Wire | `ENABLE_PUBLIC_FEED` | Explicit consent to expose the feed's selected database content |
 
 Office/spreadsheet ingestion is disabled by default, including DOCX, XLS/XLSX, CSV and TSV. The existing subprocess has resource limits but is not an OS sandbox. Leave `ENABLE_OFFICE_INGESTION=false` until you supply filesystem/network isolation; the standard file picker accepts images, PDFs and plain text. The experimental server override is not a supported security boundary.
 
-The X composer and agent publishing tools create drafts. Inspect the text, recipients and attachments in the approval queue before approving publication. An edit after review requires another review. Failed or uncertain publication attempts stay claimed to avoid duplicates; review the provider's state before creating a replacement draft. Legacy direct X publication endpoints return HTTP 410.
+After a Max response, choose **Post to X** to edit a single post or a two-post thread. **Create image** in the composer generates a private preview when media is configured. **Refine with Max** is an explicit AI request; opening the composer does not spend AI tokens. Choose **Review draft** to inspect the saved text and attachments, then approve publication. Existing drafts are available through the **Drafts** button without covering the conversation. An edit after review requires another review. Failed or uncertain publication attempts stay claimed to avoid duplicates; review the provider's state before creating a replacement draft. Legacy direct X publication endpoints return HTTP 410.
+
+Application spending caps are optional: leave `ANTHROPIC_DAILY_CAP_USD` and `OUTBOUND_VISUAL_DAILY_SPEND_USD_HARD` unset, blank, or `0` for no application cap. Set a positive USD value if you want a rolling 24-hour cap. Your provider's billing and account limits still apply. Upgrades preserve values already present in your own environment; see [the v0.1.2 upgrade instructions](DEPLOY.md#upgrading-to-v012).
 
 See [privacy and costs](docs/PRIVACY.md), [security architecture](docs/SECURITY-ARCHITECTURE.md), and [third-party terms](THIRD_PARTY_NOTICES.md).
 

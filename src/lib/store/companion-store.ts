@@ -45,6 +45,7 @@ export interface CompanionMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: string;
+  isError?: boolean;
   channelSwitch?: ChannelSwitchData;
   youtubeVideo?: YouTubeVideoContext;
   youtubeResults?: {

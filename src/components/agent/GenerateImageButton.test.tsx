@@ -29,7 +29,7 @@ function renderButton(
   act(() => {
     root?.render(<GenerateImageButton {...props} />);
   });
-  return container;
+  return document.body;
 }
 
 function buttonByText(container: HTMLElement, text: string): HTMLButtonElement {
@@ -80,7 +80,7 @@ describe('GenerateImageButton (fire-and-close launcher)', () => {
     );
 
     const container = renderButton();
-    await clickAndFlush(buttonByText(container, 'IMG'));
+    await clickAndFlush(buttonByText(container, 'Create image'));
     await clickAndFlush(buttonByText(container, 'Generate'));
 
     expect(container.textContent).toContain('HTTP 500 Internal Error');
@@ -100,7 +100,7 @@ describe('GenerateImageButton (fire-and-close launcher)', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     const container = renderButton({ ...BUTTON_PROPS, onImageReady });
-    await clickAndFlush(buttonByText(container, 'IMG'));
+    await clickAndFlush(buttonByText(container, 'Create image'));
     await clickAndFlush(buttonByText(container, 'Generate'));
 
     // Seeded a PENDING attachment (carrying the pollUrl) for the drawer poller.
@@ -133,7 +133,7 @@ describe('GenerateImageButton (fire-and-close launcher)', () => {
     );
 
     const container = renderButton({ ...BUTTON_PROPS, onImageReady });
-    await clickAndFlush(buttonByText(container, 'IMG'));
+    await clickAndFlush(buttonByText(container, 'Create image'));
     await clickAndFlush(buttonByText(container, 'Generate'));
 
     expect(onImageReady).toHaveBeenCalledWith(
@@ -163,7 +163,7 @@ describe('GenerateImageButton (fire-and-close launcher)', () => {
       },
     });
 
-    await clickAndFlush(buttonByText(container, 'IMG'));
+    await clickAndFlush(buttonByText(container, 'Create image'));
 
     expect(container.textContent).toContain('Detected brief');
     expect(container.textContent).toContain('critical');

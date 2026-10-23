@@ -107,7 +107,7 @@ export function ModePillRow({ lockedMode, detectedMode, onLockToggle }: ModePill
           : '1px solid transparent';
         const background = isLocked ? 'rgba(0, 255, 65, 0.06)' : 'transparent';
         const boxShadow = isLocked ? '0 0 6px rgba(0, 255, 65, 0.2)' : 'none';
-        const textDecoration = isDetectedPassive || isEscalated ? 'underline' : 'none';
+        const textDecorationLine = isDetectedPassive || isEscalated ? 'underline' : 'none';
 
         const handleClick = () => {
           onLockToggle(isLocked ? null : mode.id);
@@ -126,7 +126,7 @@ export function ModePillRow({ lockedMode, detectedMode, onLockToggle }: ModePill
                 border,
                 background,
                 boxShadow,
-                textDecoration,
+                textDecorationLine,
                 textDecorationThickness: '1px',
                 textUnderlineOffset: '3px',
                 padding: '2px 8px',

@@ -1,9 +1,9 @@
 /**
- * UI tests for the "Post to X" button as a BACKGROUND LAUNCHER. Clicking Post
- * fires POST /api/outbound/x/review (a reload-safe background job), registers it
- * in the store, and closes the modal immediately — it no longer posts inline.
+ * UI tests for the X draft composer. Review draft stages the reviewed text and
+ * hands off to the publication queue. Only explicit approval can publish.
  */
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, type ComponentProps } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -36,9 +36,15 @@ function renderButton(props: ComponentProps<typeof PostToXButton> = BUTTON_PROPS
   document.body.appendChild(container);
   root = createRoot(container);
   act(() => {
-    root?.render(<PostToXButton {...props} />);
+    root?.render(
+      <QueryClientProvider
+        client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}
+      >
+        <PostToXButton {...props} />
+      </QueryClientProvider>,
+    );
   });
-  return container;
+  return document.body;
 }
 
 function buttonByText(container: HTMLElement, text: string): HTMLButtonElement {
@@ -71,7 +77,7 @@ async function clickAndFlush(button: HTMLButtonElement): Promise<void> {
 
 function jobsBody(fetchMock: ReturnType<typeof vi.fn>): Record<string, unknown> {
   const call = fetchMock.mock.calls.find(([url]) => url === '/api/outbound/x/review');
-  if (!call) throw new Error('x/jobs launch call not found');
+  if (!call) throw new Error('X draft staging call not found');
   return JSON.parse(String((call[1] as RequestInit).body)) as Record<string, unknown>;
 }
 
@@ -121,7 +127,7 @@ afterEach(() => {
   useAgentStore.setState({ xPostJobs: [] });
 });
 
-describe('PostToXButton (background launcher)', () => {
+describe('PostToXButton (reviewable drafts)', () => {
   it('opens the two-post composer once X is connected', async () => {
     vi.stubGlobal(
       'fetch',
@@ -161,9 +167,10 @@ describe('PostToXButton (background launcher)', () => {
 
     const container = renderButton();
     await clickAndFlush(buttonByText(container, 'Post to X'));
-    await clickAndFlush(exactButtonByText(container, 'Save for approval'));
+    await clickAndFlush(exactButtonByText(container, 'Refine with Max'));
+    await clickAndFlush(exactButtonByText(container, 'Review draft'));
 
-    // Fired the background job endpoint, NOT the synchronous post route.
+    // Saving uses the draft endpoint and never publishes.
     const body = jobsBody(fetchMock);
     expect(body.publishMode).toBe('two_post');
     expect(String(body.text).length).toBeGreaterThan(0);
@@ -172,7 +179,7 @@ describe('PostToXButton (background launcher)', () => {
       expect.objectContaining({ method: 'POST' }),
     );
 
-    // Registered in the store (toast + poller take over) and modal closed.
+    // No publishing job starts; the composer closes for draft review.
     expect(useAgentStore.getState().xPostJobs).toHaveLength(0);
     expect(container.textContent).not.toContain('Two-post thread');
   });
@@ -198,7 +205,8 @@ describe('PostToXButton (background launcher)', () => {
 
     const container = renderButton();
     await clickAndFlush(buttonByText(container, 'Post to X'));
-    await clickAndFlush(exactButtonByText(container, 'Save for approval'));
+    await clickAndFlush(exactButtonByText(container, 'Refine with Max'));
+    await clickAndFlush(exactButtonByText(container, 'Review draft'));
 
     const body = jobsBody(fetchMock);
     expect(body.text).toBe(

@@ -13,6 +13,7 @@
   "src/lib/aegis/ingest/ingest-cves.test.ts",
   "src/lib/aegis/ingest/ingest-iocs.test.ts",
   "src/lib/aegis/ingest/ingest-kev.test.ts",
+  "src/lib/aegis/ingest/ingest-threat-actors.integration.test.ts",
   "src/lib/aegis/severity-history-emitter.test.ts",
   "src/lib/agent/monitor-matches-tool.test.ts",
   "src/lib/agent/monitor-tool-handlers.test.ts",

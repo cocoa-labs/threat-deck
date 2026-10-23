@@ -238,9 +238,9 @@
     {
       "path": "src/lib/agent/client.ts",
       "rule": "javascript.lang.security.audit.unsafe-formatstring",
-      "line": 548,
-      "sha256": "671a11131cfe69d5fd41104c45b14af67d58c18465e56c7637173c834fdad14d",
-      "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
+      "line": 564,
+      "sha256": "653e891b6f52ae9e89ad937db8c6db4f0c5ac03e7363995dd1fd22fbf0639fb3",
+      "disposition": "Re-reviewed for v0.1.2: the format prefix contains only a closed AgentErrorCategory union; provider error text is a separate JavaScript console argument. No shell, SQL or native printf execution. Logs remain private to the installation."
     },
     {
       "path": "src/lib/data/collectors/breach-feed.ts",
@@ -455,8 +455,8 @@
     {
       "path": "src/lib/hooks/use-agent-stream.ts",
       "rule": "javascript.lang.security.audit.unsafe-formatstring",
-      "line": 1425,
-      "sha256": "9bf0f6cb3bfd17fe654d220607fe98f568844b83c3124fac1701a8a9a0980a78",
+      "line": 1431,
+      "sha256": "fe5fe630870ebcd40923b42ad2e7d6bd2c5e8eab1ca974999eca5b0595ad21ae",
       "disposition": "JavaScript console/logger formatting only. These calls do not execute shell, SQL, or native printf memory operations. Logs are private to the installation."
     }
   ],
@@ -536,14 +536,14 @@
     {
       "path": "src/lib/hooks/use-agent-stream.ts",
       "message": "Syntax error at line src/lib/hooks/use-agent-stream.ts:1017:\n `,` was unexpected",
-      "sha256": "9bf0f6cb3bfd17fe654d220607fe98f568844b83c3124fac1701a8a9a0980a78",
-      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+      "sha256": "fe5fe630870ebcd40923b42ad2e7d6bd2c5e8eab1ca974999eca5b0595ad21ae",
+      "disposition": "Re-reviewed for v0.1.2: the existing inline import types and React ref union/generic syntax are valid TypeScript but exceed this pinned community parser. New error-state handling and store flags were reviewed manually and pass TypeScript, ESLint, streaming tests and browser regressions. Semgrep coverage remains partial in this file; changes require a fresh disposition."
     },
     {
       "path": "src/lib/hooks/use-companion-stream.ts",
       "message": "Syntax error at line src/lib/hooks/use-companion-stream.ts:648:\n `|` was unexpected",
-      "sha256": "32802e6ad4fc6cf019b93b2d9463de8ab387ebe2e2f3cd3f8233107e194444a1",
-      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+      "sha256": "9a93f2e4f6ffa68f2878b7a4021a8eaca59875fea2bea400c9e94be0fe6ebc96",
+      "disposition": "Re-reviewed for v0.1.2: the existing inline import types and React ref union/generic syntax are valid TypeScript but exceed this pinned community parser. New error-state handling and store flags were reviewed manually and pass TypeScript, ESLint, streaming tests and browser regressions. Semgrep coverage remains partial in this file; changes require a fresh disposition."
     },
     {
       "path": "src/lib/outbound/publish.test.ts",
@@ -553,15 +553,15 @@
     },
     {
       "path": "src/lib/store/agent-store.ts",
-      "message": "Syntax error at line src/lib/store/agent-store.ts:25:\n `import('@/lib/store/youtube-store').YouTubeVideo` was unexpected",
-      "sha256": "5c5e0757e07d05d96bc25ff1fea4f55aaecff4e8056eca46dd51488528ad204d",
-      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+      "message": "Syntax error at line src/lib/store/agent-store.ts:26:\n `import('@/lib/store/youtube-store').YouTubeVideo` was unexpected",
+      "sha256": "f18ee7540210e837c216798b18c714251a80eebeca20850dc0b891c0479872c9",
+      "disposition": "Re-reviewed for v0.1.2: the existing inline import types and React ref union/generic syntax are valid TypeScript but exceed this pinned community parser. New error-state handling and store flags were reviewed manually and pass TypeScript, ESLint, streaming tests and browser regressions. Semgrep coverage remains partial in this file; changes require a fresh disposition."
     },
     {
       "path": "src/lib/store/companion-store.ts",
-      "message": "Syntax error at line src/lib/store/companion-store.ts:52:\n `import('@/lib/store/youtube-store').YouTubeVideo` was unexpected",
-      "sha256": "45dd77b209f6df84d06ac1fc28cdc7fbfdfa8f449da240fb8ec8b2f92f53e550",
-      "disposition": "Semgrep community parser limitation in valid TypeScript generic/union syntax. These regions were reviewed manually and pass TypeScript and ESLint; scanner coverage is partial here. Changes require a fresh disposition."
+      "message": "Syntax error at line src/lib/store/companion-store.ts:53:\n `import('@/lib/store/youtube-store').YouTubeVideo` was unexpected",
+      "sha256": "6aace400cd1bf3a9233444f75b00df9a02f0f6b5edc07bc724b668bf2e0e3f88",
+      "disposition": "Re-reviewed for v0.1.2: the existing inline import types and React ref union/generic syntax are valid TypeScript but exceed this pinned community parser. New error-state handling and store flags were reviewed manually and pass TypeScript, ESLint, streaming tests and browser regressions. Semgrep coverage remains partial in this file; changes require a fresh disposition."
     },
     {
       "path": "src/lib/visual/orchestrator.test.ts",

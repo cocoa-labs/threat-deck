@@ -196,9 +196,17 @@ function isDistributableMessage(message: {
   role: 'user' | 'assistant';
   content: string;
   channelSwitch?: unknown;
+  isError?: boolean;
 }): boolean {
-  if (message.role === 'user') return false;
+  if (message.role === 'user' || message.isError) return false;
   if (message.channelSwitch != null) return false;
+  // Older persisted errors predate the explicit error flag.
+  if (
+    message.content.startsWith('The local AI spending limit has been reached.') ||
+    message.content.startsWith('[Max error:') ||
+    message.content.startsWith('[Anthropic ')
+  )
+    return false;
   return message.content.trim().length >= MIN_DISTRIBUTABLE_LENGTH;
 }
 
@@ -897,7 +905,7 @@ const MessageBubble = React.memo(function MessageBubble({
           </ChannelSwitchCard>
           <UploadedAttachmentChips attachments={message.attachments ?? []} label="Sources" />
           <div
-            className="mt-1.5 flex items-center gap-1.5 text-[8px] font-mono tabular-nums px-1"
+            className="mt-2 flex flex-wrap items-center gap-2 text-[9px] font-mono tabular-nums px-1"
             style={{ color: 'var(--text-muted)' }}
           >
             {timeStr}
@@ -928,6 +936,7 @@ const MessageBubble = React.memo(function MessageBubble({
                 generatedImages={generatedImages}
                 generatedVideos={generatedVideos}
                 sourceContext={message.sourceContext}
+                onImageReady={handleImageReady}
               />
             )}
             {canDistribute && (
@@ -999,7 +1008,7 @@ const MessageBubble = React.memo(function MessageBubble({
             </div>
           )}
           <div
-            className="mt-1.5 flex items-center gap-1.5 text-[8px] font-mono tabular-nums px-1"
+            className="mt-2 flex flex-wrap items-center gap-2 text-[9px] font-mono tabular-nums px-1"
             style={{ color: 'var(--text-muted)' }}
           >
             {timeStr}
@@ -1025,6 +1034,7 @@ const MessageBubble = React.memo(function MessageBubble({
                 generatedImages={generatedImages}
                 generatedVideos={generatedVideos}
                 sourceContext={message.sourceContext}
+                onImageReady={handleImageReady}
               />
             )}
             {canDistribute && (
@@ -1091,7 +1101,7 @@ const MessageBubble = React.memo(function MessageBubble({
             />
           )}
           <div
-            className="mt-2 flex items-center gap-1.5 text-[8px] font-mono tabular-nums"
+            className="mt-2 flex flex-wrap items-center gap-2 text-[9px] font-mono tabular-nums"
             style={{ color: 'var(--text-muted)' }}
           >
             {timeStr}
@@ -1122,6 +1132,7 @@ const MessageBubble = React.memo(function MessageBubble({
                 generatedImages={generatedImages}
                 generatedVideos={generatedVideos}
                 sourceContext={message.sourceContext}
+                onImageReady={handleImageReady}
               />
             )}
             {canDistribute && (
@@ -1369,7 +1380,7 @@ export function AgentDrawer() {
       );
   }, [clearConversationBase]);
 
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLElement>(null);
   // Stick to the bottom only while the user is already there — a render in
   // progress polls every ~2s and must not yank a scrolled-up reader down.
   const handleScroll = useStickToBottom(scrollRef, messages, streamingText);
@@ -1583,7 +1594,7 @@ export function AgentDrawer() {
   // Escape key — layered dismissal: exit fullscreen first, then close drawer
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape' && drawerOpen) {
+      if (e.key === 'Escape' && !e.defaultPrevented && drawerOpen) {
         if (drawerFullscreen) {
           setDrawerFullscreen(false);
         } else {
@@ -1657,6 +1668,7 @@ export function AgentDrawer() {
           />
         </div>
         <div className="flex items-center gap-1">
+          <ApprovalQueueSection />
           {drawerFullscreen && (
             <button
               type="button"
@@ -1725,15 +1737,11 @@ export function AgentDrawer() {
         />
       </div>
 
-      {/* Approval Queue (Phase 9.1) — sits between posture pills and messages */}
-      <div className="relative z-[2]">
-        <ApprovalQueueSection />
-      </div>
-
       {/* Messages — scrollable */}
-      <div
+      <section
         ref={scrollRef}
         onScroll={handleScroll}
+        aria-label="Max conversation"
         className="relative z-[2] min-h-0 flex-1 overflow-y-auto px-4 py-3"
       >
         <div className={cn('space-y-4', drawerFullscreen && 'mx-auto max-w-3xl')}>
@@ -1775,7 +1783,7 @@ export function AgentDrawer() {
           {/* Streaming response */}
           {isStreaming && <StreamingBubble text={streamingText} toolCalls={toolCallLog} />}
         </div>
-      </div>
+      </section>
 
       {/* Quick action chips */}
       <div

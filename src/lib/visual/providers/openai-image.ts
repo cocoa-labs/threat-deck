@@ -64,8 +64,13 @@ export class OpenAIImageProvider implements ImageProvider {
         // b64_json by default. Setting the param 400s with "Unknown parameter".
       } as never);
     } catch (err) {
-      await release().catch(() => {});
       const errAny = err as { status?: number; message?: string; headers?: Record<string, string> };
+      const rejected =
+        errAny.status != null &&
+        errAny.status >= 400 &&
+        errAny.status < 500 &&
+        errAny.status !== 408;
+      await release(rejected ? 0 : undefined).catch(() => {});
       if (errAny.status === 429) {
         const retryAfter = errAny.headers?.['retry-after-ms'];
         throw new ProviderRateLimitError(
@@ -80,13 +85,7 @@ export class OpenAIImageProvider implements ImageProvider {
       );
     }
 
-    await release();
     const durationMs = Math.max(1, Date.now() - startMs);
-    const first = response.data?.[0];
-    if (!first?.b64_json) {
-      throw new ProviderApiError(this.providerId, 200, 'no image returned');
-    }
-    const buffer = Buffer.from(first.b64_json, 'base64');
     const usage = (
       response as unknown as { usage?: { input_tokens?: number; output_tokens?: number } }
     ).usage;
@@ -95,6 +94,18 @@ export class OpenAIImageProvider implements ImageProvider {
     const costUsd =
       (inputTokens * COST_PER_M_INPUT_USD) / 1_000_000 +
       (outputTokens * COST_PER_M_OUTPUT_USD) / 1_000_000;
+    const knownUsage =
+      usage != null &&
+      Number.isSafeInteger(usage.input_tokens) &&
+      Number.isSafeInteger(usage.output_tokens) &&
+      inputTokens >= 0 &&
+      outputTokens >= 0;
+    await release(knownUsage ? costUsd : undefined);
+    const first = response.data?.[0];
+    if (!first?.b64_json) {
+      throw new ProviderApiError(this.providerId, 200, 'no image returned');
+    }
+    const buffer = Buffer.from(first.b64_json, 'base64');
 
     return {
       buffer,

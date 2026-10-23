@@ -20,6 +20,7 @@ import { ingestBreaches } from './ingest-breaches';
 import { type IngestSummary, ingestCves } from './ingest-cves';
 import { ingestIocs } from './ingest-iocs';
 import { ingestKev } from './ingest-kev';
+import { ingestThreatActors } from './ingest-threat-actors';
 
 export interface AegisIngestSummary {
   ok: boolean;
@@ -75,6 +76,7 @@ export async function runAegisIngest(): Promise<AegisIngestSummary> {
   sources.push(await ingestIocs());
   sources.push(await ingestAdvisories());
   sources.push(await ingestBreaches());
+  sources.push(await ingestThreatActors());
 
   const totalUpserted = sources.reduce((n, s) => n + s.upserted, 0);
   const ok = sources.every((s) => s.ok);

@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:84586cf2-9a3e-4d76-9db7-12320d17fa7a",
+  "serialNumber": "urn:uuid:6f89c400-7ab2-4ffc-9e17-30de1c229f72",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-23T20:34:36.529Z",
+    "timestamp": "2026-10-23T23:04:43.252Z",
     "lifecycles": [
       {
         "phase": "pre-build"
@@ -15,16 +15,16 @@
       {
         "vendor": "npm",
         "name": "cli",
-        "version": "11.20.0"
+        "version": "11.17.0"
       }
     ],
     "component": {
-      "bom-ref": "@cocoa-labs/threat-deck@0.1.1",
+      "bom-ref": "@cocoa-labs/threat-deck@0.1.2",
       "type": "library",
-      "name": "@cocoa-labs/threat-deck",
-      "version": "0.1.1",
+      "name": "threatdeck-public-v012",
+      "version": "0.1.2",
       "scope": "required",
-      "purl": "pkg:npm/%40cocoa-labs/threat-deck@0.1.1",
+      "purl": "pkg:npm/%40cocoa-labs/threat-deck@0.1.2",
       "properties": [
         {
           "name": "cdx:npm:package:private",
@@ -32027,7 +32027,7 @@
   ],
   "dependencies": [
     {
-      "ref": "@cocoa-labs/threat-deck@0.1.1",
+      "ref": "@cocoa-labs/threat-deck@0.1.2",
       "dependsOn": [
         "@anthropic-ai/sdk@0.75.0",
         "@radix-ui/react-dialog@1.3.1",

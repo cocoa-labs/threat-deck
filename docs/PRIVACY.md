@@ -14,7 +14,7 @@ Threat Deck is self-hosted. The maintainers do not operate a telemetry receiver 
 
 ## Retention
 
-There is no comprehensive automatic retention policy in v0.1.1. Saved intelligence, conversations, generated media, audit events and backups still need an installation-specific retention policy.
+There is no comprehensive automatic retention policy in v0.1.2. Saved intelligence, conversations, generated media, audit events and backups still need an installation-specific retention policy.
 
 Attachment deletion is tracked: a database transaction revokes access, removes extracted text, summaries and file pointers, and queues provider deletion. Storage failures remain visible in **Private files** and retry with bounded backoff. New uploads can take at least 16 minutes to reach final storage deletion while issued upload grants expire; in-flight previews are also tracked. The integrated server retries every minute. Serverless/native `next dev` installations must schedule `npm run files:cleanup` with their own database and Blob credentials, or use **Retry pending deletions**. Each run processes at most ten due files; failures retain the jobs. Monitor pending counts and the `attachment_file_deletions` table.
 
@@ -22,7 +22,11 @@ The cleanup queue does not cover old orphaned objects that were never recorded, 
 
 ## Costs and limits
 
-AI and media are opt-in. Budgets are reserved atomically in PostgreSQL before provider attempts, with a four-call concurrency limit and a rolling 24-hour reservation window. Failure to enforce a budget or rate limit denies the operation. Failed attempts still consume reserved allowance. Reservations are deliberately conservative and are **not a billing ledger**: model/provider pricing, retries, video duration and external account activity can change actual invoices. Configure provider-side hard limits too. `IMAGE_RESERVATION_USD` and `VIDEO_RESERVATION_USD` must cover the selected provider configuration; remote video setups reserve on both the caller and worker. External collectors, Mapbox, storage, hosting, email and X can incur separate costs outside AI/media budgets.
+AI and media are opt-in. Daily spending caps are also optional and belong to the installation operator: leave `ANTHROPIC_DAILY_CAP_USD` and `OUTBOUND_VISUAL_DAILY_SPEND_USD_HARD` unset, blank, or `0` for no application spending cap. A positive value enables a rolling 24-hour USD cap. The optional `OUTBOUND_VISUAL_DAILY_SPEND_USD` threshold only warns. Provider billing and account limits apply independently.
+
+When a cap is enabled, admission reserves an estimated maximum atomically in PostgreSQL. Completed AI and image requests replace that estimate with usage-based cost; confirmed client-side provider rejections release the unused allowance. Interrupted responses, unknown model prices, legacy reservations and asynchronous video jobs retain their estimate for the 24-hour window because their final charge is unavailable. Reservations and settlements are **not a billing ledger**: provider pricing, external account activity and usage not returned by a provider can change actual invoices. `IMAGE_RESERVATION_USD` and `VIDEO_RESERVATION_USD` must cover the selected provider configuration; remote video setups reserve on both the caller and worker.
+
+A four-call concurrency limit, request/response bounds, authentication, rate limits and publication review remain independent of daily spending caps. Database admission failures stop provider attempts; disabling a daily cap does not disable these controls. External collectors, Mapbox, storage, hosting, email and X can incur separate costs outside AI/media accounting.
 
 ## Public feeds
 

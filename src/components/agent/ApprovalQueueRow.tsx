@@ -26,6 +26,7 @@ interface ApprovalQueueRowProps {
   onEdit?: (draftPayload: unknown) => Promise<void>;
   /** True while a mutation against this row is in flight. */
   isPending?: boolean;
+  autoReview?: boolean;
 }
 
 export function ApprovalQueueRow({
@@ -34,6 +35,7 @@ export function ApprovalQueueRow({
   onReject,
   onEdit,
   isPending = false,
+  autoReview = false,
 }: ApprovalQueueRowProps) {
   const [rejecting, setRejecting] = useState(false);
   const [reason, setReason] = useState('');
@@ -259,7 +261,12 @@ export function ApprovalQueueRow({
       </div>
 
       {!editing && !rejecting && (
-        <DraftReview draft={draft} disabled={isPending} onApprove={onApprove} />
+        <DraftReview
+          draft={draft}
+          disabled={isPending}
+          onApprove={onApprove}
+          autoReview={autoReview}
+        />
       )}
 
       {rejecting && (
