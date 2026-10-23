@@ -80,7 +80,7 @@ async function main() {
   const { retryAttachmentDeletions } = await import('./src/lib/agent/attachments/blob-cleanup.js');
   const cleanupTimer = setInterval(() => { void retryAttachmentDeletions().catch(() => console.warn('[Server] Attachment cleanup deferred; will retry')); }, 60_000);
   cleanupTimer.unref();
-  server.listen(port, () => {
+  server.listen(port, hostname, () => {
     console.log(`[Server] Cocoa AI Threat Deck ready at http://${hostname}:${port}`);
     console.log('[Server] WebSocket endpoint: /ws (use TLS at your reverse proxy)');
   });

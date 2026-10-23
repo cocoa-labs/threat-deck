@@ -5,6 +5,7 @@ Security and privacy maintenance release. Source only; no hosted production depl
 - Synthetic collector fallback is disabled by default. Explicit demo mode labels samples, blocks external publishing and autonomous jobs, and excludes samples from operational ingestion. Cache reads retain source acquisition time; panels and agent context carry provenance rather than treating a fresh poll as fresh evidence.
 - Chat, command, brief and attachment state no longer persists in browser localStorage. Legacy records are discarded before the dashboard mounts. Sign-out verifies session removal and clears other tabs. Private files have an owner-scoped management view, immediate access revocation, extracted-content scrubbing, and durable provider cleanup with retries and visible pending status.
 - Production CSP uses request nonces and blocks arbitrary inline scripts, inline event handlers and JavaScript eval. Mapbox workers/WebAssembly, local viewer scripts, OAuth completion and named media origins remain supported. HTML is dynamic and must not be CDN-cached.
+- The custom server now honors its configured bind address, including loopback-only personal instances.
 - The nested Zod dependency is pinned to patched 4.6.7, addressing GHSA-mrhx-c7xc-m3w5, including the copy pulled in through Vercel configuration.
 - Office/spreadsheet ingestion is disabled by default before upload-token issuance, processing and agent use. DOCX, XLS/XLSX, CSV and TSV remain outside the standard picker until parser isolation is provided. The experimental server override is not an OS sandbox.
 

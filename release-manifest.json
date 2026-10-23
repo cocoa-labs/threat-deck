@@ -120,7 +120,7 @@
     },
     {
       "path": "docs/RELEASE-NOTES.md",
-      "sha256": "aed1ebe57d1709f824f9a8428d69fcc22a73559d3c3d0bec4b7820e6e58ba60d"
+      "sha256": "80f8ee6f051be5947e572768669a410ae143768087aafc668bb4a076035ee53f"
     },
     {
       "path": "docs/SECURITY-ARCHITECTURE.md",
@@ -388,7 +388,7 @@
     },
     {
       "path": "server.ts",
-      "sha256": "46738232fc4e8ee8eb396cc0a29d4b867f6575668b9169cb32576ec257f54dc6"
+      "sha256": "429d3cfe421b2dce9cbaff4941d531924da40fe89d8890a4b7a66117a19f8a88"
     },
     {
       "path": "src/__test__/integration-files.json",
