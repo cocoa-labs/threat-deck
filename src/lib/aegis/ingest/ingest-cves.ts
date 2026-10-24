@@ -1,4 +1,4 @@
-import { query } from '@/lib/db/client';
+import { query, queryOne } from '@/lib/db/client';
 import { getCursor, recordRun } from './cursor';
 import { fetchNvdWindow } from './nvd-client';
 import { nvdToCveRow } from './nvd-map';
@@ -46,17 +46,25 @@ async function upsertCveRow(r: CveRow): Promise<boolean> {
 export const _upsertCveRowForTests = upsertCveRow;
 
 /**
- * NVD delta ingestion. Window = [lastCursor ?? now-24h, now]. UPSERTs every CVE
+ * NVD delta ingestion. A new/empty installation starts with the last 24 hours.
+ * Existing databases catch up in bounded one-day windows. UPSERTs every CVE
  * lastModified in the window into aegis_cves, then advances the cursor to `now`
  * (endISO) on success. Never throws — records a failed run on error.
  */
 export async function ingestCves(): Promise<IngestSummary> {
   const now = new Date();
-  const cursor = await getCursor('cves');
-  const startISO = cursor ?? new Date(now.getTime() - 24 * 3600_000).toISOString();
-  const endISO = now.toISOString();
   let upserted = 0;
   try {
+    const cursor = await getCursor('cves');
+    const existing = await queryOne<{ present: boolean }>(
+      'SELECT EXISTS (SELECT 1 FROM aegis_cves) AS present',
+    );
+    // A copied cursor without its source rows must not skip the bootstrap window.
+    const start =
+      existing?.present && cursor ? new Date(cursor) : new Date(now.getTime() - 86400_000);
+    if (!Number.isFinite(start.getTime()) || start > now) throw new Error('nvd_invalid_cursor');
+    const startISO = start.toISOString();
+    const endISO = new Date(Math.min(now.getTime(), start.getTime() + 86400_000)).toISOString();
     const cves = await fetchNvdWindow(startISO, endISO);
     for (const item of cves) {
       await upsertCveRow(nvdToCveRow(item));

@@ -13,8 +13,9 @@
 
 'use client';
 
+import * as Dialog from '@radix-ui/react-dialog';
 import { ImageIcon, X } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useId, useMemo, useState } from 'react';
 import type { GeneratedImageAttachment } from '@/lib/store/agent-store';
 import { STYLE_REGISTRY, STYLE_TAGS, type StyleTag } from '@/lib/visual/style-registry';
 import {
@@ -38,6 +39,7 @@ interface GenerateImageButtonProps {
   severity?: 'critical' | 'high' | 'medium' | 'low';
   sourceContext?: VisualBriefSourceContext;
   onImageReady?: (image: GeneratedImageAttachment) => void;
+  disabled?: boolean;
 }
 
 type Status = { kind: 'idle' } | { kind: 'submitting' } | { kind: 'failed'; error: string };
@@ -79,6 +81,8 @@ function errorFromResponse(
   fallback: string,
 ): string {
   const error = typeof payload?.error === 'string' ? payload.error : null;
+  if (error === 'capability_disabled:media')
+    return 'Image creation is disabled for this installation. Enable media generation and configure an image provider in the server settings.';
   const detail = typeof payload?.detail === 'string' ? payload.detail : null;
   const message = error && detail ? `${error}: ${detail}` : (detail ?? error);
   if (message) return message;
@@ -111,8 +115,10 @@ export function GenerateImageButton({
   severity,
   sourceContext,
   onImageReady,
+  disabled = false,
 }: GenerateImageButtonProps) {
   const [open, setOpen] = useState(false);
+  const stylePickerId = useId();
   const [styleChoice, setStyleChoice] = useState<string>('auto');
   const [status, setStatus] = useState<Status>({ kind: 'idle' });
 
@@ -145,15 +151,6 @@ export function GenerateImageButton({
     setStyleChoice('auto');
     setStatus({ kind: 'idle' });
   }, [busy]);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [open, close]);
 
   const submit = useCallback(async () => {
     setStatus({ kind: 'submitting' });
@@ -210,139 +207,143 @@ export function GenerateImageButton({
   ]);
 
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[8px] font-mono font-bold uppercase tracking-wider transition-colors"
-        style={{
-          color: 'var(--matrix-green, #00ff41)',
-          background: 'rgba(var(--crt-glow-rgb), 0.06)',
-          border: '1px solid rgba(var(--crt-glow-rgb), 0.18)',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = 'rgba(var(--crt-glow-rgb), 0.55)';
-          e.currentTarget.style.background = 'rgba(var(--crt-glow-rgb), 0.12)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = 'rgba(var(--crt-glow-rgb), 0.18)';
-          e.currentTarget.style.background = 'rgba(var(--crt-glow-rgb), 0.06)';
-        }}
-        aria-label="Generate image from this response"
-        title="Generate an image from this response"
-      >
-        <ImageIcon size={8} />
-        IMG
-      </button>
-
-      {open && (
-        // biome-ignore lint/a11y/noStaticElementInteractions: backdrop click-to-close
-        // biome-ignore lint/a11y/useKeyWithClickEvents: Esc closes via document listener
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) close();
+    <Dialog.Root open={open} onOpenChange={(value) => (value ? setOpen(true) : close())}>
+      <Dialog.Trigger asChild>
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={() => setOpen(true)}
+          className="inline-flex min-h-7 items-center gap-1.5 rounded px-2 py-1 text-[11px] font-mono font-bold uppercase tracking-wider transition-colors"
+          style={{
+            color: 'var(--matrix-green, #00ff41)',
+            background: 'rgba(var(--crt-glow-rgb), 0.06)',
+            border: '1px solid rgba(var(--crt-glow-rgb), 0.18)',
           }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(var(--crt-glow-rgb), 0.55)';
+            e.currentTarget.style.background = 'rgba(var(--crt-glow-rgb), 0.12)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(var(--crt-glow-rgb), 0.18)';
+            e.currentTarget.style.background = 'rgba(var(--crt-glow-rgb), 0.06)';
+          }}
+          aria-label="Generate image from this response"
+          title="Generate an image from this response"
         >
-          <div className="bg-[var(--bg-primary)] border-2 border-[var(--crt-glow)] p-6 max-w-2xl w-full mx-4 font-mono max-h-[calc(100vh-2rem)] overflow-y-auto">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <h2 className="text-[var(--crt-glow)] text-lg uppercase tracking-wider">
-                Generate image
-              </h2>
-              <button
-                type="button"
-                onClick={close}
-                disabled={busy}
-                className="rounded p-1 hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-30"
-                aria-label="Close image generator"
-                title={busy ? 'Starting generation…' : 'Close'}
-              >
-                <X size={14} style={{ color: 'var(--text-dim, #888)' }} />
-              </button>
-            </div>
+          <ImageIcon size={12} aria-hidden />
+          Create image
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay
+          className="fixed inset-0 bg-black/70"
+          style={{ zIndex: 'calc(var(--z-agent-drawer) + 25)' }}
+        />
+        <Dialog.Content
+          className="fixed left-1/2 top-1/2 max-h-[85dvh] w-[calc(100vw-2rem)] max-w-2xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-lg border border-[var(--crt-glow)]/30 bg-[var(--bg-primary)] p-6 font-mono shadow-2xl"
+          style={{ zIndex: 'calc(var(--z-agent-drawer) + 26)' }}
+          onKeyDown={(event) => event.stopPropagation()}
+        >
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <Dialog.Title className="text-[var(--crt-glow)] text-lg uppercase tracking-wider">
+              Create image
+            </Dialog.Title>
+            <button
+              type="button"
+              onClick={close}
+              disabled={busy}
+              className="rounded p-1 hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-30"
+              aria-label="Close image generator"
+              title={busy ? 'Starting generation…' : 'Close'}
+            >
+              <X size={14} style={{ color: 'var(--text-dim, #888)' }} />
+            </button>
+          </div>
 
-            <div className="mb-4">
-              <div className="text-[var(--text-primary)] text-xs uppercase opacity-60 mb-1">
-                Detected brief
+          <Dialog.Description className="mb-4 text-xs text-[var(--text-dim)]">
+            Create a private image from this response. Review it before attaching or publishing.
+          </Dialog.Description>
+          <div className="mb-4">
+            <div className="text-[var(--text-primary)] text-xs uppercase opacity-60 mb-1">
+              Detected brief
+            </div>
+            <div className="border-l-2 border-[var(--brand-accent)] pl-3">
+              <div className="text-sm font-bold text-[var(--text-primary)]">
+                {visualBrief.title}
               </div>
-              <div className="border-l-2 border-[var(--brand-accent)] pl-3">
-                <div className="text-sm font-bold text-[var(--text-primary)]">
-                  {visualBrief.title}
-                </div>
-                <div className="mt-1 text-xs text-[var(--text-secondary)] max-h-20 overflow-auto">
-                  {visualBrief.bluf}
-                </div>
-                <div className="mt-2 flex flex-wrap gap-1.5 text-[9px] uppercase tracking-wider">
-                  <span className="border border-[rgba(var(--crt-glow-rgb),0.22)] px-1.5 py-0.5 text-[var(--crt-glow)]">
-                    {visualBrief.severity}
-                  </span>
-                  <span className="border border-[rgba(var(--crt-glow-rgb),0.14)] px-1.5 py-0.5 text-[var(--text-muted)]">
-                    {visualBrief.metrics.length} metrics
-                  </span>
-                  <span className="border border-[rgba(var(--crt-glow-rgb),0.14)] px-1.5 py-0.5 text-[var(--text-muted)]">
-                    {visualBrief.sections.length} sections
-                  </span>
-                  <span className="border border-[rgba(var(--crt-glow-rgb),0.14)] px-1.5 py-0.5 text-[var(--text-muted)]">
-                    {visualBrief.sources.length} sources
-                  </span>
-                  <span className="border border-[rgba(var(--brand-accent-rgb),0.45)] px-1.5 py-0.5 text-[var(--brand-accent)]">
-                    {resolvedPreviewStyle.replace(/_/g, ' ')}
-                  </span>
-                </div>
+              <div className="mt-1 text-xs text-[var(--text-secondary)] max-h-20 overflow-auto">
+                {visualBrief.bluf}
               </div>
-            </div>
-
-            <div className="mb-4">
-              <label
-                htmlFor="img-style-picker"
-                className="text-[var(--text-primary)] text-xs uppercase opacity-60 mb-1 block"
-              >
-                Style
-              </label>
-              <select
-                id="img-style-picker"
-                value={styleChoice}
-                onChange={(e) => setStyleChoice(e.target.value)}
-                disabled={busy}
-                className="w-full bg-black border border-[var(--crt-glow)] text-[var(--text-primary)] px-2 py-1 text-sm"
-              >
-                {STYLE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <p className="mb-3 text-[10px] uppercase tracking-wide text-[var(--text-muted)]">
-              Renders in ~10-30s · attaches to this response · Max stays free while it runs
-            </p>
-
-            {status.kind === 'failed' && (
-              <div className="mb-2 text-xs text-[var(--severity-critical)]">✗ {status.error}</div>
-            )}
-
-            <div className="flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={close}
-                disabled={busy}
-                className="px-3 py-1 text-xs uppercase tracking-wider border border-gray-600 text-gray-400 hover:bg-gray-800 disabled:opacity-30"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={submit}
-                disabled={busy}
-                className="px-3 py-1 text-xs uppercase tracking-wider border border-[var(--crt-glow)] text-[var(--crt-glow)] hover:bg-[var(--crt-glow)] hover:text-black disabled:opacity-50"
-              >
-                {busy ? 'Starting…' : 'Generate'}
-              </button>
+              <div className="mt-2 flex flex-wrap gap-1.5 text-[9px] uppercase tracking-wider">
+                <span className="border border-[rgba(var(--crt-glow-rgb),0.22)] px-1.5 py-0.5 text-[var(--crt-glow)]">
+                  {visualBrief.severity}
+                </span>
+                <span className="border border-[rgba(var(--crt-glow-rgb),0.14)] px-1.5 py-0.5 text-[var(--text-muted)]">
+                  {visualBrief.metrics.length} metrics
+                </span>
+                <span className="border border-[rgba(var(--crt-glow-rgb),0.14)] px-1.5 py-0.5 text-[var(--text-muted)]">
+                  {visualBrief.sections.length} sections
+                </span>
+                <span className="border border-[rgba(var(--crt-glow-rgb),0.14)] px-1.5 py-0.5 text-[var(--text-muted)]">
+                  {visualBrief.sources.length} sources
+                </span>
+                <span className="border border-[rgba(var(--brand-accent-rgb),0.45)] px-1.5 py-0.5 text-[var(--brand-accent)]">
+                  {resolvedPreviewStyle.replace(/_/g, ' ')}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </>
+
+          <div className="mb-4">
+            <label
+              htmlFor={stylePickerId}
+              className="text-[var(--text-primary)] text-xs uppercase opacity-60 mb-1 block"
+            >
+              Style
+            </label>
+            <select
+              id={stylePickerId}
+              value={styleChoice}
+              onChange={(e) => setStyleChoice(e.target.value)}
+              disabled={busy}
+              className="w-full bg-black border border-[var(--crt-glow)] text-[var(--text-primary)] px-2 py-1 text-sm"
+            >
+              {STYLE_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <p className="mb-3 text-[10px] uppercase tracking-wide text-[var(--text-muted)]">
+            Renders in ~10-30s · attaches to this response · Max stays free while it runs
+          </p>
+
+          {status.kind === 'failed' && (
+            <div className="mb-2 text-xs text-[var(--severity-critical)]">✗ {status.error}</div>
+          )}
+
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={close}
+              disabled={busy}
+              className="px-3 py-1 text-xs uppercase tracking-wider border border-gray-600 text-gray-400 hover:bg-gray-800 disabled:opacity-30"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={submit}
+              disabled={busy}
+              className="px-3 py-1 text-xs uppercase tracking-wider border border-[var(--crt-glow)] text-[var(--crt-glow)] hover:bg-[var(--crt-glow)] hover:text-black disabled:opacity-50"
+            >
+              {busy ? 'Starting…' : 'Generate'}
+            </button>
+          </div>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

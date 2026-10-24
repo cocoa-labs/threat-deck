@@ -49,6 +49,33 @@ function buttonByText(c: HTMLElement, text: string): HTMLButtonElement {
 }
 
 describe('ModePillRow', () => {
+  it('switches detected, locked and escalated modes without conflicting style updates', () => {
+    const consoleError = vi.spyOn(console, 'error');
+    const onLockToggle = vi.fn();
+    try {
+      const c = render({ lockedMode: null, detectedMode: 'anchor', onLockToggle });
+      const states: Array<Pick<ComponentProps<typeof ModePillRow>, 'lockedMode' | 'detectedMode'>> =
+        [
+          { lockedMode: 'anchor', detectedMode: 'anchor' },
+          { lockedMode: 'anchor', detectedMode: 'analyst' },
+          { lockedMode: 'analyst', detectedMode: 'analyst' },
+          { lockedMode: null, detectedMode: 'fix-architect' },
+          { lockedMode: 'fix-architect', detectedMode: 'fix-architect' },
+          { lockedMode: null, detectedMode: 'anchor' },
+        ];
+      for (const state of states) {
+        act(() => root?.render(<ModePillRow {...state} onLockToggle={onLockToggle} />));
+      }
+      expect(buttonByText(c, 'Anchor').style.textDecorationLine).toBe('underline');
+      expect(buttonByText(c, 'Anchor').style.textDecorationThickness).toBe('1px');
+      expect(
+        consoleError.mock.calls.filter((args) => String(args[0]).includes('conflicting')),
+      ).toEqual([]);
+    } finally {
+      consoleError.mockRestore();
+    }
+  });
+
   describe('unlocked (AUTO) state', () => {
     it('shows the AUTO label when lockedMode is null', () => {
       const c = render({

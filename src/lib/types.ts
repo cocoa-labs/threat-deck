@@ -201,6 +201,7 @@ export interface AgentResponse {
   text: string;
   toolCalls: ToolCall[];
   model: string;
+  isError?: boolean;
 }
 
 export interface Conversation {

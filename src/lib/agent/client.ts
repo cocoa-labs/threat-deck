@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import Anthropic from '@anthropic-ai/sdk';
 import { AUDIT_ACTIONS, auditFailure } from '@/lib/audit';
 import { AGENT_IDENTITY } from '@/lib/constants/agent-identity';
+import { AI_MAX_OUTPUT_TOKENS, aiPolicyMessage } from '@/lib/security/ai-policy';
 import { budgetedAIFetch } from '@/lib/security/budget';
 import type { ToolCall } from '@/lib/types';
 import { MemoryManager } from './memory';
@@ -29,6 +30,7 @@ import type { AgentResult, InvokeParams } from './types';
 const RESCUE_KEYS = ['ANTHROPIC_API_KEY'] as const;
 let envRescueApplied = false;
 function rescueEnvFromDotenvLocal(): void {
+  if (process.env.NODE_ENV === 'test') return;
   if (envRescueApplied) return;
   envRescueApplied = true;
   try {
@@ -165,8 +167,8 @@ export async function invokeAgent(params: InvokeParams): Promise<AgentResult> {
   const mode = params.responseMode ?? 'standard';
   // Generous ceiling — prompt language controls brevity, max_tokens prevents hard cutoff.
   // Concise (panel clicks): prompt says 2-4 sentences; 4096 is just a safety net.
-  // Standard (manual queries): prompt says be direct; 64000 ensures completion.
-  const maxTokens = mode === 'concise' ? 4096 : 64000;
+  // Standard requests must fit the same ceiling enforced by the budget guard.
+  const maxTokens = mode === 'concise' ? 4096 : AI_MAX_OUTPUT_TOKENS;
   const systemPrompt = buildSystemPrompt(
     params.context,
     memory.getState(),
@@ -382,7 +384,15 @@ async function callWithRecovery(
   try {
     return (await client.messages.create(params)) as Anthropic.Message;
   } catch (err) {
-    if (err instanceof Anthropic.APIError && err.status === 400 && retryCount === 0) {
+    const policyMessage = aiPolicyMessage(err);
+    if (policyMessage) throw new Error(policyMessage, { cause: err });
+    if (
+      err instanceof Anthropic.APIError &&
+      err.status === 400 &&
+      !aiPolicyMessage(err) &&
+      categorizeAgentError(err) === 'context_overflow' &&
+      retryCount === 0
+    ) {
       // Likely context overflow - truncate messages and retry
       const messages = params.messages as Anthropic.MessageParam[];
       if (messages.length > 2) {
@@ -400,14 +410,14 @@ async function callWithRecovery(
  * Returns an async generator of text chunks.
  */
 export async function* streamAgent(params: InvokeParams): AsyncGenerator<{
-  type: 'text' | 'tool_use' | 'tool_result' | 'tool_start' | 'message_start' | 'done';
+  type: 'text' | 'tool_use' | 'tool_result' | 'tool_start' | 'message_start' | 'done' | 'error';
   data: string;
 }> {
   const anthropic = getClient();
   const memory = await MemoryManager.load(params.userId);
   const tools = ToolRegistry.getToolDefinitions();
   const mode = params.responseMode ?? 'standard';
-  const maxTokens = mode === 'concise' ? 4096 : 64000;
+  const maxTokens = mode === 'concise' ? 4096 : AI_MAX_OUTPUT_TOKENS;
   const systemPrompt = buildSystemPrompt(
     params.context,
     memory.getState(),
@@ -496,7 +506,13 @@ export async function* streamAgent(params: InvokeParams): AsyncGenerator<{
       });
     } catch (err) {
       // Overflow recovery on stream creation failure
-      if (err instanceof Anthropic.APIError && err.status === 400 && messages.length > 2) {
+      if (
+        err instanceof Anthropic.APIError &&
+        err.status === 400 &&
+        !aiPolicyMessage(err) &&
+        categorizeAgentError(err) === 'context_overflow' &&
+        messages.length > 2
+      ) {
         console.log('[Agent Stream] 400 error, truncating messages and retrying');
         const keep = Math.max(2, messages.length - 4);
         messages.splice(0, messages.length - keep);
@@ -543,7 +559,7 @@ export async function* streamAgent(params: InvokeParams): AsyncGenerator<{
     } catch (streamErr) {
       const category = categorizeAgentError(streamErr);
       const rawMsg = streamErr instanceof Error ? streamErr.message : String(streamErr);
-      const userMsg = messageForCategory(category, rawMsg);
+      const userMsg = aiPolicyMessage(streamErr) ?? messageForCategory(category, rawMsg);
 
       console.error(`[Agent Stream] ${category}:`, rawMsg);
 
@@ -557,7 +573,9 @@ export async function* streamAgent(params: InvokeParams): AsyncGenerator<{
         });
       }
 
-      if (userMsg) yield { type: 'text', data: userMsg };
+      if (userMsg) yield { type: 'error', data: userMsg };
+      yield { type: 'done', data: '' };
+      return;
     }
 
     const finalMessage = await stream.finalMessage();

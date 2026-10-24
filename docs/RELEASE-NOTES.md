@@ -1,3 +1,17 @@
+# v0.1.2
+
+Restores the Max conversation and publishing workflow for self-hosted installations. Source release only; no hosted deployment or account configuration changes.
+
+- Standard Max requests use the same output ceiling as the provider guard, fixing requests rejected before reaching the model. Policy failures produce one actionable error and do not expose publication controls as though they were generated content. Both streaming surfaces retain their marker handling.
+- Unsent drafts move into a separate dialog, labeled with creation dates and Not posted status. Max responses keep the available conversation space. Mode switching no longer mixes conflicting text-decoration styles.
+- Post to X opens a visible, keyboard-accessible composer with text editing, explicit AI refinement, image creation and private previews. Manual posts default to one post with the latest generated image attached. One explicit Post to X click stages and approves the displayed payload, then shows a link to the result without sending the operator through the queue. Save for later never publishes. Duplicate clicks and uncertain responses cannot silently resend. Agent-created drafts still require full review and approval.
+- Application spending caps are optional and disabled when unset, blank or zero. Positive operator-configured caps remain supported. Completed AI/image calls settle reservations using known provider usage; unknown or interrupted charges retain estimates. Concurrency, authentication and rate limits remain enforced independently.
+- The integrated server can refresh public cyber feeds at startup and hourly with the separate `ENABLE_AEGIS_INGEST` opt-in. NVD windows advance only after complete bounded fetches; MITRE profiles preserve source-backed information without invented scores or activity dates. Database panels report successful source acquisition time.
+
+Upgrade: apply migration 030 before starting this version. Existing environment values are preserved, including positive caps copied from an older example. See [deployment](../DEPLOY.md#upgrading-to-v012) for native and Compose steps.
+
+Remaining limitations: Office ingestion stays disabled until properly isolated. AI/media/X require each operator's own configuration. Initial NVD collection can take several minutes and starts with the last day of modifications; a large existing backlog catches up one day per pass. Plain `next dev` and serverless installations need a separate ingestion runner. Usage settlement supports known model prices and is not a provider billing ledger; asynchronous video retains estimates. The v0.1.1 single-tenancy, retention, provider and licensing limitations still apply.
+
 # v0.1.1
 
 Security and privacy maintenance release. Source only; no hosted production deployment changes.

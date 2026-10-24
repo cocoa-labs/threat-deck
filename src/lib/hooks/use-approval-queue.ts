@@ -20,6 +20,7 @@ import type { DraftRow } from '@/lib/outbound/drafts';
 import { useConnectionStore } from '@/lib/store/connection-store';
 
 const QUEUE_KEY = ['approval-queue', 'pending'] as const;
+export const OPEN_APPROVAL_QUEUE_EVENT = 'threatdeck:open-publication-review';
 
 interface ApproveResponse {
   ok: boolean;

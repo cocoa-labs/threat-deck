@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { IngestSummary } from './ingest-cves';
 
+vi.mock('@/lib/audit', () => ({ AUDIT_ACTIONS: {}, recordAudit: vi.fn() }));
+
 describe('runAegisIngest', () => {
   it('aggregates all ingest summaries', async () => {
     vi.resetModules();
@@ -19,10 +21,13 @@ describe('runAegisIngest', () => {
     vi.doMock('./ingest-breaches', () => ({
       ingestBreaches: async () => ({ source: 'breaches', upserted: 0, ok: true }),
     }));
+    vi.doMock('./ingest-threat-actors', () => ({
+      ingestThreatActors: async () => ({ source: 'threat-actors', upserted: 4, ok: true }),
+    }));
     const { runAegisIngest } = await import('./index');
     const res = await runAegisIngest();
     expect(res.ok).toBe(true);
-    expect(res.totalUpserted).toBe(6);
+    expect(res.totalUpserted).toBe(10);
   });
 });
 

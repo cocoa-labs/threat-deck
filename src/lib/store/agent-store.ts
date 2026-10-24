@@ -18,6 +18,7 @@ export interface ConversationMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: number;
+  isError?: boolean;
   origin?: 'agent' | 'companion';
   channelSwitch?: import('@/lib/store/companion-store').ChannelSwitchData;
   youtubeResults?: {
@@ -325,7 +326,7 @@ export const useAgentStore = create<AgentState>()(
       ) =>
         set((state) => ({
           latestResponse: response,
-          status: 'idle',
+          status: response.isError ? 'error' : 'idle',
           currentTask: null,
           isStreaming: false,
           messages: [
@@ -333,6 +334,7 @@ export const useAgentStore = create<AgentState>()(
             {
               role: 'assistant' as const,
               content: response.text,
+              ...(response.isError ? { isError: true } : {}),
               timestamp: Date.now(),
               origin: 'agent' as const,
               responseMode: state.responseMode,

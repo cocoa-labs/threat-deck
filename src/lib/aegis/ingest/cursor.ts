@@ -26,7 +26,13 @@ export async function getCursor(source: string): Promise<string | null> {
 
 export async function recordRun(
   source: string,
-  opts: { cursor?: string | null; count: number; ok: boolean; error?: string | null },
+  opts: {
+    cursor?: string | null;
+    count: number;
+    ok: boolean;
+    error?: string | null;
+    acquiredAt?: number;
+  },
 ): Promise<void> {
   const now = NOW_TEXT();
   await query(
@@ -35,7 +41,7 @@ export async function recordRun(
      ON CONFLICT (source) DO UPDATE
        SET last_cursor     = COALESCE(EXCLUDED.last_cursor, aegis_ingest_runs.last_cursor),
            last_run_at     = EXCLUDED.last_run_at,
-           last_success_at = CASE WHEN $7 THEN EXCLUDED.last_run_at ELSE aegis_ingest_runs.last_success_at END,
+           last_success_at = CASE WHEN $7 THEN EXCLUDED.last_success_at ELSE aegis_ingest_runs.last_success_at END,
            last_count      = EXCLUDED.last_count,
            last_error      = EXCLUDED.last_error,
            updated_at      = EXCLUDED.last_run_at`,
@@ -43,7 +49,7 @@ export async function recordRun(
       source,
       opts.cursor ?? null,
       now,
-      opts.ok ? now : null,
+      opts.ok ? (opts.acquiredAt == null ? now : new Date(opts.acquiredAt).toISOString()) : null,
       opts.count,
       opts.error ?? null,
       opts.ok,

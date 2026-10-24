@@ -24,15 +24,25 @@ The integrated server is the simplest deployment. For a separate relay, run the 
 
 ## Optional scheduled jobs
 
-No production scheduler is bundled. With `ENABLE_AUTOMATION=true`, configure your scheduler to call only the desired `/api/cron/*` endpoints using `Authorization: Bearer <CRON_SECRET>`. Use an independent random secret, never a session token. Email/X/media jobs additionally require their capability flags. Automation can consume provider budgets and produce drafts. Review queue approval is still required for AI-authored external posts and replies.
+No scheduler for autonomous jobs is bundled. With `ENABLE_AUTOMATION=true`, configure your scheduler to call only the desired `/api/cron/*` endpoints using `Authorization: Bearer <CRON_SECRET>`. Use an independent random secret, never a session token. Email/X/media jobs additionally require their capability flags. Automation can consume provider budgets and produce drafts. Review queue approval is still required for AI-authored external posts and replies.
+
+The long-running custom server also offers a separate `ENABLE_AEGIS_INGEST=true` opt-in for public-feed collection at startup and hourly. It uses a database lock to prevent overlapping workers and does not enable autonomous AI or publishing. It is off by default and disabled in demo mode. NVD ingestion resumes only after complete windows; failed pages retain the prior cursor. Database-backed CVE and actor freshness reflects successful source acquisition, not the time the browser polls.
 
 ## Files and media
 
-Use a **private** Vercel Blob store with a dedicated token. Attachment tokens allow bounded MIME types and file sizes. Content routes require authentication and ownership. Files sent to an AI provider leave your infrastructure; see PRIVACY.md. Video support requires separately installing and authenticating the supported vendor CLI or configuring a protected remote worker. The release does not provision a vendor account or billing workspace. Remote workers also require database and Redis for budget and rate enforcement. Each worker reserves a media budget; account for both caller and worker reservations when sizing a remote setup.
+Use a **private** Vercel Blob store with a dedicated token. Attachment tokens allow bounded MIME types and file sizes. Content routes require authentication and ownership. Files sent to an AI provider leave your infrastructure; see [privacy and costs](docs/PRIVACY.md). Video support requires separately installing and authenticating the supported vendor CLI or configuring a protected remote worker. The release does not provision a vendor account or billing workspace. Remote workers also require database and Redis for concurrency, rate limits and any enabled spending cap. Each worker records a media reservation; account for both caller and worker reservations when configuring an optional cap for a remote setup.
 
 ## Operations
 
-Persist and back up PostgreSQL and private object storage. Redis is required for rate limits and WebSocket tickets; expensive mutations fail closed when enforcement is unavailable. `/api/health` is a minimal liveness endpoint and does not disclose integration status. Monitor private logs for database/collector failures. Apply provider-side quotas as well as the application's conservative reservation caps. Rotate secrets on suspected exposure. Never publish `.env`, backups, logs, uploads, browser profiles or screenshots containing operational information.
+Persist and back up PostgreSQL and private object storage. Redis is required for rate limits and WebSocket tickets; expensive mutations fail closed when enforcement is unavailable. `/api/health` is a minimal liveness endpoint and does not disclose integration status. Monitor private logs for database/collector failures. Spending caps are optional operator settings; provider-side billing controls apply independently. Rotate secrets on suspected exposure. Never publish `.env`, backups, logs, uploads, browser profiles or screenshots containing operational information.
+
+## Upgrading to v0.1.2
+
+Back up your database, pull the release, and run `npm ci`, `npm run db:migrate`, and `npm run build` before restarting the native server. For Compose, rebuild with `docker compose up --build -d`; the migration service runs before the app. Forward migration 030 adds usage settlement to budget reservations. Migrations 001–029 are unchanged, and existing reservations remain conservative estimates until they leave the 24-hour window.
+
+Your `.env` / `.env.local`, connected accounts, private storage and database stay with your installation. The release does not replace them. Earlier examples set positive spending caps; those values remain active on upgrade. To remove an application cap, set `ANTHROPIC_DAILY_CAP_USD=0` and `OUTBOUND_VISUAL_DAILY_SPEND_USD_HARD=0` in your own environment and restart. Set `OUTBOUND_VISUAL_DAILY_SPEND_USD=0` to remove the optional media warning threshold. Authentication, private-file ownership, concurrency limits and publication review still apply.
+
+Enable `ENABLE_AEGIS_INGEST=true` only if you want the integrated server to refresh database-backed cyber feeds. It does not enable AI or external publishing. Keep Office ingestion disabled. Review the v0.1.1 instructions below when upgrading from v0.1.0.
 
 ## Upgrading to v0.1.1
 

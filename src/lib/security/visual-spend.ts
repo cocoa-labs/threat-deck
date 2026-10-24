@@ -9,6 +9,7 @@
  */
 
 import { query } from '@/lib/db/client';
+import { configuredBudget, parseSpendingLimit } from './budget-config';
 
 export interface VisualSpendCheck {
   allowed: boolean;
@@ -19,23 +20,14 @@ export interface VisualSpendCheck {
   reason?: 'warn_threshold_exceeded' | 'hard_cap_exceeded' | 'db_unavailable_failed_closed';
 }
 
-const DEFAULT_WARN_USD = 20;
-const DEFAULT_HARD_USD = 30;
-
-function parseCap(envVal: string | undefined, fallback: number): number {
-  if (envVal == null || envVal === '') return fallback;
-  const n = Number(envVal);
-  return Number.isFinite(n) && n >= 0 ? n : fallback;
-}
-
 export async function checkOutboundVisualSpend(): Promise<VisualSpendCheck> {
-  const warnCapUsd = parseCap(process.env.OUTBOUND_VISUAL_DAILY_SPEND_USD, DEFAULT_WARN_USD);
-  const hardCapUsd = parseCap(process.env.OUTBOUND_VISUAL_DAILY_SPEND_USD_HARD, DEFAULT_HARD_USD);
+  const warnCapUsd = parseSpendingLimit(process.env.OUTBOUND_VISUAL_DAILY_SPEND_USD);
+  const hardCapUsd = configuredBudget('media');
 
   // Both caps zero = guard disabled
   if (warnCapUsd === 0 && hardCapUsd === 0) {
     return {
-      allowed: false,
+      allowed: true,
       estimatedSpend24hUsd: 0,
       warnCapUsd: 0,
       hardCapUsd: 0,
@@ -73,7 +65,7 @@ export async function checkOutboundVisualSpend(): Promise<VisualSpendCheck> {
     };
   }
 
-  if (totalUsd >= hardCapUsd) {
+  if (hardCapUsd > 0 && totalUsd >= hardCapUsd) {
     return {
       allowed: false,
       estimatedSpend24hUsd: totalUsd,
@@ -84,7 +76,7 @@ export async function checkOutboundVisualSpend(): Promise<VisualSpendCheck> {
     };
   }
 
-  if (totalUsd >= warnCapUsd) {
+  if (warnCapUsd > 0 && totalUsd >= warnCapUsd) {
     return {
       allowed: true,
       estimatedSpend24hUsd: totalUsd,

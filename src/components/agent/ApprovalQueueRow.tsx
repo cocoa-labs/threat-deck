@@ -26,6 +26,7 @@ interface ApprovalQueueRowProps {
   onEdit?: (draftPayload: unknown) => Promise<void>;
   /** True while a mutation against this row is in flight. */
   isPending?: boolean;
+  autoReview?: boolean;
 }
 
 export function ApprovalQueueRow({
@@ -34,6 +35,7 @@ export function ApprovalQueueRow({
   onReject,
   onEdit,
   isPending = false,
+  autoReview = false,
 }: ApprovalQueueRowProps) {
   const [rejecting, setRejecting] = useState(false);
   const [reason, setReason] = useState('');
@@ -155,7 +157,6 @@ export function ApprovalQueueRow({
         listStyle: 'none',
       }}
       aria-label={`Pending draft ${draft.id}: ${draft.headline}`}
-      title={draft.previewText ?? draft.headline}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         {/* Severity stripe (3px left bar) */}
@@ -183,43 +184,45 @@ export function ApprovalQueueRow({
             flexShrink: 0,
           }}
         >
-          {draft.channel}
+          {draft.channel === 'twitter' ? 'X' : draft.channel}
         </span>
 
         {/* AI-relevance bar (40px × 4px) */}
-        <span
-          role="progressbar"
-          aria-label="AI relevance"
-          aria-valuemin={0}
-          aria-valuemax={1}
-          aria-valuenow={relevance ?? undefined}
-          aria-valuetext={
-            relevance == null ? 'unscored' : `${(relevance * 100).toFixed(0)} percent`
-          }
-          style={{
-            position: 'relative',
-            width: 40,
-            height: 4,
-            background:
-              relevance == null
-                ? 'repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 4px)'
-                : 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            flexShrink: 0,
-          }}
-        >
-          {relevance != null && (
-            <span
-              style={{
-                position: 'absolute',
-                inset: 0,
-                width: `${Math.max(0, Math.min(1, relevance)) * 100}%`,
-                background: severityColor,
-                opacity: 0.85,
-              }}
-            />
-          )}
-        </span>
+        {relevance != null && (
+          <span
+            role="progressbar"
+            aria-label="AI relevance"
+            aria-valuemin={0}
+            aria-valuemax={1}
+            aria-valuenow={relevance ?? undefined}
+            aria-valuetext={
+              relevance == null ? 'unscored' : `${(relevance * 100).toFixed(0)} percent`
+            }
+            style={{
+              position: 'relative',
+              width: 40,
+              height: 4,
+              background:
+                relevance == null
+                  ? 'repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0 2px, transparent 2px 4px)'
+                  : 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              flexShrink: 0,
+            }}
+          >
+            {relevance != null && (
+              <span
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: `${Math.max(0, Math.min(1, relevance)) * 100}%`,
+                  background: severityColor,
+                  opacity: 0.85,
+                }}
+              />
+            )}
+          </span>
+        )}
 
         {/* Headline */}
         <span
@@ -258,8 +261,26 @@ export function ApprovalQueueRow({
         </ActionButton>
       </div>
 
+      <p className="pl-3 text-[10px] text-[var(--text-dim)]">
+        Not posted · Created{' '}
+        <time dateTime={draft.createdAt}>
+          {new Date(draft.createdAt).toLocaleString(undefined, {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+          })}
+        </time>
+      </p>
+
       {!editing && !rejecting && (
-        <DraftReview draft={draft} disabled={isPending} onApprove={onApprove} />
+        <DraftReview
+          draft={draft}
+          disabled={isPending}
+          onApprove={onApprove}
+          autoReview={autoReview}
+        />
       )}
 
       {rejecting && (

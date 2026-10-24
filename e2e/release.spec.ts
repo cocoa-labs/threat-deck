@@ -82,6 +82,7 @@ test('publication shows complete recipients and content before an explicit appro
   });
   await page.goto('/');
   await page.getByRole('button',{name:'Toggle conversation'}).click();
+  await page.getByRole('button',{name:'Review drafts (1 pending)',exact:true}).click();
   await page.getByRole('button',{name:'Review publication'}).click();
   const review=page.getByRole('region',{name:'Publication preview'});
   for(const address of ['recipient@example.net','reviewer@example.net','archive@example.net']) await expect(review.getByText(address,{exact:false})).toBeVisible();
@@ -144,4 +145,163 @@ test('AEGIS viewers keep their close control under the production CSP',async({pa
   await page.goto('/api/aegis/cves/view?id=CVE-2024-3094');
   await page.getByRole('button',{name:'Close Tab',exact:true}).click();
   await expect(page.locator('html')).toHaveAttribute('data-close-attempt','yes');
+});
+
+test('publication drafts stay out of the conversation and review returns keyboard focus to Max', async ({ page, context }) => {
+  await operator(context);
+  const styleErrors: string[] = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error' && /textDecoration|conflicting property/.test(message.text())) {
+      styleErrors.push(message.text());
+    }
+  });
+  const drafts = Array.from({ length: 5 }, (_, index) => ({
+    id: 100000010 + index,
+    channel: 'twitter', headline: `Synthetic X draft ${index + 1}`, previewText: 'Pending review',
+    status: 'drafted', createdBy: 'operator@example.org', createdAt: new Date().toISOString(),
+    ageSeconds: 1, aiRelevance: null, severity: 'low', draftType: 'breaking', agentMode: 'anchor', sourceAlertId: null,
+  }));
+  let detailRequests = 0;
+  let mutations = 0;
+  await page.route('**/api/outbound/drafts/**', async (route) => {
+    if (route.request().method() !== 'GET') {
+      mutations++;
+      await route.fulfill({ status: 403, json: { ok: false } });
+      return;
+    }
+    detailRequests++;
+    await route.fulfill({ json: { ok: true, draft: { ...drafts[0], draftPayload: { tweets: [{ text: 'Full synthetic draft for review only.' }] } } } });
+  });
+  await page.route('**/api/outbound/drafts?*', (route) => route.fulfill({ json: { ok: true, drafts } }));
+  await page.route('**/api/agent/stream', (route) => route.fulfill({ status: 200, contentType: 'text/event-stream', body: `data: ${JSON.stringify({ type: 'text', data: 'Max response stays readable while five publications await review.' })}\n\ndata: [DONE]\n\n` }));
+  await page.goto('/');
+  await page.getByPlaceholder(/Ask .* anything/).fill('Check conversation layout');
+  await page.getByRole('button', { name: 'Send message', exact: true }).click();
+  const conversation = page.getByRole('region', { name: 'Max conversation' });
+  await expect(conversation.getByText('Max response stays readable while five publications await review.')).toBeInViewport();
+  expect((await conversation.boundingBox())!.height).toBeGreaterThan(400);
+  await expect(page.getByRole('button', { name: 'Review publication' })).toHaveCount(0);
+  expect(detailRequests).toBe(0);
+
+  const trigger = page.getByRole('button', { name: 'Review drafts (5 pending)', exact: true });
+  await trigger.focus();
+  await page.keyboard.press('Enter');
+  const dialog = page.getByRole('dialog', { name: 'Publication drafts' });
+  await expect(dialog).toBeVisible();
+  const panelsBefore = await page.evaluate(() => localStorage.getItem('threatdeck-panels'));
+  await page.keyboard.press('1');
+  expect(await page.evaluate(() => localStorage.getItem('threatdeck-panels'))).toBe(panelsBefore);
+  await expect(dialog.getByRole('button', { name: 'Review publication' })).toHaveCount(5);
+  await expect(dialog.getByRole('button', { name: 'Approve and publish' })).toHaveCount(0);
+  await dialog.getByRole('button', { name: 'Review publication' }).first().click();
+  await expect(dialog.getByText('Full synthetic draft for review only.', { exact: true })).toBeVisible();
+  expect(detailRequests).toBe(1);
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  await expect(conversation).toBeInViewport();
+
+  const modes = page.getByRole('group', { name: 'Max posture mode' });
+  for (const name of ['Anchor', 'Analyst', 'Fix Architect', 'Fix Architect', 'Anchor', 'Anchor']) {
+    await modes.getByRole('button', { name, exact: true }).click();
+  }
+  await page.getByTitle('Fullscreen', { exact: true }).click();
+  await trigger.click();
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: 'Exit fullscreen', exact: true })).toBeInViewport();
+  await expect(trigger).toBeFocused();
+  await page.getByRole('button', { name: 'Exit fullscreen', exact: true }).click();
+  expect(styleErrors).toEqual([]);
+  expect(mutations).toBe(0);
+});
+
+test('Max creates and previews an image, then posts from the same composer with one click', async ({ page, context }) => {
+  await operator(context);
+  const imageId = '100000101';
+  const draftId = 100000101;
+  const contentPath = `/api/outbound/generated-media/${imageId}/content`;
+  const draft = { id: draftId, channel: 'twitter', headline: 'Synthetic illustrated post', previewText: 'Synthetic illustrated post', status: 'drafted', createdBy: 'operator@example.org', createdAt: new Date().toISOString(), ageSeconds: 1, aiRelevance: null, severity: 'low', draftType: 'agent_post', agentMode: 'anchor', sourceAlertId: null };
+  let ready = false;
+  let saved = false;
+  let approved = false;
+  let payload: Record<string, unknown> = {};
+  let imageRequests = 0;
+  const runtimeErrors: string[] = [];
+  page.on('pageerror', error => runtimeErrors.push(error.message));
+  await page.route('**/api/agent/stream', route => route.fulfill({ contentType: 'text/event-stream', body: `data: ${JSON.stringify({ type: 'text', data: 'Synthetic security update: keep your software patched and review exposed services. This response is long enough to expose all publishing controls.' })}\n\ndata: [DONE]\n\n` }));
+  await page.route('**/api/twitter/status', route => route.fulfill({ json: { ok: true, connected: true, handle: 'ExampleMonitor', missingScopes: [] } }));
+  await page.route('**/api/twitter/compose', route => route.fulfill({ json: { ok: true, package: { primaryText: 'Synthetic illustrated post', replyText: 'Synthetic source trail', draftedBy: 'llm' } } }));
+  await page.route('**/api/outbound/generate-image', route => {
+    imageRequests++;
+    return route.fulfill({ status: 202, json: { ok: true, generatedMediaId: imageId, status: 'pending', pollUrl: `/api/outbound/generated-media/${imageId}` } });
+  });
+  await page.route(`**/api/outbound/generated-media/${imageId}`, route => route.fulfill({ json: { ok: true, generatedMediaId: imageId, mediaKind: 'image', status: ready ? 'ready' : 'pending', blobUrl: ready ? contentPath : null, styleTag: 'terminal_dossier', createdAt: new Date().toISOString() } }));
+  await page.route(`**${contentPath}`, route => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#12321a"/><text x="32" y="180" fill="white" font-size="24">Synthetic test image</text></svg>' }));
+  await page.route('**/api/outbound/drafts?*', route => route.fulfill({ json: { ok: true, drafts: saved && !approved ? Array.from({ length: 20 }, (_, i) => ({ ...draft, id: draftId + i + 1, headline: `Older queued post ${i + 1}` })) : [] } }));
+  await page.route(`**/api/outbound/drafts/${draftId}`, route => route.fulfill({ json: { ok: true, draft: { ...draft, draftPayload: payload } } }));
+  await page.route('**/api/outbound/x/review', route => {
+    const body = route.request().postDataJSON();
+    expect(body.imageBlobUrl).toBe(contentPath);
+    expect(body.replyMode).toBe('latest_image');
+    expect(body.publishMode).toBe('single');
+    payload = { canonicalHashtag: '#AICyber', tweets: [{ text: body.text }], mediaId: imageId, mediaKind: 'image' };
+    saved = true;
+    return route.fulfill({ status: 201, json: { ok: true, draftId } });
+  });
+  await page.route(`**/api/outbound/drafts/${draftId}/approve`, route => {
+    expect(route.request().postDataJSON()).toEqual({ publish: true, reviewedPayload: payload });
+    approved = true;
+    return route.fulfill({ json: { ok: true, draftId, status: 'published', tweetIds: ['1999999999999999999'] } });
+  });
+  await page.goto('/');
+  await page.getByPlaceholder(/Ask .* anything/).fill('Create a synthetic update');
+  await page.getByRole('button', { name: 'Send message', exact: true }).click();
+  const conversation = page.getByRole('region', { name: 'Max conversation' });
+  const postButton = conversation.getByRole('button', { name: 'Post to X', exact: true });
+  await expect(postButton).toBeInViewport({ ratio: 1 });
+  await expect(conversation.getByRole('button', { name: 'Generate image from this response' })).toBeInViewport({ ratio: 1 });
+  await postButton.click();
+  const composer = page.getByRole('dialog', { name: 'Post to X', exact: true });
+  await expect(composer).toBeInViewport({ ratio: 1 });
+  await composer.getByRole('button', { name: 'Refine with Max', exact: true }).click();
+  await expect(composer.getByRole('textbox', { name: 'Post text', exact: true })).toHaveValue('Synthetic illustrated post');
+  await composer.getByRole('button', { name: 'One post', exact: true }).click();
+  await composer.getByRole('button', { name: 'Generate image from this response' }).click();
+  const generator = page.getByRole('dialog', { name: 'Create image', exact: true });
+  await expect(generator).toBeInViewport({ ratio: 1 });
+  await generator.getByRole('button', { name: 'Generate', exact: true }).click();
+  await expect(generator).toHaveCount(0);
+  await expect(composer.getByRole('button', { name: 'Post to X', exact: true })).toBeDisabled();
+  expect(saved).toBe(false);
+  ready = true;
+  const image = composer.getByRole('img', { name: 'Image attached to your X draft' });
+  await expect(image).toBeVisible({ timeout: 15_000 });
+  await expect.poll(() => image.evaluate(element => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+  expect(imageRequests).toBe(1);
+  await composer.getByRole('button', { name: 'Post to X', exact: true }).click();
+  await expect(composer.getByText('Posted to X.', { exact: true })).toBeVisible();
+  await expect(composer.getByRole('link', { name: 'View post on X' })).toHaveAttribute('href', 'https://x.com/i/status/1999999999999999999');
+  await expect(page.getByRole('dialog', { name: 'Publication drafts' })).toHaveCount(0);
+  expect(approved).toBe(true);
+  expect(runtimeErrors).toEqual([]);
+});
+
+
+test('Max shows an operational error without offering to publish or illustrate it', async ({page,context})=>{
+  await operator(context);
+  const message='Your configured AI spending cap cannot cover this request. Adjust ANTHROPIC_DAILY_CAP_USD, or set it to 0 for no cap.';
+  await page.route('**/api/agent/stream',route=>route.fulfill({contentType:'text/event-stream',body:`data: ${JSON.stringify({type:'error',data:message})}\n\ndata: [DONE]\n\n`}));
+  await page.goto('/');
+  await page.getByPlaceholder(/Ask .* anything/).fill('Synthetic error check');
+  await page.getByRole('button',{name:'Send message',exact:true}).click();
+  const conversation=page.getByRole('region',{name:'Max conversation'});
+  await expect(conversation.getByText(message,{exact:true})).toBeVisible();
+  await expect(conversation.getByRole('button',{name:'Post to X',exact:true})).toHaveCount(0);
+  await expect(conversation.getByRole('button',{name:'Generate image from this response'})).toHaveCount(0);
+  await page.reload();
+  await page.getByRole('button',{name:'Toggle conversation',exact:true}).click();
+  // Session response text is deliberately not retained across reloads.
+  await expect(conversation.getByText(message,{exact:true})).toHaveCount(0);
+  await expect(conversation.getByRole('button',{name:'Post to X',exact:true})).toHaveCount(0);
 });

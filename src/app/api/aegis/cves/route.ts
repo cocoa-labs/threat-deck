@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { ingestProvenance } from '@/lib/aegis/ingest/provenance';
 import { query } from '@/lib/db/client';
 import { withRoutePolicy } from '@/lib/security/route-policy';
 
@@ -103,10 +104,12 @@ async function routeGETImplementation(request: Request) {
       );
     }
 
+    const provenance = await ingestProvenance('cves');
     const data = result.rows.map((r) => {
       const cveId = r.cve_id as string;
       const ap = productsByCve[cveId];
       return {
+        _provenance: provenance,
         cveId,
         publishedAt: r.published_at,
         severity: r.severity,
@@ -136,6 +139,7 @@ async function routeGETImplementation(request: Request) {
       NextResponse.json({
         data,
         count: data.length,
+        provenance,
         timestamp: new Date().toISOString(),
       }),
     );

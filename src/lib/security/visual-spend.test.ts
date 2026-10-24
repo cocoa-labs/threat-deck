@@ -48,6 +48,15 @@ describe('checkOutboundVisualSpend', () => {
     expect(result.reason).toBe('hard_cap_exceeded');
   });
 
+  it('does not turn a warning-only threshold into a hard cap', async () => {
+    process.env.OUTBOUND_VISUAL_DAILY_SPEND_USD_HARD = '0';
+    vi.mocked(query).mockResolvedValueOnce({ rows: [{ total_usd: '1000' }] } as never);
+    expect(await checkOutboundVisualSpend()).toMatchObject({
+      allowed: true,
+      warningTriggered: true,
+    });
+  });
+
   it('handles zero spend (no rows in last 24h)', async () => {
     vi.mocked(query).mockResolvedValueOnce({ rows: [{ total_usd: null }], rowCount: 1 } as never);
 
@@ -64,12 +73,13 @@ describe('checkOutboundVisualSpend', () => {
     expect(result.reason).toBe('db_unavailable_failed_closed');
   });
 
-  it('denies spending when both caps are 0', async () => {
+  it('allows spending when both caps are 0', async () => {
     process.env.OUTBOUND_VISUAL_DAILY_SPEND_USD = '0';
     process.env.OUTBOUND_VISUAL_DAILY_SPEND_USD_HARD = '0';
 
     const result = await checkOutboundVisualSpend();
-    expect(result.allowed).toBe(false);
+    expect(result.allowed).toBe(true);
+    expect(query).not.toHaveBeenCalled();
     expect(result.warnCapUsd).toBe(0);
     expect(result.hardCapUsd).toBe(0);
   });

@@ -77,6 +77,8 @@ async function main() {
   }
 
   // Storage cleanup is maintenance for explicit user deletions, not autonomous publishing.
+  const { startAegisCollection } = await import('./src/lib/aegis/ingest/local-worker.js');
+  const stopAegisCollection = startAegisCollection();
   const { retryAttachmentDeletions } = await import('./src/lib/agent/attachments/blob-cleanup.js');
   const cleanupTimer = setInterval(() => { void retryAttachmentDeletions().catch(() => console.warn('[Server] Attachment cleanup deferred; will retry')); }, 60_000);
   cleanupTimer.unref();
@@ -89,6 +91,7 @@ async function main() {
   const shutdown = async () => {
     console.log('[Server] Shutting down...');
     clearInterval(cleanupTimer);
+    stopAegisCollection();
     try {
       const { feedManager } = await import('./src/lib/feeds/manager.js');
       await feedManager.stopAll();

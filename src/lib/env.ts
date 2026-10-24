@@ -178,12 +178,12 @@ const envSchema = z.object({
   OUTBOUND_VISUAL_DAILY_SPEND_USD: z
     .string()
     .optional()
-    .transform((v) => (v == null || v === '' ? 20 : Number(v)))
+    .transform((v) => (v == null || v === '' ? 0 : Number(v)))
     .pipe(z.number().min(0)),
   OUTBOUND_VISUAL_DAILY_SPEND_USD_HARD: z
     .string()
     .optional()
-    .transform((v) => (v == null || v === '' ? 30 : Number(v)))
+    .transform((v) => (v == null || v === '' ? 0 : Number(v)))
     .pipe(z.number().min(0)),
   VISUAL_AUTOPUBLISH_ENABLED: boolFromEnv,
   HIGGSFIELD_VIDEO_ENABLED: boolFromEnv,

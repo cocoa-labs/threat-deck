@@ -1,5 +1,7 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 import { useState } from 'react';
 import type { DraftRow } from '@/lib/outbound/drafts';
 import { safeLink } from '@/lib/security/safe-link';
@@ -9,28 +11,39 @@ export function DraftReview({
   draft,
   disabled,
   onApprove,
+  autoReview = false,
 }: {
   draft: DraftRow;
   disabled: boolean;
   onApprove: (reviewedPayload: Record<string, unknown>) => void;
+  autoReview?: boolean;
 }) {
-  const [payload, setPayload] = useState<Record<string, unknown> | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  async function review() {
-    setLoading(true);
-    setError('');
-    try {
+  const [reviewing, setReviewing] = useState(autoReview);
+  const {
+    data,
+    isFetching: loading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['publication-preview', draft.id],
+    enabled: reviewing,
+    retry: false,
+    staleTime: 0,
+    gcTime: 0,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    queryFn: async (): Promise<Record<string, unknown>> => {
       const response = await fetch(`/api/outbound/drafts/${draft.id}`, { credentials: 'include' });
       const body = await response.json();
       if (!response.ok || !body.draft?.draftPayload)
-        throw new Error('Could not load the current draft.');
-      setPayload(body.draft.draftPayload);
-    } catch {
-      setError('Could not load the current draft. Try again before publishing.');
-    } finally {
-      setLoading(false);
-    }
+        throw new Error('Could not load the current draft. Try again before publishing.');
+      return body.draft.draftPayload;
+    },
+  });
+  const payload = reviewing && !loading && !error ? data : null;
+  function review() {
+    if (reviewing) void refetch();
+    else setReviewing(true);
   }
   const mediaIds = payload
     ? [payload.mediaId, ...(Array.isArray(payload.mediaIds) ? payload.mediaIds : [])].filter(
@@ -49,7 +62,7 @@ export function DraftReview({
           {loading ? 'Loading draft…' : 'Review publication'}
         </button>
       )}
-      {error && <p role="alert">{error}</p>}
+      {error && <p role="alert">{error.message}</p>}
       {payload && (
         <section aria-label="Publication preview" className="space-y-2 p-2">
           <p>{draft.channel === 'email' ? 'Send email' : 'Publish to the connected X account'}</p>
@@ -102,6 +115,16 @@ export function DraftReview({
               target="_blank"
               rel="noopener noreferrer"
             >
+              {payload.mediaKind === 'image' && (
+                <Image
+                  src={`/api/outbound/generated-media/${id}/content`}
+                  alt="Image included in this publication"
+                  width={640}
+                  height={360}
+                  unoptimized
+                  className="mb-2 max-h-64 w-full object-contain"
+                />
+              )}
               Preview attachment {id}
             </a>
           ))}
@@ -117,7 +140,7 @@ export function DraftReview({
           <button
             type="button"
             disabled={disabled}
-            onClick={() => setPayload(null)}
+            onClick={() => setReviewing(false)}
             className="px-2 py-1"
           >
             Cancel review

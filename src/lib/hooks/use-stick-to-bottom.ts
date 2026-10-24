@@ -15,7 +15,7 @@ const NEAR_BOTTOM_PX = 80;
  * All bookkeeping lives in refs, so it triggers no extra renders.
  */
 export function useStickToBottom(
-  scrollRef: RefObject<HTMLDivElement | null>,
+  scrollRef: RefObject<HTMLElement | null>,
   messages: ReadonlyArray<{ role?: string }>,
   streamingText: string,
 ): () => void {
