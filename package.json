@@ -50,7 +50,7 @@
     "@types/d3-hierarchy": "^3.1.7",
     "@types/d3-sankey": "^0.12.5",
     "@vercel/blob": "2.8.2",
-    "@vercel/og": "^0.6.4",
+    "@vercel/og": "^1.0.3",
     "ajv": "8.20.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
